@@ -1,0 +1,70 @@
+@font-face {
+  font-family: "mitrregular";
+  src: url("../fonts/mitr/mitr-regular-webfont.woff2") format("woff2"),
+    url("../fonts/mitr/mitr-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: mitrregular;
+  background: rgb(26, 228, 231);
+  background: linear-gradient(
+    45deg,
+    rgba(26, 228, 231, 1) 0%,
+    rgba(0, 255, 153, 1) 100%
+  );
+}
+
+.brand-name {
+  font-size: 80px;
+  font-family: fantasy;
+  background: -webkit-linear-gradient(
+    45deg,
+    rgba(255, 115, 0, 1) 0%,
+    rgba(255, 187, 0, 1) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login100-form {
+  padding-bottom: 0px;
+}
+
+@media (min-width: 580px) {
+  .login100-form {
+    padding-top: 80px;
+  }
+}
+
+.login-failed {
+  font-size: 13px;
+  line-height: 1.4;
+  color: red;
+  animation: 0.3s shake;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(5px);
+  }
+  30% {
+    transform: translateX(0);
+  }
+  45% {
+    transform: translateX(-5px);
+  }
+  60% {
+    transform: translateX(0px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}

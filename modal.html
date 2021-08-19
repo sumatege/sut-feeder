@@ -1,0 +1,52 @@
+<!-- Setting modal -->
+    <div class="modal fade" id="SettingModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-user-circle" aria-hidden="true"></i> ข้อมูลผู้ใช้</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body pl-3 pr-3">
+                    <div class="row d-flex">
+                        <div class="col-12 m-1">รหัสผู้ใช้: <span id="user-id"></span></div>
+                        <div class="col-12 m-1">ชื่อ - นามสกุล: <span id="user-name"></span></div>
+                        <div class="col-12 m-1">อีเมล์: <span id="user-email"></span></div>
+                        <div class="col-12 m-1">วันที่ลงทะเบียน: <span id="user-create-date"></span></div>
+                        <div class="col-12 m-1"><span>ตำแหน่งปัจจุบัน: <span id="user-latlong"></span><br/></div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <a class="btn btn-danger" href="php/logout.php">Logout</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- First Time modal -->
+    <div class="modal fade" id="FirstTimeModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="pyro" id="firework">
+                    <!--<div class="before"></div>-->
+                    <div class="after"></div>
+                </div>
+                <div class="modal-header" style="border: 0px;justify-content: flex-end;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center" style="padding: 10px; border:0px">
+                        <h4>สวัสดี, คุณ<span id="user-greeting"></span></h4><br/>
+                        <h3 id="modal-greeting-txt">SUT Feeder, ยินดีต้อนรับ!</h3>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>

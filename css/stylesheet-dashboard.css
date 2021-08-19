@@ -1,0 +1,205 @@
+@font-face {
+  font-family: "mitrregular";
+  src: url("../fonts/mitr/mitr-regular-webfont.woff2") format("woff2"),
+    url("../fonts/mitr/mitr-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "mitrsemibold";
+  src: url("../fonts/mitr/mitr-semibold-webfont.woff") format("woff2"),
+    url("../fonts/mitr/mitr-semibold-webfont.woff2") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: mitrregular;
+  background: #a0ffce;
+  /*background: linear-gradient(
+    45deg,
+    rgba(255, 153, 0, 1) 0%,
+    rgba(255, 243, 0, 1) 100%
+  );*/
+  padding: 20px;
+}
+
+.user-data {
+  margin-top: 10px;
+  border-radius: 10px;
+  background: rgb(26, 228, 231);
+  background: linear-gradient(
+    45deg,
+    rgba(26, 228, 231, 1) 0%,
+    rgba(0, 255, 153, 1) 100%
+  );
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+}
+
+.manual-control,
+.auto-control,
+.feeding-control {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.auto-control{
+  height: 500px;
+}
+
+table{
+  font-size: small;
+}
+
+.btn-control {
+  height: 70px;
+  width: 120px;
+  margin: 10px;
+  font-size: x-large;
+}
+
+#UsedFood {
+  width: 100px;
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.brand-icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+}
+
+.brand-name {
+  font-family: mitrsemibold;
+  background: -webkit-linear-gradient(
+    45deg,
+    rgb(255, 94, 0) 0%,
+    rgb(255, 145, 0) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-item {
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.nav-tabs {
+  flex-flow: nowrap;
+}
+
+.tab-content {
+  background-color: white;
+}
+
+.col-md {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.col-lg {
+  width: fit-content;
+}
+
+.fa-cog,
+.fa-bars {
+  color: gray;
+}
+
+#feeder-dropdown {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: black;
+  border: 0px;
+}
+
+.adjust-project-div {
+  width: fit-content !important;
+}
+
+
+#modal-greeting-txt {
+  background: -webkit-linear-gradient(
+    45deg,
+    rgb(255, 94, 0) 0%,
+    rgb(255, 145, 0) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/*==============================================================================*/
+
+@media screen and (max-width: 380px) {
+  .manual-control,
+  h4 {
+    font-size: 14px;
+  }
+
+  h4 {
+    margin-bottom: 10px;
+  }
+
+  .btn-control {
+    height: 50px;
+    width: 100px;
+    margin: 5px;
+    font-size: medium;
+  }
+
+  .btn-success,
+  .btn-secondary {
+    font-size: small;
+  }
+
+  .user-data {
+    font-size: small;
+  }
+
+  .brand-name {
+    font-size: large;
+  }
+
+  .brand-icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+  }
+
+  .fa-cog,
+  .fa-bars {
+    font-size: x-large;
+  }
+
+  .user-weather {
+    margin-right: 0px !important;
+  }
+
+  .col-md {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  #AddRowBtnTxt{
+    display: none;
+  }
+
+  #AddNewRowBtn{
+    min-width: fit-content;
+    background-color: transparent;
+    color: darkcyan;
+    border: 0px;
+    padding-right: 0px;
+  }
+
+  .table-title {
+    padding-bottom: 0px !important;
+}
+}
