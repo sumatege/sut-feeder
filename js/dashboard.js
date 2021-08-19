@@ -1,16 +1,26 @@
 var fullname;
 
-function dashboard() {
-  startTime();
-  member();
+function Dashboard() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-session.php";
+  xhttp.onload = function () {
+    if (this.responseText == "0") {
+      startTime();
+      member();
+    } else {
+      window.location.replace("./index.html");
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
 }
 
 function member() {
   const xhttp = new XMLHttpRequest();
   var url = "./php/get-member.php";
   xhttp.onload = function () {
-    var data = JSON.parse(this.response);
-    if (this.response != "0") {
+    var data = JSON.parse(this.responseText);
+    if (this.responseText != "0") {
       document.getElementById("user-fullname").innerHTML =
         data.m_name + " " + data.m_sirname + " [รหัสผู้ใช้: " + data.m_id + "]";
       document.getElementById("user-name").innerHTML =
@@ -61,7 +71,7 @@ function getWeather(latlong) {
 
   const xhttp = new XMLHttpRequest();
   xhttp.onload = function () {
-    var data = JSON.parse(this.response);
+    var data = JSON.parse(this.responseText);
     var cel = parseFloat(data.main.temp) - 273.15;
     document.getElementById("weatherTxt").innerHTML =
       data.weather[0].description;
@@ -78,14 +88,18 @@ function greeting(name) {
   const xhttp = new XMLHttpRequest();
   var url = "./php/get-greeting.php";
   xhttp.onload = function () {
-    if (this.response == "0") {
+    if (this.responseText == "0") {
       $("#FirstTimeModal").modal("show");
       setTimeout(() => {
         document.getElementById("firework").style.display = "none";
-            document.body.style.overflowY = "scroll";
+        document.body.style.overflowY = "scroll";
       }, 5000);
     }
   };
   xhttp.open("GET", url);
   xhttp.send();
 }
+
+$(function () {
+  $("#ModalInclude").load("modal.html");
+});

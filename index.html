@@ -1,12 +1,3 @@
-<?php
-session_start();
-
-if (isset($_SESSION["m_id"])) {
-    header("location:dashboard.php");
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,13 +30,13 @@ if (isset($_SESSION["m_id"])) {
     <!--===============================================================================================-->
 </head>
 
-<body>
+<body onload="GetSession()">
 
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
                 <!-- Login -->
-                <form class="login100-form validate-form" action="php/login.php" method="POST">
+                <form class="login100-form validate-form" action="./php/login.php" method="POST">
                     <span class="login100-form-title p-b-43">
                         เข้าสู่ระบบ
                     </span>
@@ -106,10 +97,6 @@ if (isset($_SESSION["m_id"])) {
             </div>
         </div>
     </div>
-
-
-
-
 
     <!--===============================================================================================-->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>

@@ -20,9 +20,9 @@ if (isset($_POST["email"]) && isset($_POST["pass"])) {
             $_SESSION["m_latlong"] = $row["m_latlong"];
             /*$_SESSION["m_view"] = $row["m_view"];*/
         }
-        header('Location: ../dashboard.php');
+        header('Location: ../dashboard.html');
     } else {
-        header('Location: ../index.php');
+        header('Location: ../index.html');
         setcookie("FailedTxt", "แจ้งเตือน: ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง", time() + 5, "/");
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
