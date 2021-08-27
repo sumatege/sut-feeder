@@ -1,7 +1,12 @@
 <?php
-$servername = "localhost";
+/*$servername = "localhost";
 $username = "root";
 $password = "";
+$db = "feeder";*/
+
+$servername = "157.245.149.179";
+$username = "io";
+$password = "7777777777yU";
 $db = "feeder";
 
 // Create connection
