@@ -15,9 +15,8 @@ if ($result->num_rows > 0) {
             "m_name" => $row["m_name"],
             "m_sirname" => $row["m_sirname"],
             "m_create_date" => $row["m_create_date"],
-            "m_email" => $row["m_email"],
+            "m_phone" => $row["m_phone"],
             "m_password" => $row["m_password"],
-            "m_latlong" => $row["m_latlong"],
             //"m_view" => $row["m_view"]
         );
     }

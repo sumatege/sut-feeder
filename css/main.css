@@ -73,7 +73,7 @@
 
 body,
 html {
-  height: 100%;
+  height: fit-content;
   /*font-family: Poppins-Regular, sans-serif;*/
 }
 
@@ -330,6 +330,7 @@ iframe {
   color: #333333;
   line-height: 1.2;
   text-align: center;
+  margin-bottom: 15px;
 }
 
 /*------------------------------------------------------------------

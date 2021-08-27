@@ -7,6 +7,8 @@ var weatherApi =
 var x = document.getElementById("latlong");
 
 function getLocation() {
+  document.getElementById("failedStrat").style.display = "none";
+  x.style.display = "none";
   document.getElementById("location-data").style.display = "block";
   setTimeout(function () {
     if (navigator.geolocation) {
@@ -14,18 +16,19 @@ function getLocation() {
     } else {
       x.innerHTML = "Geolocation is not supported by this browser.";
     }
-  }, 3000);
+  }, 2000);
 }
 
 function showPosition(position) {
-  x.innerHTML =
-    "Latitude: " +
+  x.innerHTML = "Latitude: " +
     position.coords.latitude +
     "<br>Longitude: " +
     position.coords.longitude;
+  x.style.display = "block";
   lat = position.coords.latitude;
   long = position.coords.longitude;
   document.getElementById("location-data").style.display = "none";
+  document.getElementById("BtnStart").disabled = false;
 }
 
 function showError(error) {
@@ -50,9 +53,11 @@ function SaveLocation() {
   var url = "./php/save-location.php";
   url = url + "?lat=" + lat + "&long=" + long;
   xhttp.onload = function () {
-    if (this.response == "0") {
-      window.location.replace("./setup-project.php");
+    console.log(this.responseText);
+    if (this.responseText == "0") {
+      window.location.replace("./dashboard.html");
     } else {
+      document.getElementById("failedStrat").style.display = "block";
       document.getElementById("failedStrat").innerHTML =
         "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง";
     }
@@ -62,5 +67,11 @@ function SaveLocation() {
 }
 
 function skip() {
-  window.location.replace("./setup-project.php");
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/set-greeting.php";
+  xhttp.onload = function () {
+    window.location.replace("./dashboard.html");
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
 }

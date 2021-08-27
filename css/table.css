@@ -76,15 +76,15 @@ table.table td .add {
   display: none;
 }
 .table-body {
-  overflow: scroll;
-  height: 100%;
+  height: 300px;
+  overflow-x: scroll;
 }
 .table td {
   white-space: nowrap;
 }
 .table td,
 .table th {
-  padding: 0.1rem;
+  padding: 0.3rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   vertical-align: baseline;
@@ -92,4 +92,27 @@ table.table td .add {
 }
 .table th {
   text-align: center;
+}
+table {
+  font-size: small;
+  height: fit-content;
+  padding-bottom: 50px;
+}
+
+/*==================================*/
+
+@media (max-width: 991px) {
+  .table-responsive {
+    display: table;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .table-title {
+    padding-bottom: 0px !important;
+  }
+  .table-body {
+    height: 300px;
+    overflow-x: scroll;
+  }
 }

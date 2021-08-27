@@ -40,7 +40,7 @@
                 <h3 class="brand-name">SUT Feeder</h3>
             </div>
             <div class="col-lg text-right p-0">
-                <a href="" data-toggle="modal" data-target="#"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></a>
+                <a href="" data-toggle="modal" data-target="#HistoryModal"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></a>
                 <a href="" data-toggle="modal" data-target="#SettingModal"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a>
             </div>
         </div>
@@ -53,6 +53,7 @@
             <div class="col-md user-data user-weather mr-2">
                 <i class="fa fa-cloud mr-2" aria-hidden="true"></i>สภาพอากาศ: <span id="weatherTxt">-</span><br />
                 <i class="fa fa-thermometer-three-quarters mr-2" aria-hidden="true"></i>อุณหภูมิ: <span id="celsiusTxt">-</span> &#8451;
+                [<a href="#" data-toggle="modal" data-target="#AddLocationModal" id="linkforlatlong">ตั้งค่าพิกัด</a>]
             </div>
             <div class="col-md user-data">
                 <i class="fa fa-calendar mr-2" aria-hidden="true"></i><span id="dateTxt"></span></br />
@@ -63,42 +64,54 @@
             <div class="col-md d-flex align-items-center">
                 <div class="dropdown mr-2">
                     <button id="feeder-dropdown" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span id="ProjectNameDropdown">Project 1</span>
+                        <span id="ProjectNameDropdown"></span>
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="my-dropdown" id="dropdown-list">
-                        <a class="dropdown-item" href="#">Project 1</a>
-                        <a class="dropdown-item" href="#">Project 2</a>
-                        <a class="dropdown-item" href="#">Project 3</a>
-                    </div>
+                    <div class="dropdown-menu" aria-labelledby="my-dropdown" id="dropdown-list"></div>
                 </div>
-                <a href=""><i class="fa fa-plus-circle fa-lg mr-2" aria-hidden="true"></i></a>
-                <a href=""><i class="fa fa-minus-circle fa-lg" aria-hidden="true"></i></a>
+                <a href="#" data-toggle="modal" data-target="#AddProjectModal"><i class="fa fa-plus-circle fa-lg mr-2" aria-hidden="true"></i></a>
+                <a href="#" data-toggle="modal" data-target="#DeleteProjectModal"><i class="fa fa-minus-circle fa-lg mr-2" aria-hidden="true"></i></a>
+                <div class="text-nowrap">| สถานะ <span id="mastatus"></span></div>
             </div>
         </div>
-        <div class="mt-2">
+        <div class="mt-2 mb-5">
             <nav class="body-control">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">ให้อาหารปลา</a>
                     <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">ตั้งเวลา</a>
-                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">ข้อมูลการให้อาหาร</a>
+                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false" onclick="getProjectInfo()">ข้อมูลการใช้อาหาร</a>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="row manual-control">
                         <div class="container p-3 text-center">
-                            <h4>ควบคุมการให้อาหารปลาด้วยตนเอง</h4>
+                            <h4 id="headerTxt">ควบคุมการให้อาหารด้วยตนเอง</h4>
                             <div class="justify-content-center">
-                                <div><button class="btn btn-info btn-control">เริ่ม</button></div>
-                                <div><button class="btn btn-danger btn-control">หยุด</button></div>
+                                <div class="d-inline-flex align-items-center">
+                                    <label for="foodsize">ขนาดเม็ดอาหาร</label>           
+                                    <select class="form-control" name="foodsize" id="foodsize">
+                                        <option class="form-control" value="1">1 มม.</option>
+                                        <option class="form-control" value="2">2 มม.</option>
+                                        <option class="form-control" value="5">5 มม.</option>
+                                    </select>
+                                </div>
+                                <div><button class="btn btn-primary btn-control" id="mstartfeed" onclick="StartFeeding()">เริ่ม</button></div>
+                                <div><button class="btn btn-danger btn-control" id="mstopfeed" disabled onclick="StopFeeding()">หยุด</button></div>
                                 <div class="d-flex flex-nowrap justify-content-center align-items-center m-3">
-                                    <span class="text-nowrap">ให้อาหารไปแล้ว</span>
-                                    <input type="text" class="form-control" value="10" id="UsedFood">
-                                    <span class="text-nowrap">กรัม/กิโลกรัม</span>
+                                    <span class="text-nowrap">เวลา</span>
+                                    <input type="text" class="form-control" disabled value="0" id="UsedFoodTime">
+                                    <span>วินาที</span>
+                                </div>
+                                <div class="d-flex flex-nowrap justify-content-center align-items-center m-3">
+                                    <span class="text-nowrap">อาหารที่ใช้</span>
+                                    <input type="text" class="form-control" disabled value="0" id="UsedFoodG">
+                                    <span>กรัม หรือ</span>
+                                    <input type="text" class="form-control" disabled value="0" id="UsedFoodK">
+                                    <span>กก.</span>
                                 </div>
                                 <div>
-                                    <button class="btn btn-success">บันทึกข้อมูล</button>
-                                    <button class="btn btn-secondary">ไม่บันทึกข้อมูล</button>
+                                    <button class="btn btn-success" id="msavefeed" data-toggle="modal" data-target="#SaveFeedingModal" disabled >บันทึกข้อมูล</button>
+                                    <button class="btn btn-secondary" id="mclearfeed" data-toggle="modal" data-target="#CancelFeedingModal"  disabled>ไม่บันทึกข้อมูล</button>
                                 </div>
                             </div>
                         </div>
@@ -110,125 +123,29 @@
                             <div class="table-title">
                                 <div class="row justify-content-between">
                                     <div class="col-auto" style="align-self:center !important">
-                                        <h4>ตั้งเวลาให้อาหารปลาอัติโนมัติ</h4>
+                                        <h4>ตั้งเวลาให้อาหารอัติโนมัติ</h4>
                                     </div>
                                     <div class="col-auto">
-                                        <button type="button" id="AddNewRowBtn" class="btn btn-info btn-sm add-new"><i class="fa fa-plus"></i><span id="AddRowBtnTxt">Add New</span></button>
+                                        <button type="button" id="AddNewRowBtn" data-toggle="modal" data-target="#AutomationModal" class="btn btn-info btn-sm add-new"><i class="fa fa-plus"></i><span id="AddRowBtnTxt">เพิ่ม</span></button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row table-body">
-                                <table class="table table-responsive table-bordered">
+                            <div class="row table-body">                                
+                                <table class="table table-responsive table-bordered table-hover" id="AutomationTable">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Department</th>
-                                            <th>Phone</th>
-                                            <th>Actions</th>
+                                            <!--<th>เริ่มวันที่</th>
+                                            <th>ถึงวันที่</th>-->
+                                            <th>เวลา</th>
+                                            <th>ปริมาณอาหาร (กก.)</th>
+                                            <th>รอบการให้อาหาร (รอบ)</th>
+                                            <th>เวลาต่อรอบ (วินาที)</th>
+                                            <th>เวลาพักเบรค (วินาที)</th>
+                                            <th>เปิด/ปิดการทำงาน</th>
+                                            <th>ลบ</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Subhash</td>
-                                            <td>Administration</td>
-                                            <td>88***88***</td>
-                                            <td>
-                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subhash</td>
-                                            <td>Administration</td>
-                                            <td>88***88***</td>
-                                            <td>
-                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subhash</td>
-                                            <td>Administration</td>
-                                            <td>88***88***</td>
-                                            <td>
-                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subhash</td>
-                                            <td>Administration</td>
-                                            <td>88***88***</td>
-                                            <td>
-                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subhash</td>
-                                            <td>Administration</td>
-                                            <td>88***88***</td>
-                                            <td>
-                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subhash</td>
-                                            <td>Administration</td>
-                                            <td>88***88***</td>
-                                            <td>
-                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subhash</td>
-                                            <td>Administration</td>
-                                            <td>88***88***</td>
-                                            <td>
-                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subhash</td>
-                                            <td>Administration</td>
-                                            <td>88***88***</td>
-                                            <td>
-                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subhash</td>
-                                            <td>Administration</td>
-                                            <td>88***88***</td>
-                                            <td>
-                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subhash</td>
-                                            <td>Administration</td>
-                                            <td>88***88***</td>
-                                            <td>
-                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons"></i></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                    <tbody id="tbody"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -236,7 +153,57 @@
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                     <div class="row feeding-control">
-
+                        <div class="container p-3 text-center">
+                            <h4>ข้อมูลการใช้อาหาร</h4>
+                            <div class="row mt-3 justify-content-center align-content-center table-striped">
+                                <table class="table table-history table-responsive table-hover table-bordered">
+                                  <tbody>
+                                    <tr>
+                                      <td>วันที่เริ่มต้น</td>
+                                      <td><input type="date" class="form-control" id="r_startdate" disabled></td>
+                                    </tr>
+                                    <tr>
+                                      <td>วันที่สุดท้าย</td>
+                                      <td><input type="date" class="form-control" id="r_enddate" disabled></td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาเริ่มต้น (กก.)</td>
+                                      <td><input type="number" class="form-control" step="0.01" id="r_beginweight" disabled></td>
+                                    </tr>
+                                    <tr>
+                                      <td>จำนวนปลา (ตัว)</td>
+                                      <td><input type="number" class="form-control" id="r_beginamount" disabled></td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาสุดท้าย (กก.)</td>
+                                      <td><input type="number" class="form-control" step="0.01" id="r_endweight"  disabled></td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาที่เพิ่มขึ้น (กก.)</td>
+                                      <td><input type="number" class="form-control" step="0.01" id="r_plusweight" disabled></td>
+                                    </tr>
+                                    <tr>
+                                      <td>อาหารที่ใช้ทั้งหมด (กรัม)</td>
+                                      <td><input type="number" class="form-control" step="0.01" id="r_totalfoodG" disabled></td>
+                                    </tr>
+                                    <tr>
+                                      <td>อาหารที่ใช้ทั้งหมด (กก.)</td>
+                                      <td><input type="number" class="form-control" step="0.01" id="r_totalfoodK" disabled></td>
+                                    </tr>
+                                    <tr>
+                                      <td style="white-space: pre-wrap;">อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td>
+                                      <td><input type="number" class="form-control" step="0.01" id="r_fcr" disabled></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                            </div>
+                            <div class="row d-flex justify-content-center">                                
+                                <button class="btn btn-danger btn-r4" id="btn_r_cancel" onclick="RecordCancel()">ยกเลิก</button>                                
+                                <button class="btn btn-secondary btn-r1" id="btn_r_edit" onclick="RecordEdit()">แก้ไข</button>                                
+                                <button class="btn btn-success btn-r2" id="btn_r_save" onclick="RecordSave()">บันทึก</button>
+                                <button class="btn btn-primary btn-r3" id="btn_r_close" data-toggle="modal" data-target="#CloseProjectModal">สิ้นสุดการเก็บข้อมูล</button>                                
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -262,6 +229,7 @@
     <!--===============================================================================================-->
     <script src="js/dashboard.js"></script>
     <script src="js/weather.js"></script>
+    <script src="js/manual-feeding.js"></script>
 
 </body>
 

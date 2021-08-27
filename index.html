@@ -41,25 +41,20 @@
                         เข้าสู่ระบบ
                     </span>
 
-                    <div class="wrap-input100 validate-input" data-validate="กรอกอีเมล์ให้ถูกต้อง เช่น ex@ex.com">
-                        <input class="input100" type="text" name="email">
+                    <div class="wrap-input100 validate-input" data-validate="กรุณากรอกเบอร์โทรให้ถูกต้อง">
+                        <input class="input100" type="text" name="phone" required>
                         <span class="focus-input100"></span>
-                        <span class="label-input100">อีเมล์</span>
+                        <span class="label-input100">เบอร์โทร</span>
                     </div>
 
-                    <div class="wrap-input100 validate-input" data-validate="รหัสผ่าน 8-20 ตัว ประกอบด้วย a-Z และ 0-9">
-                        <input class="input100" type="password" name="pass">
+                    <div class="wrap-input100 validate-input" data-validate="กรุณากรอกข้อมูลให้ครบถ้วน">
+                        <input class="input100" type="password" name="pass" required>
                         <span class="focus-input100"></span>
                         <span class="label-input100">รหัสผ่าน</span>
                     </div>
 
                     <div class="m-2 mb-3">
                         <div class="login-failed" id="LoginFailedText">
-                            <?php
-                            if (isset($_COOKIE["FailedTxt"])) {
-                                echo $_COOKIE["FailedTxt"];
-                            }
-                            ?>
                         </div>
                     </div>
 
@@ -86,7 +81,7 @@
                     </div>
 
                     <div class="text-center p-t-46 p-b-20">
-                        <span class="txt2">หรือ </span><a href="registration.php">ลงทะเบียน</a><span class="txt2"> เพื่อเข้าใช้งาน </span>
+                        <span class="txt2">หรือ </span><a href="registration.html">ลงทะเบียน</a><span class="txt2"> เพื่อเข้าใช้งาน </span>
                     </div>
                 </form>
                 <div class="login100-more flex-c-m bg-img">

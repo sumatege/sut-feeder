@@ -42,12 +42,8 @@
 
     
     function validate (input) {
-        if($(input).attr('name') == 'email') {   
-            if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
-                return false;
-            }
-        } else if ($(input).attr('name') == 'pass') {
-            if($(input).val().trim().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/) == null) {
+        if($(input).attr('name') == 'phone') {   
+            if($(input).val().trim().match(/^\d{10}$/) == null) {
                 return false;
             }
         } else {
@@ -71,3 +67,32 @@
     
 
 })(jQuery);
+
+function GetSession() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-session.php";
+  xhttp.onload = function () {
+    if (this.responseText == "0") {
+      window.location.replace("./dashboard.html");
+    } else {
+      CheckFailed();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+
+function CheckFailed() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-cookie.php";
+  xhttp.onload = function () {
+    if (this.responseText != "1") {
+      document.getElementById("RegisFailedText").innerHTML = this.responseText;
+    }else{
+      document.getElementById("RegisFailedText").innerHTML = "";
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
