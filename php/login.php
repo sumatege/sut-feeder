@@ -3,9 +3,9 @@
 session_start();
 require 'config.php';
 
-if (isset($_POST["phone"]) && isset($_POST["pass"])) {
-    $user = $_POST["phone"];
-    $pw = $_POST["pass"];
+if (isset($_GET["phone"]) && isset($_GET["pass"])) {
+    $user = $_GET["phone"];
+    $pw = $_GET["pass"];
 
     $sql = "SELECT * FROM member WHERE m_phone='" . $user . "' AND m_password='" . $pw . "'";
     $result = $conn->query($sql);
