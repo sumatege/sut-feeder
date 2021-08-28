@@ -123,6 +123,8 @@ function GetDropdownList() {
       document.getElementById("AddNewRowBtn").style.opacity = 1;
       document.getElementById("mstartfeed").disabled = false;
       document.getElementById("mstartfeed").style.opacity = 1;
+      document.getElementById("DeleteProjectBtn").disabled = false;
+      document.getElementById("DeleteProjectBtn").style.opacity = 1;
 
       data.forEach((results) => {
         projectlist.insertAdjacentHTML(
@@ -167,6 +169,8 @@ function GetDropdownList() {
       document.getElementById("AddNewRowBtn").style.opacity = 0.1;
       document.getElementById("mstartfeed").disabled = true;
       document.getElementById("mstartfeed").style.opacity = 0.1;
+      document.getElementById("DeleteProjectBtn").disabled = true;
+      document.getElementById("DeleteProjectBtn").style.opacity = 0.1;
     }
   };
   xhttp.open("GET", url);
