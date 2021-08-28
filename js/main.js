@@ -38,7 +38,7 @@
   function validate(input) {
     if ($(input).val().trim() == "") {
       return false;
-    }else{
+    } else {
       return true;
     }
   }
@@ -84,21 +84,24 @@ function CheckFailed() {
   xhttp.send();
 }
 
-
-function login(){
+function login() {
   var phone = document.getElementById("phone").value;
   var pass = document.getElementById("pass").value;
 
- const xhttp = new XMLHttpRequest();
-  var url = "./php/login.php?phone=" + phone + "&pass=" + pass;
-  xhttp.onload = function () {
-    console.log(this.response);
-    if (this.response == "0") {
-      window.location.replace("./dashboard.html");
-    } else {
-      CheckFailed();
-    }
-  };
-  xhttp.open("GET", url);
-  xhttp.send(); 
+  if (phone != "" && pass != "") {
+    const xhttp = new XMLHttpRequest();
+    var url = "./php/login.php?phone=" + phone + "&pass=" + pass;
+    xhttp.onload = function () {
+      console.log(this.response);
+      if (this.response == "0") {
+        window.location.replace("./dashboard.html");
+      } else {
+        CheckFailed();
+      }
+    };
+    xhttp.open("GET", url);
+    xhttp.send();
+  } else {
+    alert(phone);
+  }
 }
