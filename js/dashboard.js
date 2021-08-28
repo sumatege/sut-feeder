@@ -14,6 +14,7 @@ function Dashboard() {
       GetAutomationTable();
       GetHistory();
       MachineStatus();
+      $("#ModalInclude").load("modal.html");
     } else {
       window.location.replace("./index.html");
     }
@@ -106,10 +107,6 @@ function greeting(name) {
   xhttp.open("GET", url);
   xhttp.send();
 }
-
-$(function () {
-  $("#ModalInclude").load("modal.html");
-});
 
 function GetDropdownList() {
   let projectlist = document.querySelector("#dropdown-list");
