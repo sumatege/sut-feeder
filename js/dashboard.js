@@ -8,12 +8,12 @@ function Dashboard() {
   xhttp.onload = function () {
     if (this.responseText == "0") {
       startTime();
-      member();
       GetDropdownList();
       getProjectInfo();
       GetAutomationTable();
       GetHistory();
       MachineStatus();
+      member();
       $("#ModalInclude").load("modal.html");
     } else {
       window.location.replace("./index.html");
