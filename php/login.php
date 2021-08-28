@@ -3,9 +3,9 @@
 session_start();
 require 'config.php';
 
-if (isset($_POST["phone"]) && isset($_POST["pass"])) {
-    $user = $_POST["phone"];
-    $pw = $_POST["pass"];
+if (isset($_GET["phone"]) && isset($_GET["pass"])) {
+    $user = $_GET["phone"];
+    $pw = $_GET["pass"];
 
     $sql = "SELECT * FROM member WHERE m_phone='" . $user . "' AND m_password='" . $pw . "'";
     $result = $conn->query($sql);
@@ -20,7 +20,7 @@ if (isset($_POST["phone"]) && isset($_POST["pass"])) {
             $_SESSION["m_latlong"] = $row["m_latlong"];
             /*$_SESSION["m_view"] = $row["m_view"];*/
         }
-        header('Location: ../dashboard.html');
+        echo "0";
     } else {
         header('Location: ../index.html');
         setcookie("FailedTxt", "เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง", time() + 10, "/");

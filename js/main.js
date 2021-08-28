@@ -83,3 +83,21 @@ function CheckFailed() {
   xhttp.open("GET", url);
   xhttp.send();
 }
+
+
+function login(){
+  var phone = document.getElementById("phone").value;
+  var pass = document.getElementById("pass").value;
+
+ const xhttp = new XMLHttpRequest();
+  var url = "./php/login.php?phone=" + phone + "&pass=" + pass;
+  xhttp.onload = function () {
+    if (this.responseText == "0") {
+      window.location.replace("./dashboard.html");
+    } else {
+      CheckFailed();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send(); 
+}
