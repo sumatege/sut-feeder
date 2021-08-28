@@ -90,7 +90,7 @@ function login(){
   var pass = document.getElementById("pass").value;
 
  const xhttp = new XMLHttpRequest();
-  var url = "login.php?phone=" + phone + "&pass=" + pass;
+  var url = "./php/login.php?phone=" + phone + "&pass=" + pass;
   xhttp.onload = function () {
     console.log(this.response);
     if (this.response == "0") {
