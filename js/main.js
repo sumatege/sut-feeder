@@ -92,7 +92,8 @@ function login(){
  const xhttp = new XMLHttpRequest();
   var url = "./php/login.php?phone=" + phone + "&pass=" + pass;
   xhttp.onload = function () {
-    if (this.responseText == "0") {
+    alert(this.response);
+    if (this.response == "0") {
       window.location.replace("./dashboard.html");
     } else {
       CheckFailed();
