@@ -55,7 +55,7 @@ function SaveLocation() {
   xhttp.onload = function () {
     console.log(this.responseText);
     if (this.responseText == "0") {
-      window.location.replace("./dashboard.html");
+      skip();
     } else {
       document.getElementById("failedStrat").style.display = "block";
       document.getElementById("failedStrat").innerHTML =
