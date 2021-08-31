@@ -1,0 +1,22 @@
+<?php
+
+$servername = "remotemysql.com";
+$username = "YOVzbEn8XW";
+$password = "VBA5JgCdGV";
+$db = "YOVzbEn8XW";
+
+$sql = "SELECT * FROM project WHERE p_key='" . $_POST["p_key"] . "'";
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $data = $row;
+    }
+    echo json_encode($data);
+} else {
+    echo "error";
+}
+
+
+$conn->close();
