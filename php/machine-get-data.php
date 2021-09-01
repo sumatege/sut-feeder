@@ -5,6 +5,12 @@ $username = "YOVzbEn8XW";
 $password = "VBA5JgCdGV";
 $db = "YOVzbEn8XW";
 
+$conn = new mysqli($servername, $username, $password, $db);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 $sql = "SELECT * FROM project WHERE p_key='" . $_POST["p_key"] . "'";
 
 $result = $conn->query($sql);
