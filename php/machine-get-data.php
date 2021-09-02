@@ -11,7 +11,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM project WHERE p_key='" . $_POST["p_key"] . "'";
+$sql = "SELECT * FROM project WHERE p_key='" . $_GET["p_key"] . "'";
 
 echo $sql;
 
