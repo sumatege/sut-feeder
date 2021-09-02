@@ -11,9 +11,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "UPDATE project SET
-    p_food_status = 1
-    WHERE p_key='" . $_GET["key"] . "'";
+$sql = "UPDATE project SET p_food_status = " . $_GET["p_food_status"] . " WHERE p_key='" . $_GET["p_key"] . "'";
 
 if ($conn->query($sql) === TRUE) {
     echo "0";
