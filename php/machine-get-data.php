@@ -13,6 +13,8 @@ if ($conn->connect_error) {
 
 $sql = "SELECT * FROM project WHERE p_key='" . $_POST["p_key"] . "'";
 
+echo $sql;
+
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
