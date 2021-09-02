@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 
 $sql = "SELECT * FROM project WHERE p_key='" . $_GET["p_key"] . "'";
 
-echo $sql;
+//echo $sql;
 
 $result = $conn->query($sql);
 
