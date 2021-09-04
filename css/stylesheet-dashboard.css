@@ -282,7 +282,6 @@ body {
 #otherSize {
   display: none;
   text-align: center;
-  text-align: -webkit-center !important;
 }
 
 /* The switch - the box around the slider ======================================== */
