@@ -12,7 +12,7 @@ $password = "VBA5JgCdGV";
 $db = "YOVzbEn8XW";
 */
 
-$servername = "http://159.89.204.217/";
+$servername = "159.89.204.217";
 $username = "root";
 $password = "2021@Password";
 $db = "sut-feeder";
