@@ -15,12 +15,20 @@ function StartFeeding() {
   document.getElementById("mclearfeed").style.opacity = "0.1";
   document.getElementById("msavefeed").disabled = true;
   document.getElementById("msavefeed").style.opacity = "0.1";
+  document.getElementById("self_weight").disabled = true;
   myTimer = setInterval(myClock, 1000);
 
   function myClock() {
     c = c + 1;
     document.getElementById("UsedFoodTime").value = c;
-    CalculateFood(c, foodsize);
+
+    if (foodsize == 0) {
+      var weightpersec = document.getElementById("self_weight").value;
+      CalculateFoodNewSize(c, weightpersec);
+    } else {
+      CalculateFood(c, foodsize);
+    }
+
     //console.log(c);
     if (c == 59) {
       clearInterval(myTimer);
@@ -37,7 +45,6 @@ function StopFeeding() {
   document.getElementById("mstartfeed").style.opacity = "1";
   document.getElementById("mstopfeed").disabled = true;
   document.getElementById("mstopfeed").style.opacity = "0.1";
-  document.getElementById("foodsize").disabled = false;
   document.getElementById("mclearfeed").disabled = false;
   document.getElementById("mclearfeed").style.opacity = "1";
   document.getElementById("msavefeed").disabled = false;
@@ -59,6 +66,7 @@ function ClearFeeding() {
   document.getElementById("mclearfeed").style.opacity = "0.1";
   document.getElementById("msavefeed").disabled = true;
   document.getElementById("msavefeed").style.opacity = "0.1";
+  document.getElementById("self_weight").disabled = false;
   $("#CancelFeedingModal").modal("hide");
 }
 
@@ -176,4 +184,9 @@ function CalculateFood(usetime, foodsize) {
       }
     });
   });
+}
+
+function CalculateFoodNewSize(usetime, foodsize) {
+  document.getElementById("UsedFoodG").value = usetime * (parseFloat(foodsize) * 1000);
+  document.getElementById("UsedFoodK").value = usetime * parseFloat(foodsize);
 }

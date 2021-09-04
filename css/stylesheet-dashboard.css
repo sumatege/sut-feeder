@@ -182,7 +182,7 @@ body {
 }
 
 #foodsize {
-  width: 100px;
+  width: auto;
   margin: 10px;
 }
 
@@ -277,6 +277,12 @@ body {
   padding-bottom: 10px !important;
   overflow-y: scroll;
   max-height: 500px !important;
+}
+
+#otherSize {
+  display: none;
+  text-align: center;
+  text-align: -webkit-center;
 }
 
 /* The switch - the box around the slider ======================================== */

@@ -14,7 +14,7 @@
                         <div class="col-12 m-1">ชื่อ - นามสกุล: <span id="user-name"></span></div>
                         <div class="col-12 m-1">เบอร์โทรศัพท์: <span id="user-phone"></span></div>
                         <div class="col-12 m-1">วันที่ลงทะเบียน: <span id="user-create-date"></span></div>
-                    </div>
+                    </div>                
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <a class="btn btn-danger" href="php/logout.php">ออกจากระบบ</a>
@@ -39,8 +39,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
-                        <h4>สวัสดี, คุณ<span id="user-greeting"></span></h4><br/>
-                        <h3 id="modal-greeting-txt">SUT Auto Feeder, <br/>ยินดีต้อนรับ!</h3>
+                        <div class="col-md-12">
+                            <h4>สวัสดี, คุณ<span id="user-greeting"></span></h4><br/>    
+                        </div>
+                        <div class="col-md-12">
+                            <h3 id="modal-greeting-txt">SUT Auto Feeder, <br/>ยินดีต้อนรับ!</h3>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
@@ -330,7 +334,7 @@
                     </button>
                 </div>
                 <div class="modal-body modal-body-history" style=" padding: 50px; padding-left: 10px; padding-right: 10px;">
-                    <div class="row d-flex justify-content-center align-items-center" id="modal-content-history"></div>
+                    <div class="row d-flex justify-content-center align-items-center" id="modal-content-history">ไม่มีประวัติการบันทึกข้อมูล</div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>

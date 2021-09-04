@@ -730,3 +730,16 @@ function GetHistory(){
 function RefreshPage(){
   window.location.replace("./dashboard.html"); 
 }
+
+function AddUnitModal(){
+  $('#SettingModal').modal('hide');
+  $('#AddUnitModal').modal('show');
+}
+
+function checkSize(value){
+  if(value == 0){
+    document.getElementById("otherSize").style.display = "block";
+  }else{
+    document.getElementById("otherSize").style.display = "none";
+  }
+}
