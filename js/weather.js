@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var appid = "91800f1c7b349cfdb6620064c1a229a4";
 var lat;
 var long;
@@ -76,7 +75,7 @@ function skip() {
   xhttp.open("GET", url);
   xhttp.send();
 }
-=======
+
 var appid = "91800f1c7b349cfdb6620064c1a229a4";
 var lat;
 var long;
@@ -154,4 +153,3 @@ function skip() {
   xhttp.open("GET", url);
   xhttp.send();
 }
->>>>>>> 64dc6b66e1673190933029b2b08d29b7dddd6390
