@@ -1,9 +1,9 @@
-<<<<<<< HEAD
 <?php
 
+session_start();
 require 'config.php';
 
-$sql = "UPDATE project SET p_food_status = " . $_GET["p_food_status"] . " WHERE p_key='" . $_GET["p_key"] . "'";
+$sql = "UPDATE automation SET a_status = " . $_GET["status"] . " WHERE a_id='" . $_GET["id"] . "'";
 
 if ($conn->query($sql) === TRUE) {
     echo "0";

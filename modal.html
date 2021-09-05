@@ -123,7 +123,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row p-3 d-flex justify-content-center">
+                    <div class="row p-2 d-flex justify-content-center">
                         <form id="AddAutomationForm">
                             <!--<div class="form-group">
                                 <label>เริ่มวันที่</label>
@@ -139,23 +139,28 @@
                             </div>
                             <div class="form-group">
                                 <label for="a_foodsize">ขนาดเม็ดอาหาร (มม.)</label>           
-                                    <select class="form-control" name="foodsize" id="a_foodsize">
-                                        <option class="form-control" value="1">1 มม.</option>
-                                        <option class="form-control" value="2">2 มม.</option>
-                                        <option class="form-control" value="5">5 มม.</option>
-                                    </select>
+                                <select class="form-control" name="foodsize" id="a_foodsize" onchange="acheckSize(this.value)">
+                                    <option class="form-control" value="1">อาหารปลา 1 มม.</option>
+                                    <option class="form-control" value="2">อาหารปลา 2 มม.</option>
+                                    <option class="form-control" value="5">อาหารปลา 5 มม.</option>
+                                    <option class="form-control" value="0">อื่น ๆ</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display: none;" id="a_otherSize">
+                                <label>ป้อนค่าน้ำหนัก (กก./วินาที)</label>
+                                <input type="number" step="0.01" min="0" class="form-control" id="a_self_weight" />
                             </div>
                             <div class="form-group">
                                 <label>ปริมาณอาหาร (กก.)</label>
-                                <input class="form-control" type="number" value="0" id="a_total" />
+                                <input class="form-control" type="number" value="1" min="0" id="a_total" />
                             </div>
                             <div class="form-group">
                                 <label>แบ่งรอบการให้อาหาร (รอบ)</label>
-                                <input class="form-control" type="number" value="0" id="a_round" />
+                                <input class="form-control" type="number" value="1" min="0" id="a_round" />
                             </div>
                             <div class="form-group">
                                 <label>ช่วงเวลาพักเบรคแต่ละรอบ (นาที)</label>
-                                <input class="form-control" type="number" value="0" id="a_break" />
+                                <input class="form-control" type="number" value="1" min="0" id="a_break" />
                             </div>
                         </form>
                     </div>

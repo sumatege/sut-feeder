@@ -1,6 +1,8 @@
 var fullname;
 var timeperround = 0;
 var latilongti = "";
+var automation;
+var weather_status = "";
 
 function Dashboard() {
   const xhttp = new XMLHttpRequest();
@@ -29,10 +31,13 @@ function member() {
   xhttp.onload = function () {
     var data = JSON.parse(this.responseText);
     if (this.responseText != "0") {
-      document.getElementById("user-fullname").innerHTML = data.m_name + " " + data.m_sirname + " [รหัสผู้ใช้: " + data.m_id + "]";
-      document.getElementById("user-name").innerHTML = data.m_name + " " + data.m_sirname;
+      document.getElementById("user-fullname").innerHTML =
+        data.m_name + " " + data.m_sirname + " [รหัสผู้ใช้: " + data.m_id + "]";
+      document.getElementById("user-name").innerHTML =
+        data.m_name + " " + data.m_sirname;
       document.getElementById("user-phone").innerHTML = data.m_phone;
-      document.getElementById("user-create-date").innerHTML = data.m_create_date;
+      document.getElementById("user-create-date").innerHTML =
+        data.m_create_date;
       document.getElementById("user-id").innerHTML = data.m_id;
 
       greeting(data.m_name + " " + data.m_sirname);
@@ -331,6 +336,10 @@ function CalculateTimePerRound(foodweight, foodsize) {
     case "5":
       Calculate3(foodweight);
       break;
+    case "0":
+      var kgpersec = document.getElementById("a_self_weight").value;
+      Calculate0(foodweight, kgpersec);
+      break;
     default:
       break;
   }
@@ -355,7 +364,7 @@ function Calculate1(foodweight) {
     });
 
     SaveFinishAutomation();
-    $("#AddAutomationForm")[0].reset();
+    document.getElementById("AddAutomationForm").reset();
   });
 }
 
@@ -378,7 +387,7 @@ function Calculate2(foodweight) {
     });
 
     SaveFinishAutomation();
-    document.getElementById("AddAutomationForm")[0].reset();
+    document.getElementById("AddAutomationForm").reset();
   });
 }
 
@@ -401,8 +410,14 @@ function Calculate3(foodweight) {
     });
 
     SaveFinishAutomation();
-    document.getElementById("AddAutomationForm")[0].reset();
+    document.getElementById("AddAutomationForm").reset();
   });
+}
+
+function Calculate0(foodweight, kgpersec) {
+  timeperround = parseFloat(foodweight) / parseFloat(kgpersec);
+  SaveFinishAutomation();
+  document.getElementById("AddAutomationForm").reset();
 }
 
 function SaveFinishAutomation() {
@@ -430,6 +445,7 @@ function SaveFinishAutomation() {
   xhttp.onload = function () {
     $("#AutomationModal").modal("hide");
     GetAutomationTable();
+    document.getElementById("a_otherSize").style.display = "none";
   };
   xhttp.open("GET", url);
   xhttp.send();
@@ -446,6 +462,8 @@ function GetAutomationTable() {
     var recorddata = JSON.parse(this.response);
     if (recorddata != 1) {
       drawTable(recorddata);
+      automation = recorddata;
+      CheckAutomation();
     } else {
       $("#tbody").empty();
       var row = $("<tr />");
@@ -502,6 +520,7 @@ function drawRow(rowData) {
   row.append($("<td>" + rowData.a_round + "</td>"));
   row.append($("<td>" + rowData.a_time_per_round + "</td>"));
   row.append($("<td>" + rowData.a_break_time + "</td>"));
+  row.append($("<td style='display: none;'>" + rowData.a_status + "</td>"));
   row.append($("<td>" + slide + "</td>"));
   row.append(
     $(
@@ -510,6 +529,60 @@ function drawRow(rowData) {
         ")'><i class='fa fa-trash' aria-hidden='true'></i></a></td>"
     )
   );
+}
+
+function CheckAutomation() {
+  var data = automation;
+  var count = Object.keys(data).length;
+  for (var i = 0; i < count; i++) {
+    var today = new Date();
+    var starttime = today.getHours() + ":" + today.getMinutes() + ":00";
+    var endtime = today.getHours() + ":" + today.getMinutes() + ":59";
+
+    //console.log(starttime + " " + data[i].a_feeding_time);
+    if (starttime == data[i].a_feeding_time && data[i].a_switch == 0) {
+      const xhttp = new XMLHttpRequest();
+      var url = "./php/set-automation-status.php?status=0&id=" + data[i].a_id;
+      xhttp.onload = function () {
+        RefreshAutomationTable();
+      };
+      xhttp.open("GET", url);
+      xhttp.send();
+    } else {
+      const xhttp = new XMLHttpRequest();
+      var url = "./php/set-automation-status.php?status=1&id=" + data[i].a_id;
+      xhttp.onload = function () {
+        RefreshAutomationTable();
+      };
+      xhttp.open("GET", url);
+      xhttp.send();
+    }
+  }
+  //console.log(starttime);
+  setTimeout(CheckAutomation, 1000);
+}
+
+function RefreshAutomationTable() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-automation-table.php";
+  xhttp.onload = function () {
+    var recorddata = JSON.parse(this.response);
+    if (recorddata != 1) {
+      drawTable(recorddata);
+      automation = recorddata;
+    } else {
+      $("#tbody").empty();
+      var row = $("<tr />");
+      $("#AutomationTable").append(row);
+      row.append(
+        $(
+          "<td colspan='8' style='text-align:center;font-size: smaller'>ไม่พบข้อมูล</td>"
+        )
+      );
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
 }
 
 function DeleteAutomation(id) {
@@ -662,13 +735,18 @@ function getLocationD() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPositionD, showError);
     } else {
-      document.getElementById("latlong").innerHTML = "Geolocation is not supported by this browser.";
+      document.getElementById("latlong").innerHTML =
+        "Geolocation is not supported by this browser.";
     }
   }, 2000);
 }
 
 function showPositionD(position) {
-  document.getElementById("latlong").innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+  document.getElementById("latlong").innerHTML =
+    "Latitude: " +
+    position.coords.latitude +
+    "<br>Longitude: " +
+    position.coords.longitude;
   document.getElementById("latlong").style.display = "block";
   lat = position.coords.latitude;
   long = position.coords.longitude;
@@ -693,7 +771,7 @@ function SaveNewLocation() {
   xhttp.send();
 }
 
-function GetHistory(){
+function GetHistory() {
   var txt = "";
   const xhttp = new XMLHttpRequest();
   var url = "./php/get-history.php";
@@ -701,45 +779,105 @@ function GetHistory(){
     if (this.responseText != "1") {
       var data = JSON.parse(this.response);
       data.forEach((results) => {
-        var increseWeight = parseFloat(results["c_fish_end_weight"]) - parseFloat(results["c_fish_begin_weight"]);
-        var convFood = parseFloat(results["c_food_used"])/1000;
-        txt = txt + '<button class="btn btn-primary btn-history" type="button" data-toggle="collapse" data-target="#collapseExample' + results["c_id"] + '" aria-expanded="false" aria-controls="collapseExample">' + results["c_end_date"] + ' - ' + results["c_name"] + '</button>';
-        txt = txt + '<div class="collapse collapse-history" id="collapseExample' + results["c_id"] + '">';
+        var increseWeight =
+          parseFloat(results["c_fish_end_weight"]) -
+          parseFloat(results["c_fish_begin_weight"]);
+        var convFood = parseFloat(results["c_food_used"]) / 1000;
+        txt =
+          txt +
+          '<button class="btn btn-primary btn-history" type="button" data-toggle="collapse" data-target="#collapseExample' +
+          results["c_id"] +
+          '" aria-expanded="false" aria-controls="collapseExample">' +
+          results["c_end_date"] +
+          " - " +
+          results["c_name"] +
+          "</button>";
+        txt =
+          txt +
+          '<div class="collapse collapse-history" id="collapseExample' +
+          results["c_id"] +
+          '">';
         txt = txt + '<div class="card card-body"><div class="row">';
-        txt = txt + '<div class="col-md-12">ชื่อ: ' + results["c_name"] + '</div>';
-        txt = txt + '<div class="col-md-12">รหัสอุปกรณ์: ' + results["c_key"] + '</div>';
-        txt = txt + '<div class="col-md-12">วันที่เริ่มต้น: ' + results["c_start_date"] + '</div>';
-        txt = txt + '<div class="col-md-12">วันที่สิ้นสุด: ' + results["c_end_date"] + '</div>';
-        txt = txt + '<div class="col-md-12">จำนวนปลา: ' + results["c_fish_amount"] + ' ตัว</div>';
-        txt = txt + '<div class="col-md-12">น้ำหนักปลาเริ่มต้น: ' + results["c_fish_begin_weight"] + ' กก.</div>';
-        txt = txt + '<div class="col-md-12">น้ำหนักปลาสุดท้าย: ' + results["c_fish_end_weight"] + ' กก.</div>';
-        txt = txt + '<div class="col-md-12">น้ำหนักปลาที่เพิ่มขึ้น: ' + increseWeight + ' กก.</div>';
-        txt = txt + '<div class="col-md-12">อาหารที่ใช้ทั้งหมด: ' + convFood + ' กก.</div>';
-        txt = txt + '<div class="col-md-12">อัตราการเปลี่ยนอาหารเป็นเนื้อ : ' + results["c_fcr"] + '</div>';
-        txt = txt + '</div></div></div>';
+        txt =
+          txt + '<div class="col-md-12">ชื่อ: ' + results["c_name"] + "</div>";
+        txt =
+          txt +
+          '<div class="col-md-12">รหัสอุปกรณ์: ' +
+          results["c_key"] +
+          "</div>";
+        txt =
+          txt +
+          '<div class="col-md-12">วันที่เริ่มต้น: ' +
+          results["c_start_date"] +
+          "</div>";
+        txt =
+          txt +
+          '<div class="col-md-12">วันที่สิ้นสุด: ' +
+          results["c_end_date"] +
+          "</div>";
+        txt =
+          txt +
+          '<div class="col-md-12">จำนวนปลา: ' +
+          results["c_fish_amount"] +
+          " ตัว</div>";
+        txt =
+          txt +
+          '<div class="col-md-12">น้ำหนักปลาเริ่มต้น: ' +
+          results["c_fish_begin_weight"] +
+          " กก.</div>";
+        txt =
+          txt +
+          '<div class="col-md-12">น้ำหนักปลาสุดท้าย: ' +
+          results["c_fish_end_weight"] +
+          " กก.</div>";
+        txt =
+          txt +
+          '<div class="col-md-12">น้ำหนักปลาที่เพิ่มขึ้น: ' +
+          increseWeight +
+          " กก.</div>";
+        txt =
+          txt +
+          '<div class="col-md-12">อาหารที่ใช้ทั้งหมด: ' +
+          convFood +
+          " กก.</div>";
+        txt =
+          txt +
+          '<div class="col-md-12">อัตราการเปลี่ยนอาหารเป็นเนื้อ : ' +
+          results["c_fcr"] +
+          "</div>";
+        txt = txt + "</div></div></div>";
       });
       document.getElementById("modal-content-history").innerHTML = txt;
-    }else{
-      document.getElementById("modal-content-history").innerHTML = "<span>ไม่มีประวัติการบันทึกข้อมูล</span>";
+    } else {
+      document.getElementById("modal-content-history").innerHTML =
+        "<span>ไม่มีประวัติการบันทึกข้อมูล</span>";
     }
   };
   xhttp.open("GET", url);
   xhttp.send();
 }
 
-function RefreshPage(){
-  window.location.replace("./dashboard.html"); 
+function RefreshPage() {
+  window.location.replace("./dashboard.html");
 }
 
-function AddUnitModal(){
-  $('#SettingModal').modal('hide');
-  $('#AddUnitModal').modal('show');
+function AddUnitModal() {
+  $("#SettingModal").modal("hide");
+  $("#AddUnitModal").modal("show");
 }
 
-function checkSize(value){
-  if(value == 0){
+function checkSize(value) {
+  if (value == 0) {
     document.getElementById("otherSize").style.display = "block";
-  }else{
+  } else {
     document.getElementById("otherSize").style.display = "none";
+  }
+}
+
+function acheckSize(value) {
+  if (value == 0) {
+    document.getElementById("a_otherSize").style.display = "block";
+  } else {
+    document.getElementById("a_otherSize").style.display = "none";
   }
 }
