@@ -2,7 +2,7 @@
 
 $servername = "159.89.204.217";
 $username = "root";
-$password = "";
+$password = "2021@Password";
 $db = "sut-feeder";
 
 
