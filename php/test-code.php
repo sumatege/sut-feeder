@@ -1,10 +1,9 @@
 <?php
 
 $servername = "159.89.204.217";
-$username = "root";
+$username = "sut-feeder";
 $password = "2021@Password";
 $db = "sut-feeder";
-
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $db);
