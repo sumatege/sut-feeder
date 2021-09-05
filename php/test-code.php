@@ -1,8 +1,8 @@
 <?php
 
 $servername = "159.89.204.217";
-$username = "phpmyadmin";
-$password = "2021@Password";
+$username = "root";
+$password = "";
 $db = "sut-feeder";
 
 
