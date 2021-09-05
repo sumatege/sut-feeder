@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 
 require 'config.php';
@@ -15,6 +14,5 @@ if ($result->num_rows > 0) {
 } else {
     echo "error";
 }
-
 
 $conn->close();
