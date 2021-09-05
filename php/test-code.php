@@ -1,6 +1,6 @@
 <?php
 
-$servername = "159.89.204.217";
+$servername = "127.0.0.1";
 $username = "sut-feeder";
 $password = "2021@Password";
 $db = "sut-feeder";
