@@ -1,7 +1,7 @@
 <?php
 
 $servername = "159.89.204.217";
-$username = "root";
+$username = "phpmyadmin";
 $password = "2021@Password";
 $db = "sut-feeder";
 
