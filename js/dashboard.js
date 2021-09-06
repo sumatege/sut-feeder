@@ -1019,7 +1019,6 @@ function APISaveSetupStopAutomation(status, restart_date) {
   var url = "./php/save-restart-stop-automation.php";
   url = url + "?status=" + status + "&date=" + restart_date;
   xhttp.onload = function () {
-    alert(this.response);
     if (this.responseText == "0") {
       RefreshPage();
     }
