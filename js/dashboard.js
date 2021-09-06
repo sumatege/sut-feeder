@@ -1010,11 +1010,24 @@ function CheckTimeWeatherStatus() {
 }
 
 function CancelDisabledAutomotion() {
-  APISaveSetupStopAutomation(1, null);
+  APICancelSetupStopAutomation(1, null);
   document.getElementById("CloseAutoFeed").style.display = "none";
 }
 
 function APISaveSetupStopAutomation(status, restart_date) {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/save-restart-stop-automation.php";
+  url = url + "?status=" + status + "&date=" + restart_date;
+  xhttp.onload = function () {
+    if (this.responseText == "0") {
+      RefreshPage();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function APICancelSetupStopAutomation(status, restart_date) {
   const xhttp = new XMLHttpRequest();
   var url = "./php/save-restart-stop-automation.php";
   url = url + "?status=" + status + "&date=" + restart_date;
