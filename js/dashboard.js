@@ -1010,11 +1010,13 @@ function CheckTimeWeatherStatus() {
 }
 
 function CancelDisabledAutomotion() {
+  alert('1');
   APISaveSetupStopAutomation(1, null);
   document.getElementById("CloseAutoFeed").style.display = "none";
 }
 
 function APISaveSetupStopAutomation(status, restart_date) {
+  alert('2');
   const xhttp = new XMLHttpRequest();
   var url = "./php/save-restart-stop-automation.php";
   url = url + "?status=" + status + "&date=" + restart_date;
