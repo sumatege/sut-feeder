@@ -1009,6 +1009,11 @@ function CheckTimeWeatherStatus() {
   setTimeout(CheckTimeWeatherStatus, 1000);
 }
 
+function CancelDisabledAutomotion() {
+  APISaveSetupStopAutomation(1, null);
+  document.getElementById("CloseAutoFeed").style.display = "none";
+}
+
 function APISaveSetupStopAutomation(status, restart_date) {
   const xhttp = new XMLHttpRequest();
   var url = "./php/save-restart-stop-automation.php";
@@ -1022,7 +1027,3 @@ function APISaveSetupStopAutomation(status, restart_date) {
   xhttp.send();
 }
 
-function CancelDisabledAutomotion() {
-  APISaveSetupStopAutomation(1, null);
-  document.getElementById("CloseAutoFeed").style.display = "none";
-}
