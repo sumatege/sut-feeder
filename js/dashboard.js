@@ -966,6 +966,7 @@ function SetupStopAutomation() {
 }
 
 function SaveSetupStopAutomation() {
+  alert("1");
   var restart_date = document.getElementById("RestartAutoDate").value;
   if (restart_date != "") {
     document.getElementById("RestartAutoDateTxt").style.display = "none";
