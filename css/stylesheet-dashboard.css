@@ -186,6 +186,10 @@ body {
   margin: 10px;
 }
 
+#CloseAutoFeed{
+  display: none;
+}
+
 .btn-r1,
 .btn-r2,
 .btn-r3,

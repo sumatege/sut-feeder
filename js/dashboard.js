@@ -70,6 +70,7 @@ function checkTime(i) {
   return i;
 }
 
+var count_weather_alert = 0;
 function getWeather() {
   if (latilongti != "") {
     var latlong = latilongti.split(",");
@@ -85,6 +86,19 @@ function getWeather() {
       document.getElementById("weatherTxt").innerHTML =
         data.weather[0].description;
       document.getElementById("celsiusTxt").innerHTML = cel.toFixed(2);
+      weather_status = data.weather[0].main;
+      if(weather_status == "Rain"){
+        if(count_weather_alert == 0){
+          $('#WeatherModal').modal('show');
+        }
+
+        count_weather_alert += 1;
+        if(count_weather_alert == 30){
+          count_weather_alert = 0;
+        }
+      }else{
+        count_weather_alert = 0;
+      }
     };
     xhttp.open("GET", url);
     xhttp.send();
@@ -93,7 +107,7 @@ function getWeather() {
     document.getElementById("celsiusTxt").innerHTML = "-";
   }
 
-  //setTimeout(getWeather, 60000);
+  setTimeout(getWeather, 60000);
 }
 
 function greeting(name) {
@@ -534,12 +548,14 @@ function drawRow(rowData) {
 function CheckAutomation() {
   var data = automation;
   var count = Object.keys(data).length;
-  for (var i = 0; i < count; i++) {
+  if(weather_status != "Rain"){
+    for (var i = 0; i < count; i++) {
     var today = new Date();
-    var starttime = today.getHours() + ":" + today.getMinutes() + ":00";
+    //var starttime = today.getHours() + ":" + today.getMinutes() + ":00";
     var endtime = today.getHours() + ":" + today.getMinutes() + ":59";
+    var starttime = String(today.getHours()).padStart(2, "0") + ":" + String(today.getMinutes()).padStart(2, "0") + ":00";
 
-    //console.log(starttime + " " + data[i].a_feeding_time);
+    console.log(starttime + " " + data[i].a_feeding_time);
     if (starttime == data[i].a_feeding_time && data[i].a_switch == 0) {
       const xhttp = new XMLHttpRequest();
       var url = "./php/set-automation-status.php?status=0&id=" + data[i].a_id;
@@ -557,9 +573,14 @@ function CheckAutomation() {
       xhttp.open("GET", url);
       xhttp.send();
     }
+    document.getElementById("CloseAutoFeed").style.display = "none";
   }
+  }else{
+    document.getElementById("CloseAutoFeed").style.display = "block";
+  }
+  
   //console.log(starttime);
-  setTimeout(CheckAutomation, 1000);
+  //setTimeout(CheckAutomation, 1000);
 }
 
 function RefreshAutomationTable() {
