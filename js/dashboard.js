@@ -969,8 +969,19 @@ function SaveSetupStopAutomation() {
   var restart_date = document.getElementById("RestartAutoDate").value;
   if (restart_date != "") {
     document.getElementById("RestartAutoDateTxt").style.display = "none";
-    alert(restart_date);
-    //APISaveSetupStopAutomation(0, restart_date);
+    var today = new Date(restart_date);
+    var datetime =
+      today.getFullYear() +
+      "-" +
+      String(today.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(today.getDate()).padStart(2, "0") +
+      " " +
+      String(today.getHours()).padStart(2, "0") +
+      ":" +
+      String(today.getMinutes()).padStart(2, "0") +
+      ":00";
+    APISaveSetupStopAutomation(0, datetime);
   } else {
     document.getElementById("RestartAutoDateTxt").innerHTML =
       "** กรุณาระบุวันที่และเวลาให้ครบถ้วน";
@@ -1028,5 +1039,3 @@ function APISaveSetupStopAutomation(status, restart_date) {
   xhttp.open("GET", url);
   xhttp.send();
 }
-
-
