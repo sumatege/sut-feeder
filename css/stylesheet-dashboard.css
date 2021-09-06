@@ -188,6 +188,7 @@ body {
 
 #CloseAutoFeed{
   display: none;
+  color:red;
 }
 
 .btn-r1,
@@ -434,5 +435,10 @@ input:checked + .slider:before {
   #UsedFoodTime {
     width: 80px;
     font-size: small;
+  }
+
+  #CloseAutoFeed{
+    font-size: x-small;
+    color:red;
   }
 }

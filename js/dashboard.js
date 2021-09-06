@@ -72,7 +72,7 @@ function checkTime(i) {
 
 var count_weather_alert = 0;
 function getWeather() {
-  if (latilongti != "") {
+  if (latilongti != "" && latilongti != "undefined,undefined") {
     var latlong = latilongti.split(",");
     var sep_lat = latlong[0];
     var sep_long = latlong[1];
