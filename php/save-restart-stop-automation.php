@@ -7,7 +7,7 @@ $sql = "UPDATE project SET
     p_weather_status = " . $_GET["status"] . ", 
     p_weather_start_time = '" . $_GET["date"] . "' 
     WHERE p_key='" . $_SESSION["selectedKey"] . "'";
-echo $sql;
+
     if ($conn->query($sql) === TRUE) {
         echo "0";
     } else {
