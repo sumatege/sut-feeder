@@ -580,7 +580,7 @@ function CheckAutomation() {
   }
   
   //console.log(starttime);
-  //setTimeout(CheckAutomation, 1000);
+  setTimeout(CheckAutomation, 1000);
 }
 
 function RefreshAutomationTable() {
