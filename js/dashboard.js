@@ -969,6 +969,7 @@ function SaveSetupStopAutomation() {
   alert("1");
   var restart_date = document.getElementById("RestartAutoDate").value;
   if (restart_date != "") {
+    alert("2");
     document.getElementById("RestartAutoDateTxt").style.display = "none";
     APISaveSetupStopAutomation(0, restart_date);
   } else {
@@ -1016,6 +1017,7 @@ function CancelDisabledAutomotion() {
 }
 
 function APISaveSetupStopAutomation(status, restart_date) {
+  alert("3");
   const xhttp = new XMLHttpRequest();
   var url = "./php/save-restart-stop-automation.php";
   url = url + "?status=" + status + "&date=" + restart_date;
