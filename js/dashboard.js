@@ -1010,7 +1010,7 @@ function CheckTimeWeatherStatus() {
       var data = JSON.parse(this.response);
       //console.log(datetime + " " + data.p_weather_start_time);
       if (data.p_weather_status == 0 && data.p_weather_start_time == datetime) {
-        APISaveSetupStopAutomation(1, null);
+        APISaveSetupStopAutomation(1, '0000-00-00 00:00:00');
         document.getElementById("CloseAutoFeed").style.display = "none";
       }
     };
@@ -1022,7 +1022,7 @@ function CheckTimeWeatherStatus() {
 }
 
 function CancelDisabledAutomotion() {
-  APISaveSetupStopAutomation(1, null);
+  APISaveSetupStopAutomation(1, "0000-00-00 00:00:00");
   document.getElementById("CloseAutoFeed").style.display = "none";
 }
 
