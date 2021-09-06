@@ -970,7 +970,7 @@ function SaveSetupStopAutomation() {
   if (restart_date != "") {
     document.getElementById("RestartAutoDateTxt").style.display = "none";
     var today = new Date(restart_date);
-    var datetime =
+    var datetime = "'" +
       today.getFullYear() +
       "-" +
       String(today.getMonth() + 1).padStart(2, "0") +
@@ -980,7 +980,7 @@ function SaveSetupStopAutomation() {
       String(today.getHours()).padStart(2, "0") +
       ":" +
       String(today.getMinutes()).padStart(2, "0") +
-      ":00";
+      ":00'";
     APISaveSetupStopAutomation(0, datetime);
   } else {
     document.getElementById("RestartAutoDateTxt").innerHTML =
