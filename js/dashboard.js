@@ -969,7 +969,8 @@ function SaveSetupStopAutomation() {
   var restart_date = document.getElementById("RestartAutoDate").value;
   if (restart_date != "") {
     document.getElementById("RestartAutoDateTxt").style.display = "none";
-    APISaveSetupStopAutomation(0, restart_date);
+    alert(restart_date);
+    //APISaveSetupStopAutomation(0, restart_date);
   } else {
     document.getElementById("RestartAutoDateTxt").innerHTML =
       "** กรุณาระบุวันที่และเวลาให้ครบถ้วน";
