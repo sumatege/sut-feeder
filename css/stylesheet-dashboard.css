@@ -241,7 +241,7 @@ body {
   margin-top: 5px;
 }
 
-#fillempty {
+#fillempty, #RestartAutoDateTxt {
   font-size: 13px;
   line-height: 1.4;
   color: red;
@@ -288,6 +288,11 @@ body {
   display: none;
   text-align: center;
 }
+
+#CloseAutoFeed, #CloseAutoFeed a{
+    font-size: medium;
+    color:red;
+  }
 
 /* The switch - the box around the slider ======================================== */
 .switch {
@@ -350,6 +355,10 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+input:disabled + .slider{
+  opacity: 0.1 !important;
 }
 
 /*==============================================================================*/
@@ -437,7 +446,7 @@ input:checked + .slider:before {
     font-size: small;
   }
 
-  #CloseAutoFeed{
+  #CloseAutoFeed, #CloseAutoFeed a{
     font-size: x-small;
     color:red;
   }

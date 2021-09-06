@@ -3,6 +3,7 @@ var timeperround = 0;
 var latilongti = "";
 var automation;
 var weather_status = "";
+var project_weather_status;
 
 function Dashboard() {
   const xhttp = new XMLHttpRequest();
@@ -16,6 +17,7 @@ function Dashboard() {
       GetHistory();
       MachineStatus();
       member();
+      CheckTimeWeatherStatus();
       $("#ModalInclude").load("modal.html");
     } else {
       window.location.replace("./index.html");
@@ -87,16 +89,16 @@ function getWeather() {
         data.weather[0].description;
       document.getElementById("celsiusTxt").innerHTML = cel.toFixed(2);
       weather_status = data.weather[0].main;
-      if(weather_status == "Rain"){
-        if(count_weather_alert == 0){
-          $('#WeatherModal').modal('show');
+      if (weather_status == "Rain") {
+        if (count_weather_alert == 0) {
+          CheckWeatherStatus();
         }
 
         count_weather_alert += 1;
-        if(count_weather_alert == 30){
+        if (count_weather_alert == 30) {
           count_weather_alert = 0;
         }
-      }else{
+      } else {
         count_weather_alert = 0;
       }
     };
@@ -108,6 +110,22 @@ function getWeather() {
   }
 
   setTimeout(getWeather, 60000);
+}
+
+function CheckWeatherStatus() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-project-data.php";
+  xhttp.onload = function () {
+    var data = JSON.parse(this.response);
+    if (data.p_weather_status == 1) {
+      project_weather_status = 1;
+      $("#WeatherModal").modal("show");
+    } else {
+      project_weather_status = 0;
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
 }
 
 function greeting(name) {
@@ -475,9 +493,9 @@ function GetAutomationTable() {
   xhttp.onload = function () {
     var recorddata = JSON.parse(this.response);
     if (recorddata != 1) {
-      drawTable(recorddata);
       automation = recorddata;
       CheckAutomation();
+      drawTable(recorddata);
     } else {
       $("#tbody").empty();
       var row = $("<tr />");
@@ -507,6 +525,8 @@ function drawTable(data) {
 function drawRow(rowData) {
   var switchval = "";
   var onchange = "";
+  var slide = "";
+
   if (rowData.a_switch == 1) {
     switchval = "";
     onchange = "1";
@@ -515,16 +535,30 @@ function drawRow(rowData) {
     onchange = "0";
   }
 
-  var slide =
-    '<label class="switch"><input type="checkbox" id="' +
-    rowData.a_id +
-    '" ' +
-    switchval +
-    ' onchange="SwitchAutomation(' +
-    rowData.a_id +
-    ", " +
-    onchange +
-    ')"><span class="slider round"></span></label>';
+  if (project_weather_status == 0) {
+    slide =
+      '<label class="switch"><input disabled type="checkbox" id="' +
+      rowData.a_id +
+      '" ' +
+      switchval +
+      ' onchange="SwitchAutomation(' +
+      rowData.a_id +
+      ", " +
+      onchange +
+      ')"><span class="slider round"></span></label>';
+  } else {
+    slide =
+      '<label class="switch"><input type="checkbox" id="' +
+      rowData.a_id +
+      '" ' +
+      switchval +
+      ' onchange="SwitchAutomation(' +
+      rowData.a_id +
+      ", " +
+      onchange +
+      ')"><span class="slider round"></span></label>';
+  }
+
   var row = $("<tr />");
   $("#AutomationTable").append(row);
   //row.append($("<td>" + rowData.a_begin_date + "</td>"));
@@ -548,37 +582,60 @@ function drawRow(rowData) {
 function CheckAutomation() {
   var data = automation;
   var count = Object.keys(data).length;
-  if(weather_status != "Rain"){
-    for (var i = 0; i < count; i++) {
-    var today = new Date();
-    //var starttime = today.getHours() + ":" + today.getMinutes() + ":00";
-    var endtime = today.getHours() + ":" + today.getMinutes() + ":59";
-    var starttime = String(today.getHours()).padStart(2, "0") + ":" + String(today.getMinutes()).padStart(2, "0") + ":00";
+  var ws_data;
 
-    //console.log(starttime + " " + data[i].a_feeding_time);
-    if (starttime == data[i].a_feeding_time && data[i].a_switch == 0) {
-      const xhttp = new XMLHttpRequest();
-      var url = "./php/set-automation-status.php?status=0&id=" + data[i].a_id;
-      xhttp.onload = function () {
-        RefreshAutomationTable();
-      };
-      xhttp.open("GET", url);
-      xhttp.send();
-    } else {
-      const xhttp = new XMLHttpRequest();
-      var url = "./php/set-automation-status.php?status=1&id=" + data[i].a_id;
-      xhttp.onload = function () {
-        RefreshAutomationTable();
-      };
-      xhttp.open("GET", url);
-      xhttp.send();
+  const ws_xhttp = new XMLHttpRequest();
+  var ws_url = "./php/get-project-data.php";
+  ws_xhttp.onload = function () {
+    ws_data = JSON.parse(this.response);
+
+    for (var i = 0; i < count; i++) {
+      var today = new Date();
+      var starttime =
+        String(today.getHours()).padStart(2, "0") +
+        ":" +
+        String(today.getMinutes()).padStart(2, "0") +
+        ":00";
+
+      //console.log(starttime + " " + data[i].a_feeding_time);
+      if (ws_data.p_weather_status == "1") {
+        if (starttime == data[i].a_feeding_time && data[i].a_switch == 0) {
+          const xhttp = new XMLHttpRequest();
+          var url =
+            "./php/set-automation-status.php?status=0&id=" + data[i].a_id;
+          xhttp.onload = function () {
+            RefreshAutomationTable();
+          };
+          xhttp.open("GET", url);
+          xhttp.send();
+        } else {
+          const xhttp = new XMLHttpRequest();
+          var url =
+            "./php/set-automation-status.php?status=1&id=" + data[i].a_id;
+          xhttp.onload = function () {
+            RefreshAutomationTable();
+          };
+          xhttp.open("GET", url);
+          xhttp.send();
+        }
+        document.getElementById("CloseAutoFeed").style.display = "none";
+      } else {
+        const xhttp = new XMLHttpRequest();
+        var url = "./php/set-automation-status.php?status=1&id=" + data[i].a_id;
+        xhttp.onload = function () {
+          document.getElementById("CloseAutoFeed").style.display = "block";
+          document.getElementById("CloseAutoFeed_date").innerHTML =
+            ws_data.p_weather_start_time;
+          RefreshAutomationTable();
+        };
+        xhttp.open("GET", url);
+        xhttp.send();
+      }
     }
-    document.getElementById("CloseAutoFeed").style.display = "none";
-  }
-  }else{
-    document.getElementById("CloseAutoFeed").style.display = "block";
-  }
-  
+  };
+  ws_xhttp.open("GET", ws_url);
+  ws_xhttp.send();
+
   //console.log(starttime);
   setTimeout(CheckAutomation, 1000);
 }
@@ -901,4 +958,71 @@ function acheckSize(value) {
   } else {
     document.getElementById("a_otherSize").style.display = "none";
   }
+}
+
+function SetupStopAutomation() {
+  $("#WeatherModal").modal("hide");
+  $("#SetupStopAutomationModal").modal("show");
+}
+
+function SaveSetupStopAutomation() {
+  var restart_date = document.getElementById("RestartAutoDate").value;
+  if (restart_date != "") {
+    document.getElementById("RestartAutoDateTxt").style.display = "none";
+    APISaveSetupStopAutomation(0, restart_date);
+  } else {
+    document.getElementById("RestartAutoDateTxt").innerHTML =
+      "** กรุณาระบุวันที่และเวลาให้ครบถ้วน";
+    document.getElementById("RestartAutoDateTxt").style.display = "block";
+  }
+}
+
+function CheckTimeWeatherStatus() {
+  if (project_weather_status == 0) {
+    var today = new Date();
+    var datetime =
+      today.getFullYear() +
+      "-" +
+      String(today.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(today.getDate()).padStart(2, "0") +
+      " " +
+      String(today.getHours()).padStart(2, "0") +
+      ":" +
+      String(today.getMinutes()).padStart(2, "0") +
+      ":00";
+
+    const xhttp = new XMLHttpRequest();
+    var url = "./php/get-project-data.php";
+    xhttp.onload = function () {
+      var data = JSON.parse(this.response);
+      //console.log(datetime + " " + data.p_weather_start_time);
+      if (data.p_weather_status == 0 && data.p_weather_start_time == datetime) {
+        APISaveSetupStopAutomation(1, null);
+        document.getElementById("CloseAutoFeed").style.display = "none";
+      }
+    };
+    xhttp.open("GET", url);
+    xhttp.send();
+  }
+
+  setTimeout(CheckTimeWeatherStatus, 1000);
+}
+
+function APISaveSetupStopAutomation(status, restart_date) {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/save-restart-stop-automation.php";
+  url = url + "?status=" + status + "&date=" + restart_date;
+  xhttp.onload = function () {
+    if (this.responseText == "0") {
+      RefreshPage();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function CancelDisabledAutomotion() {
+  APISaveSetupStopAutomation(1, null);
+  document.getElementById("CloseAutoFeed").style.display = "none";
 }

@@ -1,7 +1,22 @@
 var myTimer;
 var c = 0;
 
+function BeforeStartFeeding() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-automation-table.php";
+  xhttp.onload = function () {
+    if (this.response != 1) {
+      $('#AskManualFeedingModal').modal('show');
+    } else {      
+      StartFeeding();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
 function StartFeeding() {
+  $('#AskManualFeedingModal').modal('hide');
   MachineControl("0");
   var foodsize = document.getElementById("foodsize").value;
   document.getElementById("mstopfeed").disabled = false;
@@ -187,6 +202,7 @@ function CalculateFood(usetime, foodsize) {
 }
 
 function CalculateFoodNewSize(usetime, foodsize) {
-  document.getElementById("UsedFoodG").value = usetime * (parseFloat(foodsize) * 1000);
+  document.getElementById("UsedFoodG").value =
+    usetime * (parseFloat(foodsize) * 1000);
   document.getElementById("UsedFoodK").value = usetime * parseFloat(foodsize);
 }

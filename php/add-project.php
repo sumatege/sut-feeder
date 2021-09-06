@@ -14,7 +14,8 @@ if($_GET["key"] != null && $_GET["name"] != null && $_GET["weight"] != null && $
     p_food_size = 0,
     p_food_used = 0,
     p_fcr = 0,
-    p_machine_status = 1
+    p_machine_status = 1,
+    p_weather_status = 1
     WHERE p_key='" . $_GET["key"] . "'";
 
     if ($conn->query($sql) === TRUE) {

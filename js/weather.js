@@ -153,3 +153,6 @@ function skip() {
   xhttp.open("GET", url);
   xhttp.send();
 }
+
+
+

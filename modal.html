@@ -358,11 +358,64 @@
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>
                 </div>
-                <div class="modal-body modal-body-history" style=" padding: 50px; padding-left: 10px; padding-right: 10px;">
-                    ขณะนี้สภาพอากาศ<span style="text-decoration: underline;">ฝนกำลังตก</span>! <br/>ระบบจะปิดการให้อาหารอัตโนมัติ
+                <div class="modal-body p-3" style=" padding: 50px; padding-left: 10px; padding-right: 10px;">
+                    ขณะนี้สภาพอากาศที่บ่อ <span style="text-decoration: underline;">ฝนกำลังตก</span>! <br/> จะหยุดโปรแกรมการให้อาหารอัตโนมัติหรือไม่?
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-primary" onclick="SetupStopAutomation()">หยุด</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ไม่หยุด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Setup Stop Automation modal -->
+    <div class="modal fade" id="SetupStopAutomationModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-history" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">กำหนดค่า</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body p-3" style=" padding: 50px; padding-left: 10px; padding-right: 10px;">
+                    <form id="SetupStopAutomationForm">                          
+                            <div class="form-group">
+                                <label>หยุดให้อาหารอัตโนมัติ และจะกลับมาเริ่มใช้โปรแกรมให้อาหารอัตโนมัติตั้งแต่</label>
+                                <input type="datetime-local" class="form-control" id="RestartAutoDate" required />
+                                <label id="RestartAutoDateTxt">** Message</label>
+                            </div>
+                        </form>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success" onclick="SaveSetupStopAutomation()">บันทึก</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ask Manual Feeding modal -->
+    <div class="modal fade" id="AskManualFeedingModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="container container-fluid">
+                        <div class="row justify-content-center latlon-content align-content-center text-center">
+                            <span>คุณได้กำหนดโปรแกรมให้อาหารอัตโนมัติไว้แล้ว<br/>คุณต้องการให้อาหารเพิ่มเติมใช่หรือไม่?</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success" onclick="StartFeeding()">ยืนยัน</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
                 </div>
             </div>
         </div>
