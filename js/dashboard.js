@@ -555,7 +555,7 @@ function CheckAutomation() {
     var endtime = today.getHours() + ":" + today.getMinutes() + ":59";
     var starttime = String(today.getHours()).padStart(2, "0") + ":" + String(today.getMinutes()).padStart(2, "0") + ":00";
 
-    console.log(starttime + " " + data[i].a_feeding_time);
+    //console.log(starttime + " " + data[i].a_feeding_time);
     if (starttime == data[i].a_feeding_time && data[i].a_switch == 0) {
       const xhttp = new XMLHttpRequest();
       var url = "./php/set-automation-status.php?status=0&id=" + data[i].a_id;
