@@ -596,10 +596,19 @@ function CheckAutomation() {
         ":" +
         String(today.getMinutes()).padStart(2, "0") +
         ":00";
+      var endtime =
+        String(today.getHours()).padStart(2, "0") +
+        ":" +
+        String(today.getMinutes()).padStart(2, "0") +
+        ":15";
 
       //console.log(starttime + " " + data[i].a_feeding_time);
       if (ws_data.p_weather_status == "1") {
-        if (starttime == data[i].a_feeding_time && data[i].a_switch == 0) {
+        if (
+          starttime <= data[i].a_feeding_time &&
+          data[i].a_feeding_time <= endtime &&
+          data[i].a_switch == 0
+        ) {
           const xhttp = new XMLHttpRequest();
           var url =
             "./php/set-automation-status.php?status=0&id=" + data[i].a_id;
@@ -970,7 +979,8 @@ function SaveSetupStopAutomation() {
   if (restart_date != "") {
     document.getElementById("RestartAutoDateTxt").style.display = "none";
     var today = new Date(restart_date);
-    var datetime = "'" +
+    var datetime =
+      "'" +
       today.getFullYear() +
       "-" +
       String(today.getMonth() + 1).padStart(2, "0") +
