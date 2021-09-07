@@ -601,14 +601,17 @@ function CheckAutomation() {
         ":" +
         String(today.getMinutes()).padStart(2, "0") +
         ":15";
+      var checkTime =
+        String(today.getHours()).padStart(2, "0") +
+        ":" +
+        String(today.getMinutes()).padStart(2, "0") +
+        ":" +
+        String(today.getSeconds()).padStart(2, "0");
 
       //console.log(starttime + " " + data[i].a_feeding_time);
+      //console.log(endtime + " " + checkTime);
       if (ws_data.p_weather_status == "1") {
-        if (
-          starttime <= data[i].a_feeding_time &&
-          data[i].a_feeding_time <= endtime &&
-          data[i].a_switch == 0
-        ) {
+        if (starttime == data[i].a_feeding_time && data[i].a_switch == 0 && checkTime <= endtime) {
           const xhttp = new XMLHttpRequest();
           var url =
             "./php/set-automation-status.php?status=0&id=" + data[i].a_id;
