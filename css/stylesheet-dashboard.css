@@ -186,9 +186,9 @@ body {
   margin: 10px;
 }
 
-#CloseAutoFeed{
+#CloseAutoFeed {
   display: none;
-  color:red;
+  color: red;
 }
 
 .btn-r1,
@@ -241,7 +241,8 @@ body {
   margin-top: 5px;
 }
 
-#fillempty, #RestartAutoDateTxt {
+#fillempty,
+#RestartAutoDateTxt {
   font-size: 13px;
   line-height: 1.4;
   color: red;
@@ -289,10 +290,24 @@ body {
   text-align: center;
 }
 
-#CloseAutoFeed, #CloseAutoFeed a{
-    font-size: medium;
-    color:red;
-  }
+#CloseAutoFeed,
+#CloseAutoFeed a {
+  font-size: medium;
+  color: red;
+}
+
+.food-data-table {
+  width: auto;
+  overflow: auto;
+}
+
+.table-history {
+  font-size: medium;
+}
+
+.table-history td {
+  white-space: normal;
+}
 
 /* The switch - the box around the slider ======================================== */
 .switch {
@@ -357,7 +372,7 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-input:disabled + .slider{
+input:disabled + .slider {
   opacity: 0.1 !important;
 }
 
@@ -446,8 +461,13 @@ input:disabled + .slider{
     font-size: small;
   }
 
-  #CloseAutoFeed, #CloseAutoFeed a{
+  #CloseAutoFeed,
+  #CloseAutoFeed a {
     font-size: x-small;
-    color:red;
+    color: red;
+  }
+
+  .table-history {
+    font-size: small;
   }
 }
