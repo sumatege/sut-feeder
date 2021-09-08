@@ -299,9 +299,11 @@ body {
 .food-data-table {
   width: auto;
   overflow: auto;
+  text-align: -webkit-center;
 }
 
-.table-history {
+.table-history,
+.fm-p-data {
   font-size: medium;
 }
 
@@ -443,10 +445,13 @@ input:disabled + .slider {
   }
 
   .table-history {
-    table-layout: fixed;
     width: 100%;
-    font-size: 14px;
+    font-size: small;
     border: 3px solid black;
+  }
+
+  .fm-p-data {
+    font-size: small;
   }
 
   .table-history tr {
@@ -467,7 +472,8 @@ input:disabled + .slider {
     color: red;
   }
 
-  .table-history {
-    font-size: small;
+  .food-data-table {
+    width: auto;
+    overflow: auto;
   }
 }

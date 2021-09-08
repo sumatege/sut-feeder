@@ -281,16 +281,6 @@ function RecordCancel() {
 }
 
 function RecordSave() {
-  document.getElementById("btn_r_cancel").style.display = "none";
-  document.getElementById("btn_r_edit").style.display = "block";
-  document.getElementById("btn_r_save").style.display = "none";
-
-  document.getElementById("r_startdate").disabled = true;
-  document.getElementById("r_enddate").disabled = true;
-  document.getElementById("r_beginweight").disabled = true;
-  document.getElementById("r_beginamount").disabled = true;
-  document.getElementById("r_endweight").disabled = true;
-
   var r_startdate = document.getElementById("r_startdate").value;
   var r_enddate = document.getElementById("r_enddate").value;
   var r_beginweight = document.getElementById("r_beginweight").value;
@@ -302,6 +292,16 @@ function RecordSave() {
   var r_beginweight = checkNull(r_beginweight);
   var r_endweight = checkNull(r_endweight);
   var r_beginamount = checkNull(r_beginamount);
+
+  document.getElementById("btn_r_cancel").style.display = "none";
+  document.getElementById("btn_r_edit").style.display = "block";
+  document.getElementById("btn_r_save").style.display = "none";
+
+  document.getElementById("r_startdate").disabled = true;
+  document.getElementById("r_enddate").disabled = true;
+  document.getElementById("r_beginweight").disabled = true;
+  document.getElementById("r_beginamount").disabled = true;
+  document.getElementById("r_endweight").disabled = true;  
 
   const xhttp = new XMLHttpRequest();
   var url = "./php/update-project-data.php";
@@ -318,7 +318,8 @@ function RecordSave() {
     "&eweight=" +
     r_endweight;
   xhttp.onload = function () {
-    getProjectInfo();
+    alert(this.response);
+    //getProjectInfo();
   };
   xhttp.open("GET", url);
   xhttp.send();
