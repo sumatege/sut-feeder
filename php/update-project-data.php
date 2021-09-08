@@ -36,9 +36,9 @@ if ($_GET["eweight"] == null) {
 $sql = "UPDATE project SET
     p_start_date=" . $sdate . ",
     p_end_date=" . $edate . ",
-    p_fish_amount='" . $bamount . "',
-    p_fish_begin_weight='" . $bweight . "',
-    p_fish_end_weight='" . $eweight . "'
+    p_fish_amount=" . $bamount . ",
+    p_fish_begin_weight=" . $bweight . ",
+    p_fish_end_weight=" . $eweight . " 
     WHERE p_key='" . $_SESSION["selectedKey"] . "'";
 
 echo $sql;
