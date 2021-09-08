@@ -12,7 +12,7 @@ if($_GET["sdate"] != null && $_GET["edate"] != null && $_GET["bweight"] != null 
     p_fish_end_weight='" . $_GET["eweight"] . "'
     WHERE p_key='" . $_SESSION["selectedKey"] . "'";
 
-    echo $sql;
+    echo $sql . "<br/>";
     if ($conn->query($sql) === TRUE) {
         echo "0";
     } else {
