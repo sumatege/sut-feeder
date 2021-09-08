@@ -12,8 +12,9 @@ if($_GET["sdate"] != null && $_GET["edate"] != null && $_GET["bweight"] != null 
     p_fish_end_weight='" . $_GET["eweight"] . "'
     WHERE p_key='" . $_SESSION["selectedKey"] . "'";
 
-    if ($conn->query($sql) === TRUE) {
+    if ($conn->query($sql) === TRUE)         
         echo "0";
+        echo $sql;
     } else {
         echo "Error updating record: " . $conn->error;
     }
