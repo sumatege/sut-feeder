@@ -4,13 +4,13 @@ session_start();
 require 'config.php';
 
 if ($_GET["sdate"] == "null") {
-    $sdate = null;
+    $sdate = NULL;
 } else {
     $sdate = "'" . $_GET["sdate"] . "'";
 }
 
-if ($_GET["edate"] == "null") {
-    $edate = null;
+if ($_GET["edate"] == null) {
+    $edate = NULL;
 } else {
     $edate = "'" . $_GET["edate"] . "'";
 }
