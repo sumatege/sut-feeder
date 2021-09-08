@@ -318,6 +318,7 @@ function RecordSave() {
     "&eweight=" +
     r_endweight;
   xhttp.onload = function () {
+    alert(this.response);
     getProjectInfo();
   };
   xhttp.open("GET", url);
