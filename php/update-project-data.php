@@ -10,7 +10,7 @@ if ($_GET["sdate"] == "null") {
 }
 
 if ($_GET["edate"] == "null") {
-    $edate = NULL;
+    $edate = "NULL";
 } else {
     $edate = "'" . $_GET["edate"] . "'";
 }
