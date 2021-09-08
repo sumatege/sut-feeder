@@ -3,25 +3,25 @@
 session_start();
 require 'config.php';
 
-if ($_GET["sdate"] == null) {
+if ($_GET["sdate"] == "null") {
     $sdate = null;
 } else {
     $sdate = "'" . $_GET["sdate"] . "'";
 }
 
-if ($_GET["edate"] == null) {
+if ($_GET["edate"] == "null") {
     $edate = null;
 } else {
     $edate = "'" . $_GET["sdate"] . "'";
 }
 
-if ($_GET["bamount"] == null) {
+if ($_GET["bamount"] == "null") {
     $bamount = 0;
 } else {
     $bamount = $_GET["bamount"];
 }
 
-if ($_GET["bweight"] == null) {
+if ($_GET["bweight"] == "null") {
     $bweight = 0;
 } else {
     $bweight = $_GET["bweight"];
