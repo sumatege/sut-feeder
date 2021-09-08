@@ -299,12 +299,12 @@ body {
 .food-data-table {
   width: auto;
   overflow: auto;
-  text-align: -webkit-center !important;
+  text-align: -webkit-center;
 }
 
 .table-history,
 .fm-p-data {
-  font-size: medium !important;
+  font-size: medium;
 }
 
 .table-history td {
@@ -451,7 +451,7 @@ input:disabled + .slider {
   }
 
   .fm-p-data {
-    font-size: small !important;
+    font-size: small;
   }
 
   .table-history tr {
