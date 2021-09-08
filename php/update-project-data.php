@@ -12,7 +12,7 @@ if ($_GET["sdate"] == "null") {
 if ($_GET["edate"] == "null") {
     $edate = null;
 } else {
-    $edate = "'" . $_GET["sdate"] . "'";
+    $edate = "'" . $_GET["edate"] . "'";
 }
 
 if ($_GET["bamount"] == "null") {
