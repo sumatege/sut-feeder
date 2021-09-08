@@ -317,10 +317,8 @@ function RecordSave() {
     r_beginamount +
     "&eweight=" +
     r_endweight;
-    alert(url);
   xhttp.onload = function () {
-    alert(this.response);
-    //getProjectInfo();
+    getProjectInfo();
   };
   xhttp.open("GET", url);
   xhttp.send();
