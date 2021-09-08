@@ -39,7 +39,7 @@ $sql = "UPDATE project SET
     p_fish_amount=" . $bamount . ",
     p_fish_begin_weight=" . $bweight . ",
     p_fish_end_weight=" . $eweight . " 
-    WHERE p_key='" . $_SESSION["selectedKey"] . "'";
+     WHERE p_key='" . $_SESSION["selectedKey"] . "'";
 
 echo $sql;
 if ($conn->query($sql) === TRUE) {
