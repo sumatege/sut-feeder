@@ -4,7 +4,7 @@ session_start();
 require 'config.php';
 
 if ($_GET["sdate"] == "null") {
-    $sdate = NULL;
+    $edate = "NULL";
 } else {
     $sdate = "'" . $_GET["sdate"] . "'";
 }
@@ -41,7 +41,6 @@ $sql = "UPDATE project SET
     p_fish_end_weight=" . $eweight . " 
      WHERE p_key='" . $_SESSION["selectedKey"] . "'";
 
-echo $sql;
 if ($conn->query($sql) === TRUE) {
     echo "0";
 } else {
