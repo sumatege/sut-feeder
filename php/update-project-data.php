@@ -27,7 +27,7 @@ if ($_GET["bweight"] == null) {
     $bweight = $_GET["bweight"];
 }
 
-if ($_GET["eweight"] == null) {
+if ($_GET["eweight"] == "null") {
     $eweight = 0;
 } else {
     $eweight = $_GET["eweight"];
