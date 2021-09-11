@@ -4,6 +4,7 @@ var latilongti = "";
 var automation;
 var weather_status = "";
 var project_weather_status;
+var food_unit;
 
 function Dashboard() {
   const xhttp = new XMLHttpRequest();
@@ -14,14 +15,45 @@ function Dashboard() {
       GetDropdownList();
       getProjectInfo();
       GetAutomationTable();
-      GetHistory();
       MachineStatus();
-      member();
       CheckTimeWeatherStatus();
+      member();
       $("#ModalInclude").load("modal.html");
     } else {
       window.location.replace("./index.html");
     }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function SettingModal() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-member.php";
+  xhttp.onload = function () {
+    var data = JSON.parse(this.responseText);
+    if (this.responseText != "0") {
+      document.getElementById("user-name").innerHTML =
+        data.m_name + " " + data.m_sirname;
+      document.getElementById("user-phone").innerHTML = data.m_phone;
+      document.getElementById("user-create-date").innerHTML =
+        data.m_create_date;
+      document.getElementById("user-id").innerHTML = data.m_id;
+
+      GetFoodUnit();
+      $("#SettingModal").modal("show");
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function GetFoodUnit() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-project-data.php";
+  xhttp.onload = function () {
+    var data = JSON.parse(this.responseText);
+    ChangeUnitSettingModal(data.p_food_unit);
   };
   xhttp.open("GET", url);
   xhttp.send();
@@ -35,14 +67,24 @@ function member() {
     if (this.responseText != "0") {
       document.getElementById("user-fullname").innerHTML =
         data.m_name + " " + data.m_sirname + " [รหัสผู้ใช้: " + data.m_id + "]";
-      document.getElementById("user-name").innerHTML =
-        data.m_name + " " + data.m_sirname;
-      document.getElementById("user-phone").innerHTML = data.m_phone;
-      document.getElementById("user-create-date").innerHTML =
-        data.m_create_date;
-      document.getElementById("user-id").innerHTML = data.m_id;
-
       greeting(data.m_name + " " + data.m_sirname);
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function greeting(name) {
+  document.getElementById("user-greeting").innerHTML = name;
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-greeting.php";
+  xhttp.onload = function () {
+    if (this.responseText == "0") {
+      $("#FirstTimeModal").modal("show");
+      setTimeout(() => {
+        document.getElementById("firework").style.display = "none";
+        document.body.style.overflowY = "scroll";
+      }, 5000);
     }
   };
   xhttp.open("GET", url);
@@ -74,7 +116,11 @@ function checkTime(i) {
 
 var count_weather_alert = 0;
 function getWeather() {
-  if (latilongti != "" && latilongti != "undefined,undefined") {
+  if (
+    latilongti != "" &&
+    latilongti != null &&
+    latilongti != "undefined,undefined"
+  ) {
     var latlong = latilongti.split(",");
     var sep_lat = latlong[0];
     var sep_long = latlong[1];
@@ -122,23 +168,6 @@ function CheckWeatherStatus() {
       $("#WeatherModal").modal("show");
     } else {
       project_weather_status = 0;
-    }
-  };
-  xhttp.open("GET", url);
-  xhttp.send();
-}
-
-function greeting(name) {
-  document.getElementById("user-greeting").innerHTML = name;
-  const xhttp = new XMLHttpRequest();
-  var url = "./php/get-greeting.php";
-  xhttp.onload = function () {
-    if (this.responseText == "0") {
-      $("#FirstTimeModal").modal("show");
-      setTimeout(() => {
-        document.getElementById("firework").style.display = "none";
-        document.body.style.overflowY = "scroll";
-      }, 5000);
     }
   };
   xhttp.open("GET", url);
@@ -230,24 +259,46 @@ function getProjectInfo() {
   xhttp.onload = function () {
     var data = JSON.parse(this.response);
     document.getElementById("r_startdate").value = data.p_start_date;
-    document.getElementById("r_beginweight").value = data.p_fish_begin_weight;
     document.getElementById("r_beginamount").value = data.p_fish_amount;
-    document.getElementById("r_endweight").value = data.p_fish_end_weight;
-    document.getElementById("r_totalfoodG").value = data.p_food_used;
-    document.getElementById("r_totalfoodK").value =
-      parseFloat(data.p_food_used) / 1000;
-    document.getElementById("r_fcr").value = data.p_fcr;
-
-    if (data.p_fish_end_weight == 0) {
-      document.getElementById("r_plusweight").value = 0;
-    } else {
-      document.getElementById("r_plusweight").value =
-        parseFloat(data.p_fish_end_weight) -
-        parseFloat(data.p_fish_begin_weight);
-    }
+    document.getElementById("r_fcr").value = parseFloat(data.p_fcr).toFixed(2);
+    food_unit = data.p_food_unit;
 
     if (data.p_end_date != null) {
       document.getElementById("r_enddate").value = data.p_end_date;
+    }
+
+    if (data.p_food_unit == "g") {
+      document.getElementById("r_beginweight").value =
+        parseFloat(data.p_fish_begin_weight) * 1000;
+      document.getElementById("r_endweight").value =
+        parseFloat(data.p_fish_end_weight) * 1000;
+      document.getElementById("r_totalfood").value = parseFloat(
+        data.p_food_used
+      );
+
+      if (data.p_fish_end_weight == 0) {
+        document.getElementById("r_plusweight").value = 0;
+      } else {
+        document.getElementById("r_plusweight").value =
+          (parseFloat(data.p_fish_end_weight) -
+            parseFloat(data.p_fish_begin_weight)) *
+          1000;
+      }
+      $(".UnitTextFeedingManual").html("กรัม");
+    } else {
+      document.getElementById("r_beginweight").value = data.p_fish_begin_weight;
+      document.getElementById("r_endweight").value = data.p_fish_end_weight;
+      document.getElementById("r_totalfood").value =
+        parseFloat(data.p_food_used) / 1000;
+
+      if (data.p_fish_end_weight == 0) {
+        document.getElementById("r_plusweight").value = 0;
+      } else {
+        document.getElementById("r_plusweight").value =
+          parseFloat(data.p_fish_end_weight) -
+          parseFloat(data.p_fish_begin_weight);
+      }
+      $(".UnitTextFeedingManual").html("กิโลกรัม");
     }
   };
   xhttp.open("GET", url);
@@ -286,12 +337,21 @@ function RecordSave() {
   var r_beginweight = document.getElementById("r_beginweight").value;
   var r_endweight = document.getElementById("r_endweight").value;
   var r_beginamount = document.getElementById("r_beginamount").value;
+  var r_usedfood = document.getElementById("r_totalfood").value;
 
   var r_startdate = checkNull(r_startdate);
   var r_enddate = checkNull(r_enddate);
   var r_beginweight = checkNull(r_beginweight);
   var r_endweight = checkNull(r_endweight);
   var r_beginamount = checkNull(r_beginamount);
+
+  var r_fcr;
+  if (r_endweight != null) {
+    var diff = parseFloat(r_endweight) - parseFloat(r_beginweight);
+    r_fcr = parseFloat(r_usedfood) / 1000 / diff;
+  } else {
+    r_fcr = 0;
+  }
 
   document.getElementById("btn_r_cancel").style.display = "none";
   document.getElementById("btn_r_edit").style.display = "block";
@@ -301,7 +361,7 @@ function RecordSave() {
   document.getElementById("r_enddate").disabled = true;
   document.getElementById("r_beginweight").disabled = true;
   document.getElementById("r_beginamount").disabled = true;
-  document.getElementById("r_endweight").disabled = true;  
+  document.getElementById("r_endweight").disabled = true;
 
   const xhttp = new XMLHttpRequest();
   var url = "./php/update-project-data.php";
@@ -316,7 +376,9 @@ function RecordSave() {
     "&bamount=" +
     r_beginamount +
     "&eweight=" +
-    r_endweight;
+    r_endweight +
+    "&fcr=" +
+    r_fcr;
   xhttp.onload = function () {
     getProjectInfo();
   };
@@ -351,6 +413,12 @@ function SaveAutomation() {
     a_foodsize != ""
   ) {
     var weightpertime = a_total / a_round;
+    if (food_unit == "g") {
+      weightpertime = parseFloat(a_total) / 1000;
+      weightpertime = weightpertime / parseFloat(a_round);
+    } else {
+      weightpertime = parseFloat(a_total) / parseFloat(a_round);
+    }
     CalculateTimePerRound(weightpertime, a_foodsize);
   } else {
     $("#FullfilldataModal").modal("show");
@@ -370,6 +438,9 @@ function CalculateTimePerRound(foodweight, foodsize) {
       break;
     case "0":
       var kgpersec = document.getElementById("a_self_weight").value;
+      if (food_unit == "g") {
+        kgpersec / 1000;
+      }
       Calculate0(foodweight, kgpersec);
       break;
     default:
@@ -458,7 +529,11 @@ function SaveFinishAutomation() {
   var a_time = document.getElementById("a_time").value;
   var a_total = document.getElementById("a_total").value;
   var a_round = document.getElementById("a_round").value;
-  var a_break = document.getElementById("a_break").value * 60;
+  var a_break = document.getElementById("a_break").value;
+
+  if (food_unit == "g") {
+    a_total = parseFloat(a_total) / 1000;
+  }
 
   const xhttp = new XMLHttpRequest();
   var url = "./php/add-automation.php";
@@ -559,14 +634,28 @@ function drawRow(rowData) {
       ')"><span class="slider round"></span></label>';
   }
 
+  var food_weight;
+  if (food_unit == "g") {
+    food_weight = rowData.a_food_weight * 1000;
+  } else {
+    food_weight = rowData.a_food_weight;
+  }
+
+  var tpr;
+  if (parseFloat(rowData.a_time_per_round) % 1 == 0) {
+    tpr = parseFloat(rowData.a_time_per_round);
+  } else {
+    tpr = parseFloat(rowData.a_time_per_round).toFixed(2);
+  }
+
   var row = $("<tr />");
   $("#AutomationTable").append(row);
   //row.append($("<td>" + rowData.a_begin_date + "</td>"));
   //row.append($("<td>" + rowData.a_end_date + "</td>"));
   row.append($("<td>" + rowData.a_feeding_time.substring(0, 5) + "</td>"));
-  row.append($("<td>" + rowData.a_food_weight + "</td>"));
+  row.append($("<td>" + food_weight + "</td>"));
   row.append($("<td>" + rowData.a_round + "</td>"));
-  row.append($("<td>" + rowData.a_time_per_round + "</td>"));
+  row.append($("<td>" + tpr + "</td>"));
   row.append($("<td>" + rowData.a_break_time + "</td>"));
   row.append($("<td style='display: none;'>" + rowData.a_status + "</td>"));
   row.append($("<td>" + slide + "</td>"));
@@ -611,7 +700,11 @@ function CheckAutomation() {
       //console.log(starttime + " " + data[i].a_feeding_time);
       //console.log(endtime + " " + checkTime);
       if (ws_data.p_weather_status == "1") {
-        if (starttime == data[i].a_feeding_time && data[i].a_switch == 0 && checkTime <= endtime) {
+        if (
+          starttime == data[i].a_feeding_time &&
+          data[i].a_switch == 0 &&
+          checkTime <= endtime
+        ) {
           const xhttp = new XMLHttpRequest();
           var url =
             "./php/set-automation-status.php?status=0&id=" + data[i].a_id;
@@ -732,6 +825,10 @@ function SaveNewProject() {
   var weight = document.getElementById("add_begin_weight").value;
   var amount = document.getElementById("add_fish_amout").value;
 
+  if (food_unit == "g") {
+    weight = parseFloat(weight) / 1000;
+  }
+
   if (key != "" && name != "" && weight != "" && amount != "") {
     document.getElementById("fillempty").style.display = "none";
     const xhttp = new XMLHttpRequest();
@@ -745,7 +842,9 @@ function SaveNewProject() {
       "&weight=" +
       weight +
       "&amount=" +
-      amount;
+      amount +
+      "&unit=" +
+      food_unit;
     xhttp.onload = function () {
       if (this.responseText == 0) {
         $("#AddProjectModal").modal("hide");
@@ -795,18 +894,18 @@ function RecordClose() {
   var confirm = document.getElementById("ConfirmCloseTxt").value;
   if (confirm != "") {
     const xhttp = new XMLHttpRequest();
-    var url = "./php/close-project.php";
+    var url = "./php/close-project.php?password=" + confirm;
     xhttp.onload = function () {
-      if (this.responseText == 0) {
-        if (this.response == "0") {
-          document.getElementById("DelProTxt").style.display = "none";
-          $("#CloseProjectModal").modal("hide");
-          window.location.replace("./dashboard.html");
-        } else {
-          document.getElementById("DelProTxt").innerHTML =
-            "เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง!";
-          document.getElementById("DelProTxt").style.display = "block";
-        }
+      if (this.response == "0") {
+        document.getElementById("CloseProTxt").style.display = "none";
+        $("#CloseProjectModal").modal("hide");
+        window.location.replace("./dashboard.html");
+      } else {
+        document.getElementById("CloseProTxt").innerHTML =
+          "เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง!";
+        document.getElementById("CloseProTxt").style.color = "red";
+        document.getElementById("CloseProTxt").style.fontSize = "small";
+        document.getElementById("CloseProTxt").style.display = "block";
       }
     };
     xhttp.open("GET", url);
@@ -1052,3 +1151,109 @@ function APISaveSetupStopAutomation(status, restart_date) {
   xhttp.open("GET", url);
   xhttp.send();
 }
+
+function ChangeUnit(val) {
+  if (val == "g") {
+    document.getElementById("add-btn-g").style.border = "medium solid #1C319F";
+    document.getElementById("add-btn-g").style.background = "white";
+    document.getElementById("add-btn-g").style.opacity = "1";
+    document.getElementById("add-btn-g").style.color = "black";
+
+    document.getElementById("add-btn-kg").style.border = "none";
+    document.getElementById("add-btn-kg").style.opacity = "0.5";
+    document.getElementById("add-btn-kg").style.color = "gray";
+
+    document.getElementById("UnitTxt").innerHTML = "กรัม";
+    food_unit = "g";
+  } else {
+    document.getElementById("add-btn-kg").style.border = "medium solid #1C319F";
+    document.getElementById("add-btn-kg").style.background = "white";
+    document.getElementById("add-btn-kg").style.opacity = "1";
+    document.getElementById("add-btn-kg").style.color = "black";
+    document.getElementById("add-btn-g").style.border = "none";
+    document.getElementById("add-btn-g").style.opacity = "0.5";
+    document.getElementById("add-btn-g").style.color = "gray";
+
+    document.getElementById("UnitTxt").innerHTML = "กิโลกรัม";
+    food_unit = "kg";
+  }
+}
+
+function ChangeUnitSettingModal(val) {
+  if (val == "g") {
+    document.getElementById("btn-g").style.border = "medium solid #1C319F";
+    document.getElementById("btn-g").style.background = "white";
+    document.getElementById("btn-g").style.opacity = "1";
+    document.getElementById("btn-g").style.color = "black";
+
+    document.getElementById("btn-kg").style.border = "none";
+    document.getElementById("btn-kg").style.opacity = "0.5";
+    document.getElementById("btn-kg").style.color = "gray";
+
+    UpdateUnitBySettingModal("g");
+    food_unit = "g";
+  } else {
+    document.getElementById("btn-kg").style.border = "medium solid #1C319F";
+    document.getElementById("btn-kg").style.background = "white";
+    document.getElementById("btn-kg").style.opacity = "1";
+    document.getElementById("btn-kg").style.color = "black";
+
+    document.getElementById("btn-g").style.border = "none";
+    document.getElementById("btn-g").style.opacity = "0.5";
+    document.getElementById("btn-g").style.color = "gray";
+
+    UpdateUnitBySettingModal("kg");
+    food_unit = "kg";
+  }
+}
+
+function UpdateUnitBySettingModal(val) {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/update-unit-modal.php?unit=" + val;
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+$(function () {
+  $("#AddProjectModal").on("show.bs.modal", function () {
+    document.getElementById("add-btn-g").style.border = "medium solid #1C319F";
+    document.getElementById("add-btn-g").style.background = "white";
+    document.getElementById("add-btn-g").style.opacity = "1";
+    document.getElementById("add-btn-g").style.color = "black";
+
+    document.getElementById("add-btn-kg").style.border = "none";
+    document.getElementById("add-btn-kg").style.opacity = "0.5";
+    document.getElementById("add-btn-kg").style.color = "gray";
+
+    document.getElementById("UnitTxt").innerHTML = "กรัม";
+    food_unit = "g";
+  });
+
+  $("#HistoryModal").on("show.bs.modal", function () {
+    GetHistory();
+  });
+
+  $("#CloseProjectModal").on("show.bs.modal", function () {
+    document.getElementById("CloseProTxt").style.display = "none";
+  });
+
+  $("#AutomationModal").on("show.bs.modal", function () {
+    if (food_unit == "g") {
+      $(".UnitTextFeedingManual").html("กรัม");
+    } else {
+      $(".UnitTextFeedingManual").html("กิโลกรัม");
+    }
+  });
+
+  $("#SettingModal").on("hide.bs.modal", function () {
+    if (food_unit == "g") {
+      $(".UnitTextFeedingManual").html("กรัม");
+    } else {
+      $(".UnitTextFeedingManual").html("กิโลกรัม");
+    }
+  });
+
+  $("#AddLocationModal").on("hide.bs.modal", function () {
+    RefreshPage();
+  });
+});

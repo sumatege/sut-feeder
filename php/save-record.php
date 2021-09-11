@@ -24,8 +24,16 @@ if ($_GET["foodsize"] != null && $_GET["totaltime"] != null && $_GET["usedfood"]
 
             $row2 = $result_select2->fetch_assoc();
             //echo $row2["p_fish_end_weight"];
-            $fcr = floatval($row2["p_fish_end_weight"]) / ($sum_food / 1000);
-            //echo $fcr;
+
+            if ($row2["p_fish_end_weight"] != 0) {
+                $diff = floatval($row2["p_fish_end_weight"]) - floatval($row2["p_fish_begin_weight"]);
+                //echo $diff;
+                $fcr = ($sum_food / 1000) / $diff;
+                //echo $fcr;
+            } else {
+                $fcr = 0;
+            }
+
 
             $sql_update = "UPDATE project SET 
             p_food_used = " . $sum_food . " , 

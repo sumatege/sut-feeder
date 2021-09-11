@@ -39,9 +39,9 @@
                 <a href="dashboard.html"><img class="brand-icon" src="images/icons/brand-logo.png" /></a>
                 <a href="dashboard.html"><h3 class="brand-name">SUT Feeder</h3></a>
             </div>
-            <div class="col-lg text-right p-0">
+            <div class="col-lg text-right p-0">                
                 <a href="" data-toggle="modal" data-target="#HistoryModal"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></a>
-                <a href="" data-toggle="modal" data-target="#SettingModal"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a>
+                <a onclick="SettingModal()"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a>
             </div>
         </div>
         <div class="row user-data">
@@ -98,7 +98,7 @@
                                 </div>
                                 <div id="otherSize">
                                     <div class="form-group" style="text-align: -webkit-center;">
-                                        <label>ป้อนค่าน้ำหนัก (กก./วินาที)</label>
+                                        <label>ป้อนค่าน้ำหนัก (<span class="UnitTextFeedingManual"></span>/วินาที)</label>
                                         <input type="number" step="0.01" min="0" value="1" class="form-control" style="width: 150px; text-align: center;" id="self_weight" />
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@
                                             <!--<th>เริ่มวันที่</th>
                                             <th>ถึงวันที่</th>-->
                                             <th>เวลา</th>
-                                            <th>ปริมาณอาหาร (กก.)</th>
+                                            <th>ปริมาณอาหาร (<span class="UnitTextFeedingManual"></span>)</th>
                                             <th>รอบการให้อาหาร (รอบ)</th>
                                             <th>เวลาต่อรอบ (วินาที)</th>
                                             <th>เวลาพักเบรค (วินาที)</th>
@@ -171,40 +171,44 @@
                                 <table class="table table-history table-responsive table-hover table-bordered">
                                   <tbody>
                                     <tr>
-                                      <td>วันที่เริ่มต้น</td>
-                                      <td><input type="date" class="form-control fm-p-data" id="r_startdate" disabled></td>
+                                      <td class="ht-td-1">วันที่เริ่มต้น</td>
+                                      <td class="ht-td-2"><input type="date" class="form-control fm-p-data" id="r_startdate" disabled></td>
+                                      <td class="ht-td-3"></td>
                                     </tr>
                                     <tr>
-                                      <td>วันที่สุดท้าย</td>
-                                      <td><input type="date" class="form-control fm-p-data" id="r_enddate" disabled></td>
+                                      <td class="ht-td-1">วันที่สุดท้าย</td>
+                                      <td class="ht-td-2"><input type="date" class="form-control fm-p-data" id="r_enddate" disabled></td>
+                                      <td class="ht-td-3"></td>
                                     </tr>
                                     <tr>
-                                      <td>น้ำหนักปลาเริ่มต้น (กก.)</td>
-                                      <td><input type="number" class="form-control fm-p-data" step="0.01" id="r_beginweight" disabled></td>
+                                      <td class="ht-td-1">จำนวนปลาทั้งหมด</td>
+                                      <td class="ht-td-2"><input type="number" class="form-control fm-p-data" id="r_beginamount" disabled></td>
+                                      <td class="ht-td-3">ตัว/บ่อ</td>
                                     </tr>
                                     <tr>
-                                      <td>จำนวนปลา (ตัว)</td>
-                                      <td><input type="number" class="form-control fm-p-data" id="r_beginamount" disabled></td>
+                                      <td class="ht-td-1">น้ำหนักปลาเริ่มต้น</td>
+                                      <td class="ht-td-2"><input type="number" class="form-control fm-p-data" step="0.01" id="r_beginweight" disabled></td>
+                                      <td class="ht-td-3"><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>                                    
+                                    <tr>
+                                      <td class="ht-td-1">น้ำหนักปลาสุดท้าย</td>
+                                      <td class="ht-td-2"><input type="number" class="form-control fm-p-data" step="0.01" id="r_endweight"  disabled></td>
+                                      <td class="ht-td-3"><span class="UnitTextFeedingManual"></span>/บ่อ</td>
                                     </tr>
                                     <tr>
-                                      <td>น้ำหนักปลาสุดท้าย (กก.)</td>
-                                      <td><input type="number" class="form-control fm-p-data" step="0.01" id="r_endweight"  disabled></td>
+                                      <td class="ht-td-1">น้ำหนักปลาที่เพิ่มขึ้น</td>
+                                      <td class="ht-td-2"><input type="number" class="form-control fm-p-data" step="0.01" id="r_plusweight" disabled></td>
+                                      <td class="ht-td-3"><span class="UnitTextFeedingManual"></span>/บ่อ</td>
                                     </tr>
                                     <tr>
-                                      <td>น้ำหนักปลาที่เพิ่มขึ้น (กก.)</td>
-                                      <td><input type="number" class="form-control fm-p-data" step="0.01" id="r_plusweight" disabled></td>
+                                      <td class="ht-td-1">อาหารที่ใช้ทั้งหมด</td>
+                                      <td class="ht-td-2"><input type="number" class="form-control fm-p-data" step="0.01" id="r_totalfood" disabled></td>
+                                      <td class="ht-td-3"><span class="UnitTextFeedingManual"></span>/บ่อ</td>
                                     </tr>
                                     <tr>
-                                      <td>อาหารที่ใช้ทั้งหมด (กรัม)</td>
-                                      <td><input type="number" class="form-control fm-p-data" step="0.01" id="r_totalfoodG" disabled></td>
-                                    </tr>
-                                    <tr>
-                                      <td>อาหารที่ใช้ทั้งหมด (กก.)</td>
-                                      <td><input type="number" class="form-control fm-p-data" step="0.01" id="r_totalfoodK" disabled></td>
-                                    </tr>
-                                    <tr>
-                                      <td style="white-space: pre-wrap;">อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td>
-                                      <td><input type="number" class="form-control fm-p-data" step="0.01" id="r_fcr" disabled></td>
+                                      <td  class="ht-td-1" style="white-space: pre-wrap;">อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td>
+                                      <td class="ht-td-2"><input type="number" class="form-control fm-p-data" step="0.01" id="r_fcr" disabled></td>
+                                      <td class="ht-td-3"></td>
                                     </tr>
                                   </tbody>
                                 </table>

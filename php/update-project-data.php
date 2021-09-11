@@ -38,9 +38,9 @@ $sql = "UPDATE project SET
     p_end_date=" . $edate . ",
     p_fish_amount=" . $bamount . ",
     p_fish_begin_weight=" . $bweight . ",
-    p_fish_end_weight=" . $eweight . " 
+    p_fish_end_weight=" . $eweight . ",
+    p_fcr=" . $_GET["fcr"] . " 
      WHERE p_key='" . $_SESSION["selectedKey"] . "'";
-
 if ($conn->query($sql) === TRUE) {
     echo "0";
 } else {

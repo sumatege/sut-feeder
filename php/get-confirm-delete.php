@@ -13,7 +13,7 @@ if ($_GET["val"] == $_SESSION["m_phone"] || $_GET["val"] == $_SESSION["m_passwor
     p_fish_amount = NULL,
     p_fish_begin_weight = NULL,
     p_fish_end_weight = NULL,
-    p_food_size = NULL,
+    p_food_unit = NULL,
     p_food_used = NULL,
     p_fcr = NULL,
     p_machine_status = NULL,

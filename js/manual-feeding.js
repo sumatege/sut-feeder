@@ -6,8 +6,8 @@ function BeforeStartFeeding() {
   var url = "./php/get-automation-table.php";
   xhttp.onload = function () {
     if (this.response != 1) {
-      $('#AskManualFeedingModal').modal('show');
-    } else {      
+      $("#AskManualFeedingModal").modal("show");
+    } else {
       StartFeeding();
     }
   };
@@ -16,7 +16,7 @@ function BeforeStartFeeding() {
 }
 
 function StartFeeding() {
-  $('#AskManualFeedingModal').modal('hide');
+  $("#AskManualFeedingModal").modal("hide");
   MachineControl("0");
   var foodsize = document.getElementById("foodsize").value;
   document.getElementById("mstopfeed").disabled = false;
@@ -109,8 +109,10 @@ function SaveFeeding() {
     usedfood +
     "&datetime=" +
     today;
+    //alert(url);
   const xhttp = new XMLHttpRequest();
   xhttp.onload = function () {
+    //alert(this.response);
     if (this.responseText == "0") {
       document.getElementById("UsedFoodG").value = 0;
       document.getElementById("UsedFoodK").value = 0;
@@ -202,7 +204,16 @@ function CalculateFood(usetime, foodsize) {
 }
 
 function CalculateFoodNewSize(usetime, foodsize) {
-  document.getElementById("UsedFoodG").value =
-    usetime * (parseFloat(foodsize) * 1000);
-  document.getElementById("UsedFoodK").value = usetime * parseFloat(foodsize);
+  var unit = $('.UnitTextFeedingManual').html();
+
+  //console.log(unit);
+  if (unit == "กรัม") {    
+    document.getElementById("UsedFoodG").value =
+      usetime * (parseFloat(foodsize));
+      document.getElementById("UsedFoodK").value = usetime * (parseFloat(foodsize) / 1000);
+  } else {
+    document.getElementById("UsedFoodG").value =
+      usetime * (parseFloat(foodsize) * 1000);
+      document.getElementById("UsedFoodK").value = usetime * (parseFloat(foodsize));
+  }
 }

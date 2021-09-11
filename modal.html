@@ -15,6 +15,12 @@
                         <div class="col-12 m-1">เบอร์โทรศัพท์: <span id="user-phone"></span></div>
                         <div class="col-12 m-1">วันที่ลงทะเบียน: <span id="user-create-date"></span></div>
                     </div>                
+                    <hr/>
+                    <div class="row d-flex m-1">
+                        <label for="foodunit" style="place-self: center;margin-right: 5px;">หน่วยน้ำหนัก:</label>           
+                        <button class="btn btn-secondary btn-unit" style="margin-right: 5px;" id="btn-g" onclick="ChangeUnitSettingModal('g')">กรัม</button>
+                        <button class="btn btn-secondary btn-unit" style="margin-right: 5px;" id="btn-kg" onclick="ChangeUnitSettingModal('kg')">กิโลกรัม</button>
+                    </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <a class="btn btn-danger" href="php/logout.php">ออกจากระบบ</a>
@@ -147,11 +153,11 @@
                                 </select>
                             </div>
                             <div class="form-group" style="display: none;" id="a_otherSize">
-                                <label>ป้อนค่าน้ำหนัก (กก./วินาที)</label>
-                                <input type="number" step="0.01" min="0" class="form-control" id="a_self_weight" />
+                                <label>ป้อนค่าน้ำหนัก (<span class="UnitTextFeedingManual"></span>/วินาที)</label>
+                                <input type="number" step="0.01" min="0" value="1" class="form-control" id="a_self_weight" />
                             </div>
                             <div class="form-group">
-                                <label>ปริมาณอาหาร (กก.)</label>
+                                <label>ปริมาณอาหาร (<span class="UnitTextFeedingManual"></span>)</label>
                                 <input class="form-control" type="number" value="1" min="0" id="a_total" />
                             </div>
                             <div class="form-group">
@@ -159,7 +165,7 @@
                                 <input class="form-control" type="number" value="1" min="0" id="a_round" />
                             </div>
                             <div class="form-group">
-                                <label>ช่วงเวลาพักเบรคแต่ละรอบ (นาที)</label>
+                                <label>ช่วงเวลาพักเบรคแต่ละรอบ (วินาที)</label>
                                 <input class="form-control" type="number" value="1" min="0" id="a_break" />
                             </div>
                         </form>
@@ -247,14 +253,18 @@
                                 <input type="text" class="form-control" id="add_name" required />
                             </div>
                             <div class="form-group">
-                                <label>น้ำหนักปลาเริ่มต้น (กก.) *</label>
-                                <input type="number" class="form-control" id="add_begin_weight" min="0" value="0" required>
-                            </div>
-                            <div class="form-group">
-                                <label>จำนวนปลาเริ่มต้น (ตัว) *</label>
+                                <label>จำนวนปลาเริ่มต้น (ตัว/บ่อ) *</label>
                                 <input type="number" class="form-control" id="add_fish_amout" min="0" value="0" required>
                                 <label id="fillempty">** Message</label>
                             </div>
+                            <div class="form-group">
+                            <label>น้ำหนักปลาเริ่มต้น (<span id="UnitTxt">กรัม</span>/บ่อ)*</label> 
+                            <div class="d-flex text-nowrap">
+                                <input type="number" class="form-control mr-1" id="add_begin_weight" min="0" value="0" required>
+                                <a class="btn btn-secondary btn-unit" style="margin-right: 5px;" id="add-btn-g" onclick="ChangeUnit('g')">กรัม</a>
+                                <a class="btn btn-secondary btn-unit" style="margin-right: 5px;" id="add-btn-kg" onclick="ChangeUnit('kg')">กิโลกรัม</a>
+                            </div>                            
+                        </div>                         
                         </form>
                     </div>
                 </div>
@@ -314,7 +324,7 @@
                         <span>กรุณากรอกเบอร์โทรศัพท์หรือรหัสผ่าน<br/>เพื่อยืนยันสิ้นสุดการเก็บข้อมูล</span>
                     </div>
                     <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
-                        <input type="text" id="ConfirmCloseTxt" class="form-control ml-3 mr-3" />
+                        <input type="password" id="ConfirmCloseTxt" class="form-control ml-3 mr-3" />
                     </div>
                     <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 3px; border:0px">
                         <span id="CloseProTxt">เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง!</span>

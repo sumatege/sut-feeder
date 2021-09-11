@@ -10,8 +10,8 @@ if($_GET["key"] != null && $_GET["name"] != null && $_GET["weight"] != null && $
     p_start_date='" . date("Y/m/d") . "',
     p_fish_amount='" . $_GET["amount"] . "',
     p_fish_begin_weight='" . $_GET["weight"] . "',
+    p_food_unit = '" . $_GET["unit"] . "',
     p_fish_end_weight = 0,
-    p_food_size = 0,
     p_food_used = 0,
     p_fcr = 0,
     p_machine_status = 1,
@@ -21,6 +21,7 @@ if($_GET["key"] != null && $_GET["name"] != null && $_GET["weight"] != null && $
     if ($conn->query($sql) === TRUE) {
         $_SESSION["selectedKey"] = $_GET["key"];
         $_SESSION["selectedName"] = $_GET["name"];
+        $_SESSION["selectedUnit"] = $_GET["unit"];
 
         echo "0";
     } else {
