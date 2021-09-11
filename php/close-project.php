@@ -3,7 +3,7 @@
 session_start();
 require 'config.php';
 
-if ($_SESSION["m_password"] == $_GET["password"] or $_SESSION["m_phone"] == $_GET["password"]) {
+if ($_SESSION["m_password"] == $_GET["password"] || $_SESSION["m_phone"] == $_GET["password"]) {
     $sql_select = "SELECT * FROM project WHERE p_key='" . $_SESSION["selectedKey"] . "'";
     $result = $conn->query($sql_select);
     if ($result->num_rows > 0) {
@@ -12,12 +12,24 @@ if ($_SESSION["m_password"] == $_GET["password"] or $_SESSION["m_phone"] == $_GE
         }
         //echo json_encode($data);
 
+        if ($data["p_start_date"] == "null") {
+            $sdate = "NULL";
+        } else {
+            $sdate = "'" . $data["p_start_date"] . "'";
+        }
+
+        if ($data["p_end_date"] == "null") {
+            $edate = "NULL";
+        } else {
+            $edate = "'" . $data["p_end_date"] . "'";
+        }
+
         $sql_insert = "INSERT INTO close_project (c_key,c_name,c_owner,c_start_date,c_end_date,c_fish_amount,c_fish_begin_weight,c_fish_end_weight,c_food_unit,c_food_used,c_fcr,c_latlon) VALUES
 ('" . $data["p_key"] . "',
 '" . $data["p_name"] . "',
 '" . $data["p_owner"] . "',
-'" . $data["p_start_date"] . "',
-'" . $data["p_end_date"] . "',
+" .  $sdate . ",
+" . $edate . ",
 '" . $data["p_fish_amount"] . "',
 '" . $data["p_fish_begin_weight"] . "',
 '" . $data["p_fish_end_weight"] . "',
