@@ -1248,8 +1248,10 @@ $(function () {
   $("#SettingModal").on("hide.bs.modal", function () {
     if (food_unit == "g") {
       $(".UnitTextFeedingManual").html("กรัม");
+      getProjectInfo();
     } else {
       $(".UnitTextFeedingManual").html("กิโลกรัม");
+      getProjectInfo();
     }
   });
 
