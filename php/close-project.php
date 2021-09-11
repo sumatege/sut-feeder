@@ -12,13 +12,13 @@ if ($_SESSION["m_password"] == $_GET["password"] || $_SESSION["m_phone"] == $_GE
         }
         //echo json_encode($data);
 
-        if ($data["p_start_date"] == "null") {
+        if ($data["p_start_date"] == "") {
             $sdate = "NULL";
         } else {
             $sdate = "'" . $data["p_start_date"] . "'";
         }
 
-        if ($data["p_end_date"] == "null") {
+        if ($data["p_end_date"] == "") {
             $edate = "NULL";
         } else {
             $edate = "'" . $data["p_end_date"] . "'";
