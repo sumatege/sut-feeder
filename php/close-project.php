@@ -3,7 +3,7 @@
 session_start();
 require 'config.php';
 
-if ($_SESSION["m_password"] == $_GET["password"] || $_SESSION["m_phone"] == $_GET["password"]) {
+if ($_SESSION["m_password"] == $_GET["password"] or $_SESSION["m_phone"] == $_GET["password"]) {
     $sql_select = "SELECT * FROM project WHERE p_key='" . $_SESSION["selectedKey"] . "'";
     $result = $conn->query($sql_select);
     if ($result->num_rows > 0) {
