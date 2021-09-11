@@ -23,6 +23,7 @@ if ($_SESSION["m_password"] == $_GET["password"] || $_SESSION["m_phone"] == $_GE
         } else {
             $edate = "'" . $data["p_end_date"] . "'";
         }
+        echo $data["p_end_date"]  . " " . $edate . "<br/>";
 
         $sql_insert = "INSERT INTO close_project (c_key,c_name,c_owner,c_start_date,c_end_date,c_fish_amount,c_fish_begin_weight,c_fish_end_weight,c_food_unit,c_food_used,c_fcr,c_latlon) VALUES
 ('" . $data["p_key"] . "',
@@ -37,6 +38,7 @@ if ($_SESSION["m_password"] == $_GET["password"] || $_SESSION["m_phone"] == $_GE
 '" . $data["p_food_used"] . "',
 '" . $data["p_fcr"] . "',
 '" . $data["p_latlon"] . "')";
+        echo $sql_insert . "<br/>";
 
 
         if ($conn->query($sql_insert) === TRUE) {
@@ -62,7 +64,7 @@ if ($_SESSION["m_password"] == $_GET["password"] || $_SESSION["m_phone"] == $_GE
                 echo "Error updating record: " . $conn->error;
             }
         } else {
-            echo "Error updating record: " . $conn->error;
+            echo "Error inserting record: " . $conn->error;
         }
     } else {
         echo "error";
