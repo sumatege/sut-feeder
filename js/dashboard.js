@@ -895,7 +895,9 @@ function RecordClose() {
   if (confirm != "") {
     const xhttp = new XMLHttpRequest();
     var url = "./php/close-project.php?password=" + confirm;
+    alert(url);
     xhttp.onload = function () {
+      alert(this.response);
       if (this.response == "0") {
         document.getElementById("CloseProTxt").style.display = "none";
         $("#CloseProjectModal").modal("hide");
