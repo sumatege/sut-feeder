@@ -176,9 +176,6 @@ function CalculateFood(usetime, foodsize) {
     const response = await fetch(url);
     return response.json();
   };
-
-  //console.log(usetime + ' ' + foodsize);
-
   getJSON("./files/foodsize.txt").then(function (data) {
     data.forEach(function (item) {
       if (item.time == usetime) {
