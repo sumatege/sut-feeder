@@ -890,6 +890,15 @@ function checkKey(key) {
   }
 }
 
+function CheckRecordClose(){
+  var edate = document.getElementById("r_enddate").value;
+  if(edate == "" || edate == null){
+    $('#EnddateModal').modal('show');
+  }else{
+    $('#CloseProjectModal').modal('show');
+  }
+}
+
 function RecordClose() {
   var confirm = document.getElementById("ConfirmCloseTxt").value;
   if (confirm != "") {
