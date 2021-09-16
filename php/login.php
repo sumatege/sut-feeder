@@ -20,7 +20,12 @@ if (isset($_POST["phone"]) && isset($_POST["pass"])) {
             $_SESSION["m_latlong"] = $row["m_latlong"];
             /*$_SESSION["m_view"] = $row["m_view"];*/
         }
-        header('Location: ../dashboard.html');
+        
+        if($_SESSION["m_id"] == '0'){
+            header('Location: ../admin.html');
+        }else{
+            header('Location: ../dashboard.html');
+        }
     } else {
         header('Location: ../index.html');
         setcookie("FailedTxt", "เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง", time() + 10, "/");

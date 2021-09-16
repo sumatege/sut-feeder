@@ -62,6 +62,8 @@ function GetSession() {
   xhttp.onload = function () {
     if (this.responseText == "0") {
       window.location.replace("./dashboard.html");
+    } else if (this.responseText == "2") {
+      window.location.replace("./admin.html");
     } else {
       CheckFailed();
     }

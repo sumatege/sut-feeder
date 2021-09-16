@@ -19,6 +19,8 @@ function Dashboard() {
       CheckTimeWeatherStatus();
       member();
       $("#ModalInclude").load("modal.html");
+    }else if(this.responseText == "2"){
+      window.location.replace("./admin.html");
     } else {
       window.location.replace("./index.html");
     }
