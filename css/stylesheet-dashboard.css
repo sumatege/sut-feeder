@@ -325,6 +325,24 @@ body {
   text-decoration: none !important;
 }
 
+ .setting-link{
+   text-decoration: underline;
+ }
+
+ #SettingModal{
+   font-size: small;
+ }
+
+ #ConfirmPwTxt, #OldPwTxt{
+   font-size: xx-small;
+   color: red;
+   display: none;
+ }
+
+ #password-change, #member-btn{
+   display: none;
+ }
+ 
 /* The switch - the box around the slider ======================================== */
 .switch {
   position: relative;

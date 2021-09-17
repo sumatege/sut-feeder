@@ -35,12 +35,11 @@ function SettingModal() {
   xhttp.onload = function () {
     var data = JSON.parse(this.responseText);
     if (this.responseText != "0") {
-      document.getElementById("user-name").innerHTML =
-        data.m_name + " " + data.m_sirname;
-      document.getElementById("user-phone").innerHTML = data.m_phone;
-      document.getElementById("user-create-date").innerHTML =
-        data.m_create_date;
-      document.getElementById("user-id").innerHTML = data.m_id;
+      document.getElementById("user-name").value = data.m_name;
+      document.getElementById("user-sirname").value = data.m_sirname;
+      document.getElementById("user-phone").value = data.m_phone;
+      document.getElementById("user-create-date").value = data.m_create_date;
+      document.getElementById("user-id").value = data.m_id;
 
       GetFoodUnit();
       $("#SettingModal").modal("show");
@@ -702,10 +701,10 @@ function CheckAutomation() {
         ":" +
         String(today.getSeconds()).padStart(2, "0");
 
-        const cr_date_format = "YYYY-MM-DD HH:mm:ss";
-        var cr_date = new Date();
-        cr_date = moment(cr_date).format(cr_date_format);
-        let new_cr_date = cr_date;
+      const cr_date_format = "YYYY-MM-DD HH:mm:ss";
+      var cr_date = new Date();
+      cr_date = moment(cr_date).format(cr_date_format);
+      let new_cr_date = cr_date;
 
       //console.log(starttime + " " + data[i].a_feeding_time);
       //console.log(endtime + " " + checkTime);
@@ -716,7 +715,13 @@ function CheckAutomation() {
           checkTime <= endtime
         ) {
           const xhttp = new XMLHttpRequest();
-          var url = "./php/set-automation-status.php?status=0&id=" + data[i].a_id + "&datetime=" + new_cr_date + "&key=" + data[i].a_project_key;
+          var url =
+            "./php/set-automation-status.php?status=0&id=" +
+            data[i].a_id +
+            "&datetime=" +
+            new_cr_date +
+            "&key=" +
+            data[i].a_project_key;
           xhttp.onload = function () {
             console.log(this.responseText);
             RefreshAutomationTable();
@@ -725,7 +730,13 @@ function CheckAutomation() {
           xhttp.send();
         } else {
           const xhttp = new XMLHttpRequest();
-          var url = "./php/set-automation-status.php?status=1&id=" + data[i].a_id + "&datetime=" + new_cr_date + "&key=" + data[i].a_project_key;
+          var url =
+            "./php/set-automation-status.php?status=1&id=" +
+            data[i].a_id +
+            "&datetime=" +
+            new_cr_date +
+            "&key=" +
+            data[i].a_project_key;
           xhttp.onload = function () {
             RefreshAutomationTable();
           };
@@ -735,7 +746,13 @@ function CheckAutomation() {
         document.getElementById("CloseAutoFeed").style.display = "none";
       } else {
         const xhttp = new XMLHttpRequest();
-        var url = "./php/set-automation-status.php?status=1&id=" + data[i].a_id + "&datetime=" + new_cr_date + "&key=" + data[i].a_project_key;
+        var url =
+          "./php/set-automation-status.php?status=1&id=" +
+          data[i].a_id +
+          "&datetime=" +
+          new_cr_date +
+          "&key=" +
+          data[i].a_project_key;
         xhttp.onload = function () {
           document.getElementById("CloseAutoFeed").style.display = "block";
           document.getElementById("CloseAutoFeed_date").innerHTML =
@@ -1230,6 +1247,137 @@ function UpdateUnitBySettingModal(val) {
   var url = "./php/update-unit-modal.php?unit=" + val;
   xhttp.open("GET", url);
   xhttp.send();
+}
+
+var oldname = "";
+var oldsirname = "";
+var oldphone = "";
+function EditMemberFn() {
+  var name = document.getElementById("user-name").value;
+  var sirname = document.getElementById("user-sirname").value;
+  var phone = document.getElementById("user-phone").value;
+  oldname = document.getElementById("user-name").value;
+  oldsirname = document.getElementById("user-sirname").value;
+  oldphone = document.getElementById("user-phone").value;
+
+  document.getElementById("user-name").disabled = false;
+  document.getElementById("user-sirname").disabled = false;
+  document.getElementById("user-phone").disabled = false;
+  document.getElementById("member-btn").style.display = "block";
+}
+
+function EditPwFn() {
+  document.getElementById("SaveChangePWBtn").disabled = true;
+  document.getElementById("SaveChangePWBtn").style.opacity = "0.3";
+  document.getElementById("password-change").style.display = "block";
+}
+
+function SaveEditSetting(val) {
+  if (val == 1) {
+    var name = document.getElementById("user-name").value;
+    var sirname = document.getElementById("user-sirname").value;
+    var phone = document.getElementById("user-phone").value;
+    const xhttp = new XMLHttpRequest();
+    var url =
+      "./php/save-edit-member-data.php?name=" +
+      name +
+      "&sirname=" +
+      sirname +
+      "&phone=" +
+      phone;
+    xhttp.onload = function () {
+      document.getElementById("user-name").value = name;
+      document.getElementById("user-sirname").value = sirname;
+      document.getElementById("user-phone").value = phone;
+      document.getElementById("user-name").disabled = true;
+      document.getElementById("user-sirname").disabled = true;
+      document.getElementById("user-phone").disabled = true;
+      document.getElementById("member-btn").style.display = "none";
+    };
+    xhttp.open("GET", url);
+    xhttp.send();
+  } else if (val == 2) {
+    document.getElementById("user-name").value = oldname;
+      document.getElementById("user-sirname").value = oldsirname;
+      document.getElementById("user-phone").value = oldphone;
+    document.getElementById("user-name").disabled = true;
+    document.getElementById("user-sirname").disabled = true;
+    document.getElementById("user-phone").disabled = true;
+    document.getElementById("member-btn").style.display = "none";
+  } else if (val == 3) {
+    var newpw = document.getElementById("pw-new").value;
+    const xhttp = new XMLHttpRequest();
+    var url = "./php/save-edit-password.php?newpw=" + newpw;
+    xhttp.onload = function () {
+      document.getElementById("pw-old").value = "";
+      document.getElementById("pw-new").value = "";
+      document.getElementById("pw-cf").value = "";
+      document.getElementById("password-change").style.display = "none";
+    };
+    xhttp.open("GET", url);
+    xhttp.send();
+  } else if (val == 4) {
+    document.getElementById("pw-old").value = "";
+    document.getElementById("pw-new").value = "";
+    document.getElementById("pw-cf").value = "";
+    document.getElementById("password-change").style.display = "none";
+  }
+}
+
+function CheckConfirmPassword() {
+  var pw = document.getElementById("pw-old").value;
+  var newpw = document.getElementById("pw-new").value;
+  var cfpw = document.getElementById("pw-cf").value;
+
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-member.php";
+  xhttp.onload = function () {
+    var data = JSON.parse(this.response);
+    if (data.m_password == pw && pw != "") {
+      document.getElementById("OldPwTxt").style.display = "none";
+
+      if (newpw == pw) {
+        document.getElementById("ConfirmPwTxt").innerHTML =
+          "**กรุณาใช้รหัสผ่านใหม่ที่ไม่ซ้ำกับรหัสผ่านเดิม";
+        document.getElementById("ConfirmPwTxt").style.display = "block";
+      } else {
+        document.getElementById("ConfirmPwTxt").style.display = "none";
+        if (newpw != "" && cfpw != "") {
+          if (newpw == cfpw) {
+            document.getElementById("ConfirmPwTxt").style.display = "none";
+            document.getElementById("SaveChangePWBtn").disabled = false;
+            document.getElementById("SaveChangePWBtn").style.opacity = "1";
+          } else {
+            document.getElementById("ConfirmPwTxt").innerHTML =
+              "**กรุณากรอกยืนยันรหัสผ่านให้ถูกต้อง";
+            document.getElementById("ConfirmPwTxt").style.display = "block";
+            document.getElementById("SaveChangePWBtn").disabled = true;
+            document.getElementById("SaveChangePWBtn").style.opacity = "0.3";
+          }
+        } else {
+          document.getElementById("SaveChangePWBtn").disabled = true;
+          document.getElementById("SaveChangePWBtn").style.opacity = "0.3";
+        }
+      }
+    } else {
+      document.getElementById("OldPwTxt").style.display = "block";
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function CheckMemberData() {
+  var name = document.getElementById("user-name").value;
+  var sirname = document.getElementById("user-sirname").value;
+  var phone = document.getElementById("user-phone").value;
+  if (name != "" && sirname != "" && phone != "") {
+    document.getElementById("SaveMemberBtn").disabled = false;
+    document.getElementById("SaveMemberBtn").style.opacity = "1";
+  } else {
+    document.getElementById("SaveMemberBtn").disabled = true;
+    document.getElementById("SaveMemberBtn").style.opacity = "0.3";
+  }
 }
 
 $(function () {

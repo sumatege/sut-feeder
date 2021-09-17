@@ -9,22 +9,76 @@
                     </button>
                 </div>
                 <div class="modal-body pl-3 pr-3">
-                    <div class="row d-flex">
-                        <div class="col-12 m-1">รหัสผู้ใช้: <span id="user-id"></span></div>
-                        <div class="col-12 m-1">ชื่อ - นามสกุล: <span id="user-name"></span></div>
-                        <div class="col-12 m-1">เบอร์โทรศัพท์: <span id="user-phone"></span></div>
-                        <div class="col-12 m-1">วันที่ลงทะเบียน: <span id="user-create-date"></span></div>
-                    </div>                
-                    <hr/>
-                    <div class="row d-flex m-1">
-                        <label for="foodunit" style="place-self: center;margin-right: 5px;">หน่วยน้ำหนัก:</label>           
-                        <button class="btn btn-secondary btn-unit" style="margin-right: 5px;" id="btn-g" onclick="ChangeUnitSettingModal('g')">กรัม</button>
-                        <button class="btn btn-secondary btn-unit" style="margin-right: 5px;" id="btn-kg" onclick="ChangeUnitSettingModal('kg')">กิโลกรัม</button>
-                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="my-input">รหัสผู้ใช้</label>
+                                        <input id="user-id" class="form-control form-control-sm" type="text" disabled />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="my-input">ชื่อ</label>
+                                        <input id="user-name" class="form-control form-control-sm" type="text" disabled onkeyup="CheckMemberData()" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="my-input">นามสกุล</label>
+                                        <input id="user-sirname" class="form-control form-control-sm" type="text" disabled onkeyup="CheckMemberData()" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="my-input">เบอร์โทรศัพท์</label>
+                                        <input id="user-phone" class="form-control form-control-sm" type="text" disabled onkeyup="CheckMemberData()" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="my-input">วันที่ลงทะเบียน</label>
+                                        <input id="user-create-date" class="form-control form-control-sm" type="text" disabled />
+                                    </div>
+                                    <div class="form-group" id="member-btn">
+                                        <button class="btn btn-success btn-sm" onclick="SaveEditSetting(1)" id="SaveMemberBtn">ยืนยัน</button>
+                                        <button class="btn btn-danger btn-sm" onclick="SaveEditSetting(2)">ยกเลิก</button>
+                                    </div>
+                                </form>
+                                <a href="#" class="setting-link" onclick="EditMemberFn()">แก้ไขข้อมูล</a>
+                                <a href="#" class="setting-link" onclick="EditPwFn()">เปลี่ยนรหัสผ่่าน</a> 
+                            </div>
+                        </div>
+                        <div class="row">                                
+                            <div class="col-md" id="password-change">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="my-input">รหัสผ่านเดิม</label>
+                                        <input id="pw-old" class="form-control form-control-sm" type="password" required onkeyup="CheckConfirmPassword()" />
+                                        <small id="OldPwTxt">**กรุณาใส่รหัสผ่านเดิมให้ถูกต้อง</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="my-input">รหัสผ่านใหม่</label>
+                                        <input id="pw-new" class="form-control form-control-sm" type="password" required onkeyup="CheckConfirmPassword()" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="my-input">ยืนยันรหัสผ่าน</label>
+                                        <input id="pw-cf" class="form-control form-control-sm" type="password" required onkeyup="CheckConfirmPassword()" />
+                                        <small id="ConfirmPwTxt">**กรุณากรอกยืนยันรหัสผ่านให้ถูกต้อง</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-success btn-sm" onclick="SaveEditSetting(3)" id="SaveChangePWBtn">ยืนยัน</button>
+                                        <button class="btn btn-danger btn-sm" onclick="SaveEditSetting(4)">ยกเลิก</button>
+                                    </div>                                
+                                </form>
+                            </div> 
+                        </div>
+                        <div class="row" style="padding:0px"><div class="col-md"  style="padding:0px"><hr/></div></div>
+                        <div class="row">
+                            <div class="col-md d-flex text-nowrap">
+                               <label for="foodunit" style="place-self: center;margin-right: 5px;">หน่วยน้ำหนัก:</label>           
+                               <button class="btn btn-secondary btn-unit btn-sm" style="margin-right: 5px;" id="btn-g" onclick="ChangeUnitSettingModal('g')">กรัม</button>
+                               <button class="btn btn-secondary btn-unit btn-sm" style="margin-right: 5px;" id="btn-kg" onclick="ChangeUnitSettingModal('kg')">กิโลกรัม</button>
+                            </div> 
+                        </div>
+                    </div>                    
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
-                    <a class="btn btn-danger" href="php/logout.php">ออกจากระบบ</a>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <a class="btn btn-danger btn-sm" href="php/logout.php">ออกจากระบบ</a>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">ปิด</button>
                 </div>
             </div>
         </div>
