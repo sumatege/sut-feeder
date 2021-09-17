@@ -139,7 +139,7 @@ function drawRow(rowData, index) {
   row.append(
     $("<td>" + parseFloat(rowData.p_food_used / 1000).toFixed(2) + "</td>")
   );
-  row.append($("<td>" + parseFloat(rowData.p_fcr).toFixed(2) + "</td>"));
+  row.append($("<td>" + rowData.p_fcr + "</td>"));
   row.append($("<td>" + ma_status + "</td>"));
   row.append(
     $(
