@@ -137,9 +137,9 @@ function drawRow(rowData, index) {
   row.append($("<td>" + rowData.p_fish_end_weight + "</td>"));
   row.append($("<td>" + last_weight + "</td>"));
   row.append(
-    $("<td>" + parseFloat(rowData.p_food_used / 1000).toFixed(2) + "</td>")
+    $("<td>" + parseFloat(rowData.p_food_used / 1000).toFixed(3) + "</td>")
   );
-  row.append($("<td>" + rowData.p_fcr + "</td>"));
+  row.append($("<td>" + parseFloat().toFixed(3) + "</td>"));
   row.append($("<td>" + ma_status + "</td>"));
   row.append(
     $(
