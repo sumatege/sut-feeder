@@ -41,6 +41,9 @@ function SettingModal() {
       document.getElementById("user-create-date").value = data.m_create_date;
       document.getElementById("user-id").value = data.m_id;
 
+      document.getElementById("member-btn").style.display = "none";
+      document.getElementById("password-change").style.display = "none";
+
       GetFoodUnit();
       $("#SettingModal").modal("show");
     }
