@@ -58,8 +58,21 @@ if ($_SESSION["m_password"] == $_GET["password"] || $_SESSION["m_phone"] == $_GE
     WHERE p_key = '" . $_SESSION["selectedKey"] . "'";
 
             if ($conn->query($sql) === TRUE) {
-                echo "0";
-                unset($_SESSION["selectedId"]);
+                $sql_delete_automation = "DELETE FROM automation WHERE a_project_key = '" . $_SESSION["selectedKey"] . "'";
+
+                if ($conn->query($sql_delete_automation) === TRUE) {
+                    $sql_delete = "DELETE FROM record WHERE r_key = '" . $_SESSION["selectedKey"] . "'";
+
+                    if ($conn->query($sql_delete) === TRUE) {
+                        echo "0";
+                        unset($_SESSION["selectedId"]);
+                    } else {
+                        echo "Error deleting record: " . $conn->error;
+                    }
+                } else {
+                    echo "Error deleting record: " . $conn->error;
+                }
+                
             } else {
                 echo "Error updating record: " . $conn->error;
             }

@@ -7,12 +7,30 @@ function admin() {
     if (this.responseText == "2") {
       project_status = 9;
       SetSelected(project_status);
+      $("#AdminModalInclude").load("admin-modal.html");
     } else {
       window.location.replace("./dashboard.html");
     }
   };
   xhttp.open("GET", url);
   xhttp.send();
+}
+
+var TopBtn = document.getElementById("TopBtn");
+
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
+    TopBtn.style.display = "block";
+  } else {
+    TopBtn.style.display = "none";
+  }
+}
+
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
 }
 
 function GetTable() {
@@ -59,6 +77,7 @@ function drawTable(data) {
 function drawRow(rowData, index) {
   var ma_status = "";
   var owner = "";
+  var last_weight;
 
   //alert(rowData.p_status);
   switch (rowData.p_status) {
@@ -79,11 +98,19 @@ function drawRow(rowData, index) {
     owner = "<td>" + rowData.p_owner + "</td>";
   } else {
     owner =
-      "<td><a href='#' onclick='EditMember(" +
+      "<td><a href='#' onclick='EditMember(\"" +
       rowData.p_owner +
-      ")'>" +
+      "\")'>" +
       rowData.p_owner +
       "</a></td>";
+  }
+
+  if (rowData.p_fish_end_weight != 0) {
+    last_weight = parseFloat(
+      rowData.p_fish_end_weight - rowData.p_fish_begin_weight
+    );
+  } else {
+    last_weight = null;
   }
 
   var row = $("<tr />");
@@ -108,6 +135,7 @@ function drawRow(rowData, index) {
   row.append($("<td>" + rowData.p_fish_amount + "</td>"));
   row.append($("<td>" + rowData.p_fish_begin_weight + "</td>"));
   row.append($("<td>" + rowData.p_fish_end_weight + "</td>"));
+  row.append($("<td>" + last_weight + "</td>"));
   row.append(
     $("<td>" + parseFloat(rowData.p_food_used / 1000).toFixed(2) + "</td>")
   );
@@ -115,9 +143,9 @@ function drawRow(rowData, index) {
   row.append($("<td>" + ma_status + "</td>"));
   row.append(
     $(
-      "<td><a href='#' onclick='DeleteProject(" +
-        rowData.p_id +
-        ")'><i class='fa fa-trash' aria-hidden='true'></i></a></td>"
+      "<td><a href='#' onclick='DeleteProject(\"" +
+        rowData.p_key +
+        "\")'><i class='fa fa-trash' aria-hidden='true'></i></a></td>"
     )
   );
 }
@@ -280,4 +308,159 @@ function SaveNewID() {
 
 function RefreshPage() {
   window.location.replace("./admin.html");
+}
+
+function DeleteProject(key) {
+  document.getElementById("delete-key").innerHTML = key;
+  $("#DeleteKeyModal").modal("show");
+}
+
+function ConfirmDeleteProject() {
+  var key = document.getElementById("delete-key").innerHTML;
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/delete-key.php?key=" + key;
+  xhttp.onload = function () {
+    if (this.response == "0") {
+      $("#DeleteKeyModal").modal("hide");
+      RefreshPage();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function EditMember(mid) {
+  var key = document.getElementById("delete-key").innerHTML;
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-member-data.php?id=" + mid;
+  xhttp.onload = function () {
+    var data = JSON.parse(this.response);
+    //console.log(data);
+    if (this.responseText != "1") {
+      $("#m_id").val(data.m_id);
+      $("#m_name").val(data.m_name);
+      $("#m_sirname").val(data.m_sirname);
+      $("#m_phone").val(data.m_phone);
+      $("#m_create_date").val(data.m_create_date);
+      $("#MemberModal").modal("show");
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function SaveEditMember() {
+  var id = $("#m_id").val();
+  var name = $("#m_name").val();
+  var sirname = $("#m_sirname").val();
+  var phone = $("#m_phone").val();
+
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/save-edit-member.php";
+  url =
+    url +
+    "?id=" +
+    id +
+    "&name=" +
+    name +
+    "&sirname=" +
+    sirname +
+    "&phone=" +
+    phone;
+  xhttp.onload = function () {
+    if (this.responseText == "0") {
+      $("#MemberModal").modal("hide");
+      RefreshPage();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function EditProject(id) {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-selected-project.php?id=" + id;
+  xhttp.onload = function () {
+    var data = JSON.parse(this.response);
+    //console.log(data);
+    if (data != 1) {
+      $("#p_id").val(data.p_id);
+      $("#p_key").val(data.p_key);
+      $("#p_name").val(data.p_name);
+      $("#p_owner").val(data.m_id);
+      $("#p_mname").val(data.m_name + " " + data.m_sirname);
+      $("#p_sdate").val(data.p_start_date);
+      $("#p_edate").val(data.p_end_date);
+      $("#p_famount").val(data.p_fish_amount);
+      $("#p_fbweight").val(data.p_fish_begin_weight);
+      $("#p_feweight").val(data.p_fish_end_weight);
+      if (data.p_fish_end_weight != 0) {
+        $("#p_fpweight").val(
+          parseFloat(data.p_fish_end_weight - data.p_fish_begin_weight)
+        );
+      } else {
+        $("#p_fpweight").val("0");
+      }
+      $("#p_food").val(parseFloat(data.p_food_used / 1000));
+      $("#p_fcr").val(data.p_fcr);
+      $("#p_status").val(data.p_status);
+      $("#ProjectModal").modal("show");
+    } else {
+      $("#NodataExportModal").modal("show");
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function SaveEditProject() {
+  var id = document.getElementById("p_id").value;
+  var name = document.getElementById("p_name").value;
+  var owner = document.getElementById("p_owner").value;
+  var sdate = document.getElementById("p_sdate").value;
+  var edate = document.getElementById("p_edate").value;
+  var amount = document.getElementById("p_famount").value;
+  var bweight = document.getElementById("p_fbweight").value;
+  var eweight = document.getElementById("p_feweight").value;
+  var food = document.getElementById("p_food").value;
+  var fcr = document.getElementById("p_fcr").value;
+  var status = document.getElementById("p_status").value;
+
+  food = food * 1000;
+
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/save-edit-project.php";
+  url =
+    url +
+    "?id=" +
+    id +
+    "&name=" +
+    name +
+    "&owner=" +
+    owner +
+    "&sdate=" +
+    sdate +
+    "&edate=" +
+    edate +
+    "&amount=" +
+    amount +
+    "&bweight=" +
+    bweight +
+    "&eweight=" +
+    eweight +
+    "&food=" +
+    food +
+    "&fcr=" +
+    fcr +
+    "&status=" +
+    status;
+  //console.log(url);
+  xhttp.onload = function () {
+    if (this.responseText == "0") {
+      $("#ProjectModal").modal("hide");
+      RefreshPage();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
 }

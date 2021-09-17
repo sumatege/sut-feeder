@@ -19,7 +19,7 @@ function Dashboard() {
       CheckTimeWeatherStatus();
       member();
       $("#ModalInclude").load("modal.html");
-    }else if(this.responseText == "2"){
+    } else if (this.responseText == "2") {
       window.location.replace("./admin.html");
     } else {
       window.location.replace("./index.html");
@@ -532,6 +532,7 @@ function SaveFinishAutomation() {
   var a_total = document.getElementById("a_total").value;
   var a_round = document.getElementById("a_round").value;
   var a_break = document.getElementById("a_break").value;
+  var a_foodsize = document.getElementById("a_foodsize").value;
 
   if (food_unit == "g") {
     a_total = parseFloat(a_total) / 1000;
@@ -550,7 +551,9 @@ function SaveFinishAutomation() {
     "&break=" +
     a_break +
     "&tpr=" +
-    timeperround;
+    timeperround +
+    "&foodsize=" +
+    a_foodsize;
   xhttp.onload = function () {
     $("#AutomationModal").modal("hide");
     GetAutomationTable();
@@ -699,6 +702,11 @@ function CheckAutomation() {
         ":" +
         String(today.getSeconds()).padStart(2, "0");
 
+        const cr_date_format = "YYYY-MM-DD HH:mm:ss";
+        var cr_date = new Date();
+        cr_date = moment(cr_date).format(cr_date_format);
+        let new_cr_date = cr_date;
+
       //console.log(starttime + " " + data[i].a_feeding_time);
       //console.log(endtime + " " + checkTime);
       if (ws_data.p_weather_status == "1") {
@@ -708,17 +716,16 @@ function CheckAutomation() {
           checkTime <= endtime
         ) {
           const xhttp = new XMLHttpRequest();
-          var url =
-            "./php/set-automation-status.php?status=0&id=" + data[i].a_id;
+          var url = "./php/set-automation-status.php?status=0&id=" + data[i].a_id + "&datetime=" + new_cr_date + "&key=" + data[i].a_project_key;
           xhttp.onload = function () {
+            console.log(this.responseText);
             RefreshAutomationTable();
           };
           xhttp.open("GET", url);
           xhttp.send();
         } else {
           const xhttp = new XMLHttpRequest();
-          var url =
-            "./php/set-automation-status.php?status=1&id=" + data[i].a_id;
+          var url = "./php/set-automation-status.php?status=1&id=" + data[i].a_id + "&datetime=" + new_cr_date + "&key=" + data[i].a_project_key;
           xhttp.onload = function () {
             RefreshAutomationTable();
           };
@@ -728,7 +735,7 @@ function CheckAutomation() {
         document.getElementById("CloseAutoFeed").style.display = "none";
       } else {
         const xhttp = new XMLHttpRequest();
-        var url = "./php/set-automation-status.php?status=1&id=" + data[i].a_id;
+        var url = "./php/set-automation-status.php?status=1&id=" + data[i].a_id + "&datetime=" + new_cr_date + "&key=" + data[i].a_project_key;
         xhttp.onload = function () {
           document.getElementById("CloseAutoFeed").style.display = "block";
           document.getElementById("CloseAutoFeed_date").innerHTML =
@@ -892,12 +899,12 @@ function checkKey(key) {
   }
 }
 
-function CheckRecordClose(){
+function CheckRecordClose() {
   var edate = document.getElementById("r_enddate").value;
-  if(edate == "" || edate == null){
-    $('#EnddateModal').modal('show');
-  }else{
-    $('#CloseProjectModal').modal('show');
+  if (edate == "" || edate == null) {
+    $("#EnddateModal").modal("show");
+  } else {
+    $("#CloseProjectModal").modal("show");
   }
 }
 
@@ -906,9 +913,7 @@ function RecordClose() {
   if (confirm != "") {
     const xhttp = new XMLHttpRequest();
     var url = "./php/close-project.php?password=" + confirm;
-    alert(url);
     xhttp.onload = function () {
-      alert(this.response);
       if (this.response == "0") {
         document.getElementById("CloseProTxt").style.display = "none";
         $("#CloseProjectModal").modal("hide");

@@ -1,0 +1,215 @@
+ <!-- No Data Export modal -->
+<div class="modal fade" id="NodataExportModal" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
+                    <span style="font-size: large;">ไม่พบข้อมูล!</span>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- New Equitpment ID Modal -->
+<div class="modal fade" id="NewIDModal" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">สร้างรหัสอุปกรณ์ใหม่</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
+                    <span style="font-size: large;">รหัสอุปกรณ์: <span id="equipment-id" style="color:darkblue"></span></span>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-success" onclick="SaveNewID()">ยืนยัน</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Save New Equitpment ID Success Modal -->
+<div class="modal fade" id="SaveNewIDSuccessModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">บันทึกข้อมูลสำเร็จ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 5px; border:0px">
+                    <span style="font-size: large;">รหัสอุปกรณ์: <span id="show-id" style="color:darkblue"></span></span>
+                </div>
+                <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 5px; border:0px">
+                    <img src="images/icons/check-circle.gif" width="100px" >
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="RefreshPage()">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Delete Key Modal -->
+<div class="modal fade" id="DeleteKeyModal" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ยืนยันลบอุปกรณ์</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
+                    <span style="font-size: large;">รหัสอุปกรณ์: <span id="delete-key" style="color:darkblue"></span></span>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-success" onclick="ConfirmDeleteProject()">ยืนยัน</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Member Modal -->
+<div class="modal fade" id="MemberModal" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ข้อมูลผู้ใช้งาน</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
+                    <div class="row form-group">
+                      <label for="">รหัสผู้ใช้</label>
+                      <input type="text" name="" id="m_id" class="form-control" placeholder="" aria-describedby="helpId" disabled>
+                    </div>
+                    <div class="row form-group">
+                      <label for="">ชื่อ</label>
+                      <input type="text" name="" id="m_name" class="form-control" placeholder="" aria-describedby="helpId">
+                    </div>
+                    <div class="row form-group">
+                      <label for="">นามสกุล</label>
+                      <input type="text" name="" id="m_sirname" class="form-control" placeholder="" aria-describedby="helpId">
+                    </div>
+                    <div class="row form-group">
+                      <label for="">เบอร์โทรศัพท์</label>
+                      <input type="text" name="" id="m_phone" class="form-control" placeholder="" aria-describedby="helpId">
+                    </div>
+                    <div class="row form-group">
+                      <label for="">วันที่สมัคร</label>
+                      <input type="date" name="" id="m_create_date" class="form-control" placeholder="" aria-describedby="helpId" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-success" onclick="SaveEditMember()">บันทึกการแก้ไข</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Project Modal -->
+<div class="modal fade" id="ProjectModal" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ข้อมูลผู้ใช้งาน</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <form aria-required="true">
+            <div class="modal-body">                
+                <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">                    
+                    <div class="row form-group">
+                      <label for="">รหัสโปรเจ็ค</label>
+                      <input type="text" name="" id="p_id" class="form-control" placeholder="" aria-describedby="helpId" disabled />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">รหัสอุปกรณ์</label>
+                      <input type="text" name="" id="p_key" class="form-control" placeholder="" aria-describedby="helpId" disabled />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">ชื่ออุปกรณ์</label>
+                      <input type="text" name="" id="p_name" class="form-control" placeholder="" aria-describedby="helpId" required />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">รหัสผู้ใช้</label>
+                      <input type="text" name="" id="p_owner" class="form-control" placeholder="" aria-describedby="helpId" required />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">ชื่อ - นามสกุล</label>
+                      <input type="text" name="" id="p_mname" class="form-control" placeholder="" aria-describedby="helpId" disabled />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">วันที่เริ่ม</label>
+                      <input type="date" name="" id="p_sdate" class="form-control" placeholder="" aria-describedby="helpId" required />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">วันที่สิ้นสุด</label>
+                      <input type="date" name="" id="p_edate" class="form-control" placeholder="" aria-describedby="helpId" required />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">จำนวนปลา (ตัว)</label>
+                      <input type="number" name="" id="p_famount" class="form-control" placeholder="" aria-describedby="helpId" required />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">น้ำหนักปลาเริ่มต้น (กก.)</label>
+                      <input type="number" name="" id="p_fbweight" step="any" class="form-control" placeholder="" aria-describedby="helpId" required />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">น้ำหนักปลาสุดท้าย (กก.)</label>
+                      <input type="number" name="" id="p_feweight" step="any" class="form-control" placeholder="" aria-describedby="helpId" required />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">น้ำหนักปลาที่เพิ่มขึ้น (กก.)</label>
+                      <input type="number" name="" id="p_fpweight" step="any" class="form-control" placeholder="" aria-describedby="helpId" disabled />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">อาหารที่ใช้ทั้งหมด (กก.)</label>
+                      <input type="number" name="" id="p_food" step="any" class="form-control" placeholder="" aria-describedby="helpId" required />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">อัตราการเพิ่มเนื้อ</label>
+                      <input type="number" name="" id="p_fcr" step="any" class="form-control" placeholder="" aria-describedby="helpId" required />
+                    </div>
+                    <div class="row form-group">
+                      <label for="">สถานะรหัส</label>
+                      <select name="" id="p_status" class="form-control">
+                          <option value="0" class="form-control">รหัสใหม่</option>
+                          <option value="2" class="form-control">รหัสใช้แล้ว</option>
+                          <option value="1" class="form-control">ขายแล้ว</option>
+                      </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="submit" class="btn btn-success" onclick="SaveEditProject()">บันทึกการแก้ไข</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="js/admin.js"></script>

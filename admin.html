@@ -34,6 +34,7 @@
 </head>
 
 <body onload="admin()">
+    <button onclick="topFunction()" id="TopBtn" title="ไปบนสุดของเพจ"><i class="fa fa-arrow-circle-up" aria-hidden="true"></i></button>
     <div class="container container-fluid">
         <div class="row justify-content-between align-items-center">
             <div class="col-auto-md d-flex flex-nowrap align-items-center">
@@ -95,7 +96,7 @@
                 </div>
             </div>
         </div>
-        <div class="row ">
+        <div class="row" style="overflow: auto;">
             <table class="table table-striped table-responsive table-hover table-bordered" id="table-project">
               <thead>
                 <tr>
@@ -111,6 +112,7 @@
                   <th>จำนวนปลา (ตัว)</th>
                   <th>น้ำหนักปลาเริ่มต้น (กก.)</th>
                   <th>น้ำหนักปลาสุดท้าย (กก.)</th>
+                  <th>น้ำหนักปลาที่เพิ่มขึ้น (กก.)</th>
                   <th>อาหารที่ใช้ทั้งหมด (กก.)</th>
                   <th>อัตราการเพิ่มเนื้อ</th>
                   <th>สถานะรหัส</th>
@@ -122,75 +124,7 @@
         </div>
     </div>
 
-    <!-- No Data Export modal -->
-    <div class="modal fade" id="NodataExportModal" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
-                        <span style="font-size: large;">ไม่พบข้อมูล!</span>
-                    </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- New Equitpment ID Modal -->
-    <div class="modal fade" id="NewIDModal" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">สร้างรหัสอุปกรณ์ใหม่</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
-                        <span style="font-size: large;">รหัสอุปกรณ์: <span id="equipment-id" style="color:darkblue"></span></span>
-                    </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-success" onclick="SaveNewID()">ยืนยัน</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Save New Equitpment ID Success Modal -->
-    <div class="modal fade" id="SaveNewIDSuccessModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">บันทึกข้อมูลสำเร็จ</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 5px; border:0px">
-                        <span style="font-size: large;">รหัสอุปกรณ์: <span id="show-id" style="color:darkblue"></span></span>
-                    </div>
-                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 5px; border:0px">
-                        <img src="images/icons/check-circle.gif" width="100px" >
-                    </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="RefreshPage()">ปิด</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="AdminModalInclude"></div>
 
     <!--===============================================================================================-->
     <script src="js/vendor/jquery/jquery-3.2.1.min.js"></script>
