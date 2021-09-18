@@ -1,8 +1,7 @@
 <?php
-session_start();
+date_default_timezone_set('Asia/Bangkok');
 
-/*$_SESSION["selectedId"] = "100001";
-$_SESSION["selectedKey"] = "GfvSd56sdD";
-$_SESSION["selectedName"] = "Test";*/
+echo "normal = " . date("Y-m-d H:i:s") . "<br>";
+$newTime = date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")." +7 hours"));
 
-echo $_SESSION["p_latlong"] ;
+echo "+7 = " . $newTime . "<br>";
