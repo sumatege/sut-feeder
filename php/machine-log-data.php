@@ -1,8 +1,6 @@
 <?php
 
-date_default_timezone_set('Asia/Bangkok');
-$newTime = date("Y-m-d H:i:s", strtotime(date("Y-m-d H:i:s") . " +7 hours"));
-echo $date("Y-m-d H:i:s");
+
 
 require 'config.php';
 
