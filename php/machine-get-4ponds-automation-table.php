@@ -22,8 +22,9 @@ if ($result->num_rows > 0) {
         $myObj->switch = $row["switch"];
         $myObj->status = $row["status"];
         $myObj->current_time = date("Y-m-d H:i:s");
+        $data[] = $myObj;
     }
-    echo json_encode($myObj);
+    echo json_encode($data);
 } else {
     echo "No data";
 }
