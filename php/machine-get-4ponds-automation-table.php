@@ -21,7 +21,8 @@ if ($result->num_rows > 0) {
         $myObj->food_status = $row["food_status"];
         $myObj->switch = $row["switch"];
         $myObj->status = $row["status"];
-        $myObj->current_time = date("Y-m-d H:i:s");
+        //$myObj->current_time = date("Y-m-d H:i:s");
+        $myObj->current_time = time();
         $data[] = $myObj;
     }
     echo json_encode($data);
