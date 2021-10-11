@@ -27,7 +27,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "0";
     $sql_insert = "INSERT INTO 4ponds_automation (equipment_no, equipment_key, feeding_time, food_weight, food_size, food_status, switch, status) 
-VALUES ('" . $pond . "', 'qtLpbVhz0H', '" . $feeding_time . "', " . $weight . ", 0, 0, 0, 1)";
+VALUES ('" . $pond . "', 'qtLpbVhz0H', '" . $feeding_time . "', " . $weight . ", 0, 0, 0, 0)";
 
     if ($conn->query($sql_insert) === TRUE) {
         echo "0";
