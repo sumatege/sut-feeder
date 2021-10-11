@@ -33,14 +33,21 @@
 </head>
 
 <body onload="Dashboard()">
+    <button onclick="topFunction()" id="TopBtn" title="ไปบนสุดของเพจ"><i class="fa fa-arrow-circle-up" aria-hidden="true"></i></button>
+    <span style="display: none;" id="project_current_unit"></span>
+    <span id="txt-hidden-unit" style="display: none;"></span>
     <div class="container container-fluid">
         <div class="row justify-content-between nav-bar">
             <div class="col-lg d-flex flex-nowrap align-items-center p-0">
                 <a href="dashboard.html"><img class="brand-icon" src="images/icons/brand-logo.png" /></a>
                 <a href="dashboard.html"><h3 class="brand-name">SUT Feeder</h3></a>
             </div>
-            <div class="col-lg text-right p-0">                
-                <a href="" data-toggle="modal" data-target="#HistoryModal"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></a>
+            <div class="col-lg d-flex flex-nowrap justify-content-end  align-items-center p-0" id="head_menu">
+                <select class="form-control form-control-sm mr-2" name="" id="pond_type" onchange="SelectPage(this.value)">
+                    <option value="1">บ่อเดี่ยว</option>
+                    <option value="2">หลายบ่อ</option>
+                </select>
+                <a href="" data-toggle="modal" data-target="#HistoryModal" class="mr-2"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></a>
                 <a onclick="SettingModal()"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a>
             </div>
         </div>
@@ -50,17 +57,20 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-md user-data user-weather mr-2">
+            <div class="col-md user-data user-weather mr-2" >
                 <i class="fa fa-cloud mr-2" aria-hidden="true"></i>สภาพอากาศ: <span id="weatherTxt">-</span><br />
-                <i class="fa fa-thermometer-three-quarters mr-2" aria-hidden="true"></i>อุณหภูมิ: <span id="celsiusTxt">-</span> &#8451;
-                [<a href="#" data-toggle="modal" data-target="#AddLocationModal" id="linkforlatlong">ตั้งค่าพิกัด</a>]
+                <div class="d-flex text-nowrap">
+                    <i class="fa fa-thermometer-three-quarters mr-2" aria-hidden="true"></i>อุณหภูมิ:&nbsp;<span id="celsiusTxt">-</span> &#8451;&nbsp;
+                    <div id="weather1">[<a href="#" data-toggle="modal" data-target="#AddLocationModal" id="linkforlatlong">ตั้งค่าพิกัด</a>]</div>
+                    <div id="weather2" style="display: none;">[<a href="#" data-toggle="modal" data-target="#AddLocation2Modal" id="linkforlatlong2">ตั้งค่าพิกัด</a>]</div>
+                </div>
             </div>
             <div class="col-md user-data">
                 <i class="fa fa-calendar mr-2" aria-hidden="true"></i><span id="dateTxt"></span></br />
                 <i class="fa fa-clock-o mr-2" aria-hidden="true"></i></i><span id="clock"></span>
             </div>
         </div>
-        <div class="row user-data">
+        <div class="row user-data" id="user-data-div">
             <div class="col-md d-flex align-items-center">
                 <div class="dropdown mr-2">
                     <button id="feeder-dropdown" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -73,7 +83,7 @@
                 <div class="text-nowrap">| สถานะ <span id="mastatus"></span></div>
             </div>
         </div>
-        <div class="mt-2 mb-5">
+        <div class="mt-2 mb-5" id="control-dashboard-div-1">
             <nav class="body-control">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">ให้อาหารปลา</a>
@@ -149,7 +159,7 @@
                                             <!--<th>เริ่มวันที่</th>
                                             <th>ถึงวันที่</th>-->
                                             <th>เวลา</th>
-                                            <th>ปริมาณอาหาร (กก.)</th>
+                                            <th>ปริมาณอาหาร (<span class="UnitTextFeedingManual"></span>)</th>
                                             <th>รอบการให้อาหาร (รอบ)</th>
                                             <th>เวลาต่อรอบ (วินาที)</th>
                                             <th>เวลาพักเบรค (วินาที)</th>
@@ -225,6 +235,323 @@
                 </div>
             </div>
         </div>
+        <div class="row user-data" id="control-dashboard-div-2">
+            <div class="control-dashboard-div-2-content">
+                <div class="container container-fluid p-2">
+                    <div class="row justify-content-center">
+                        <h4>ควบคุมการให้อาหารอัตโนมัติ [4 บ่อ]</h4>                        
+                    </div>
+                    <div class="row justify-content-center p-1 settime-btn">
+                        <button data-toggle="modal" data-target="#4PondsAutomationModal" class="btn btn-sm btn-warning">ตั้งเวลา</button>                              
+                    </div>
+                    <hr style="margin-top: 5px; margin-bottom: 5px;" />
+
+                    <!-- บ่อที่ 1 -->
+                    <div class="row justify-content-center py-1 px-3">                        
+                        <div class="col-md-12 four-pond-content"  style="font-weight: bold;">
+                            <i class="fa fa-glass" aria-hidden="true"></i> บ่อที่ 1
+                        </div>
+                        <div class="col-md-12 four-pond-content" style="overflow-x: auto;">
+                            <table class="table table-responsive table-bordered table-hover" id="bor-1-auto-table">
+                                <thead>
+                                    <tr style="background-color: rgba(255, 255, 255, 0.5);">
+                                        <th>เวลา</th>
+                                        <th>ปริมาณอาหาร (<span class="UnitTextFeedingManual"></span>)</th>
+                                        <th>เปิด/ปิดการทำงาน</th>                                            
+                                        <th>ลบ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bor-1-tbody">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">ไม่พบข้อมูล</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12 four-pond-content" style="overflow-x: auto;">
+                            <table class="table table-responsive table-hover table-bordered four-pond-table">
+                                <tbody>
+                                    <tr style="background-color: rgba(255, 255, 255, 0.5);">                                        
+                                        <th style="text-align: start;">ข้อมูลการใช้อาหาร บ่อที่ 1</th>
+                                        <th style="width: 10%;"></th>
+                                        <th style="width: 5%;"></th>
+                                    </tr>
+                                    <tr>
+                                      <td>วันที่เริ่มต้น</td>
+                                      <td><input type="date" class="form-control input-sm" id="1_startdate" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td>วันที่สุดท้าย</td>
+                                      <td><input type="date" class="form-control input-sm" id="1_enddate" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td>จำนวนปลาทั้งหมด</td>
+                                      <td><input type="number" class="form-control input-sm" id="1_beginamount" disabled></td>
+                                      <td>ตัว/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาเริ่มต้น</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="1_beginweight" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>                    
+                                    <tr>
+                                      <td>น้ำหนักปลาสุดท้าย</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="1_endweight"  disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาที่เพิ่มขึ้น</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="1_plusweight" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>อาหารที่ใช้ทั้งหมด</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="1_totalfood" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td style="white-space: pre-wrap;">อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="1_fcr" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>                                                
+                        </div>
+                    </div>
+                    <hr style="margin-top: 5px; margin-bottom: 5px;" />
+
+                    <!-- บ่อที่ 2 -->
+                    <div class="row justify-content-center py-1 px-3">                        
+                        <div class="col-md-12 four-pond-content" style="font-weight: bold;">
+                            <i class="fa fa-glass" aria-hidden="true"></i> บ่อที่ 2
+                        </div>
+                        <div class="col-md-12 four-pond-content" style="overflow-x: auto;">
+                            <table class="table table-responsive table-bordered table-hover" id="bor-2-auto-table">
+                                <thead>
+                                    <tr style="background-color: rgba(255, 255, 255, 0.5);">
+                                        <th>เวลา</th>
+                                        <th>ปริมาณอาหาร (<span class="UnitTextFeedingManual"></span>)</th>
+                                        <th>เปิด/ปิดการทำงาน</th>                                            
+                                        <th>ลบ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bor-2-tbody">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">ไม่พบข้อมูล</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12 four-pond-content" style="overflow-x: auto;">
+                            <table class="table table-responsive table-hover table-bordered four-pond-table">
+                                <tbody>
+                                    <tr style="background-color: rgba(255, 255, 255, 0.5);">                                        
+                                        <th style="text-align: start;">ข้อมูลการใช้อาหาร บ่อที่ 2</th>
+                                        <th style="width: 10%;"></th>
+                                        <th style="width: 5%;"></th>
+                                    </tr>
+                                    <tr>
+                                      <td>วันที่เริ่มต้น</td>
+                                      <td><input type="date" class="form-control input-sm" id="2_startdate" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td>วันที่สุดท้าย</td>
+                                      <td><input type="date" class="form-control input-sm" id="2_enddate" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td>จำนวนปลาทั้งหมด</td>
+                                      <td><input type="number" class="form-control input-sm" id="2_beginamount" disabled></td>
+                                      <td>ตัว/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาเริ่มต้น</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="2_beginweight" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>                    
+                                    <tr>
+                                      <td>น้ำหนักปลาสุดท้าย</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="2_endweight"  disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาที่เพิ่มขึ้น</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="2_plusweight" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>อาหารที่ใช้ทั้งหมด</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="2_totalfood" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td style="white-space: pre-wrap;">อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="2_fcr" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>                            
+                        </div>
+                    </div>
+                    <hr style="margin-top: 5px; margin-bottom: 5px;" />
+
+                    <!-- บ่อที่ 3 -->
+                    <div class="row justify-content-center py-1 px-3">                        
+                        <div class="col-md-12 four-pond-content" style="font-weight: bold;">
+                            <i class="fa fa-glass" aria-hidden="true"></i> บ่อที่ 3
+                        </div>
+                        <div class="col-md-12 four-pond-content" style="overflow-x: auto;">
+                            <table class="table table-responsive table-bordered table-hover" id="bor-3-auto-table">
+                                <thead>
+                                    <tr style="background-color: rgba(255, 255, 255, 0.5);">
+                                        <th>เวลา</th>
+                                        <th>ปริมาณอาหาร (<span class="UnitTextFeedingManual"></span>)</th>
+                                        <th>เปิด/ปิดการทำงาน</th>                                            
+                                        <th>ลบ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bor-3-tbody">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">ไม่พบข้อมูล</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12 four-pond-content" style="overflow-x: auto;">
+                            <table class="table table-responsive table-hover table-bordered four-pond-table">
+                                <tbody>
+                                    <tr style="background-color: rgba(255, 255, 255, 0.5);">                                        
+                                        <th style="text-align: start;">ข้อมูลการใช้อาหาร บ่อที่ 3</th>
+                                        <th style="width: 10%;"></th>
+                                        <th style="width: 5%;"></th>
+                                    </tr>
+                                    <tr>
+                                      <td>วันที่เริ่มต้น</td>
+                                      <td><input type="date" class="form-control input-sm" id="3_startdate" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td>วันที่สุดท้าย</td>
+                                      <td><input type="date" class="form-control input-sm" id="3_enddate" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td>จำนวนปลาทั้งหมด</td>
+                                      <td><input type="number" class="form-control input-sm" id="3_beginamount" disabled></td>
+                                      <td>ตัว/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาเริ่มต้น</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="3_beginweight" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>                    
+                                    <tr>
+                                      <td>น้ำหนักปลาสุดท้าย</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="3_endweight"  disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาที่เพิ่มขึ้น</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="3_plusweight" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>อาหารที่ใช้ทั้งหมด</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="3_totalfood" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td style="white-space: pre-wrap;">อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="3_fcr" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>                            
+                        </div>
+                    </div>
+                    <hr style="margin-top: 5px; margin-bottom: 5px;" />
+
+                    <!-- บ่อที่ 4 -->
+                    <div class="row justify-content-center py-1 px-3">                        
+                        <div class="col-md-12 four-pond-content" style="font-weight: bold;">
+                            <i class="fa fa-glass" aria-hidden="true"></i> บ่อที่ 4
+                        </div>
+                        <div class="col-md-12 four-pond-content" style="overflow-x: auto;">
+                            <table class="table table-responsive table-bordered table-hover" id="bor-4-auto-table">
+                                <thead>
+                                    <tr style="background-color: rgba(255, 255, 255, 0.5);">
+                                        <th>เวลา</th>
+                                        <th>ปริมาณอาหาร (<span class="UnitTextFeedingManual"></span>)</th>
+                                        <th>เปิด/ปิดการทำงาน</th>                                            
+                                        <th>ลบ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bor-4-tbody">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">ไม่พบข้อมูล</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12 four-pond-content" style="overflow-x: auto;">
+                            <table class="table table-responsive table-hover table-bordered four-pond-table">
+                                <tbody>
+                                    <tr style="background-color: rgba(255, 255, 255, 0.5);">                                        
+                                        <th style="text-align: start;">ข้อมูลการใช้อาหาร บ่อที่ 4</th>
+                                        <th style="width: 10%;"></th>
+                                        <th style="width: 5%;"></th>
+                                    </tr>
+                                    <tr>
+                                      <td>วันที่เริ่มต้น</td>
+                                      <td><input type="date" class="form-control input-sm" id="4_startdate" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td>วันที่สุดท้าย</td>
+                                      <td><input type="date" class="form-control input-sm" id="4_enddate" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td>จำนวนปลาทั้งหมด</td>
+                                      <td><input type="number" class="form-control input-sm" id="4_beginamount" disabled></td>
+                                      <td>ตัว/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาเริ่มต้น</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="4_beginweight" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>                    
+                                    <tr>
+                                      <td>น้ำหนักปลาสุดท้าย</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="4_endweight"  disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>น้ำหนักปลาที่เพิ่มขึ้น</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="4_plusweight" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td>อาหารที่ใช้ทั้งหมด</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="4_totalfood" disabled></td>
+                                      <td><span class="UnitTextFeedingManual"></span>/บ่อ</td>
+                                    </tr>
+                                    <tr>
+                                      <td style="white-space: pre-wrap;">อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td>
+                                      <td><input type="number" class="form-control input-sm" step="0.01" id="4_fcr" disabled></td>
+                                      <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>                            
+                        </div>
+                    </div>
+
+                </div>
+            </div> 
+        </div>
     </div>
 
     <div id="ModalInclude"></div>
@@ -247,6 +574,7 @@
     <script src="js/dashboard.js"></script>
     <script src="js/weather.js"></script>
     <script src="js/manual-feeding.js"></script>
+    <script src="js/four-ponds.js"></script>
 
 </body>
 

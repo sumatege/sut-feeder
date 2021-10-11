@@ -236,7 +236,7 @@ body {
   margin-top: 10px;
 }
 
-#linkforlatlong {
+#linkforlatlong, #linkforlatlong2 {
   font-size: small;
   text-decoration: underline;
 }
@@ -346,6 +346,82 @@ body {
 
 #member-btn {
   display: none;
+}
+
+#pond_type {
+  width: fit-content;
+  font-size: small;
+  background: transparent;
+  padding: 1px;
+  height: fit-content;
+}
+
+#control-dashboard-div-2 {
+  padding: 3px;
+}
+
+.control-dashboard-div-2-content {
+  background-color: rgba(255, 255, 255, 0.5);
+  max-width: 100%;
+  height: 100%;
+  border-radius: 7px;
+  padding: 5px;
+}
+
+.four-pond-content {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  justify-content: center;
+}
+
+.four-pond-content > table th {
+  vertical-align: middle;
+}
+
+.four-pond-content > table {
+  font-size: small;
+}
+
+.input-sm {
+  font-size: small;
+  max-width: fit-content;
+  height: 25px !important;
+}
+
+.input-sm:disabled {
+  font-size: small;
+  max-width: fit-content;
+  height: 25px !important;
+  background-color: transparent;
+}
+
+#TopBtn {
+  display: none;
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  z-index: 99;
+  font-size: xx-large;
+  border: none;
+  outline: none;
+  color: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+#bor-1-auto-table{
+  width: 100%;
+}
+
+#bor-1-auto-table tr, #bor-2-auto-table tr, #bor-3-auto-table tr, #bor-4-auto-table tr{
+  white-space: nowrap;
+  text-align: center;
+}
+
+#bor-1-auto-table th, #bor-2-auto-table th, #bor-3-auto-table th, #bor-4-auto-table th{
+  white-space: nowrap;
+  text-align: center;
 }
 
 /* The switch - the box around the slider ======================================== */
@@ -512,5 +588,13 @@ input:disabled + .slider {
   .food-data-table {
     width: auto;
     overflow: auto;
+  }
+
+  .settime-btn {
+    padding: 0px !important;
+  }
+
+  .settime-btn > .btn {
+    font-size: smaller;
   }
 }

@@ -10,14 +10,19 @@ function Dashboard() {
   const xhttp = new XMLHttpRequest();
   var url = "./php/get-session.php";
   xhttp.onload = function () {
-    if (this.responseText == "0") {
+    if (this.responseText == "0") {      
       startTime();
-      GetDropdownList();
-      getProjectInfo();
+      GetDropdownList();      
       GetAutomationTable();
       MachineStatus();
       CheckTimeWeatherStatus();
       member();
+      getProjectInfo();
+      if (sessionStorage.getItem("SelectPage") == null) {
+        SelectPage(1);
+      } else {
+        SelectPage(sessionStorage.getItem("SelectPage"));
+      }
       $("#ModalInclude").load("modal.html");
     } else if (this.responseText == "2") {
       window.location.replace("./admin.html");
@@ -58,6 +63,7 @@ function GetFoodUnit() {
   xhttp.onload = function () {
     var data = JSON.parse(this.responseText);
     ChangeUnitSettingModal(data.p_food_unit);
+    
   };
   xhttp.open("GET", url);
   xhttp.send();
@@ -128,6 +134,7 @@ function getWeather() {
     var latlong = latilongti.split(",");
     var sep_lat = latlong[0];
     var sep_long = latlong[1];
+    //alert("Get weather: " + latilongti);
 
     var url = weatherApi + "&lat=" + sep_lat + "&lon=" + sep_long;
 
@@ -138,7 +145,16 @@ function getWeather() {
       document.getElementById("weatherTxt").innerHTML =
         data.weather[0].description;
       document.getElementById("celsiusTxt").innerHTML = cel.toFixed(2);
-      weather_status = data.weather[0].main;
+
+      //alert(data.weather.length);
+      for (var i = 0; i < data.weather.length; i++) {
+        weather_status = data.weather[i].main;
+        //alert(i + " " + data.weather[i].main);
+        if (data.weather[i].main == "Rain") {
+          break;
+        }
+      }
+
       if (weather_status == "Rain") {
         if (count_weather_alert == 0) {
           CheckWeatherStatus();
@@ -169,9 +185,11 @@ function CheckWeatherStatus() {
     var data = JSON.parse(this.response);
     if (data.p_weather_status == 1) {
       project_weather_status = 1;
+      sessionStorage.setItem("project_weather_status", 1);
       $("#WeatherModal").modal("show");
     } else {
       project_weather_status = 0;
+      sessionStorage.setItem("project_weather_status", 0);
     }
   };
   xhttp.open("GET", url);
@@ -196,6 +214,7 @@ function GetDropdownList() {
       document.getElementById("DeleteProjectBtn").disabled = false;
       document.getElementById("DeleteProjectBtn").style.opacity = 1;
 
+      $("#dropdown-list").empty();
       data.forEach((results) => {
         projectlist.insertAdjacentHTML(
           "beforeend",
@@ -726,7 +745,7 @@ function CheckAutomation() {
             "&key=" +
             data[i].a_project_key;
           xhttp.onload = function () {
-            console.log(this.responseText);
+            //console.log(this.responseText);
             RefreshAutomationTable();
           };
           xhttp.open("GET", url);
@@ -998,6 +1017,50 @@ function SaveNewLocation() {
   xhttp.send();
 }
 
+function getLocationD2() {
+  document.getElementById("failedStrat2").style.display = "none";
+  document.getElementById("latlong2").style.display = "none";
+  document.getElementById("locationdata2").style.display = "block";
+  setTimeout(function () {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPositionD2, showError);
+    } else {
+      document.getElementById("latlong").innerHTML =
+        "Geolocation is not supported by this browser.";
+    }
+  }, 2000);
+}
+
+function showPositionD2(position) {
+  document.getElementById("latlong2").innerHTML =
+    "Latitude: " +
+    position.coords.latitude +
+    "<br>Longitude: " +
+    position.coords.longitude;
+  document.getElementById("latlong2").style.display = "block";
+  lat = position.coords.latitude;
+  long = position.coords.longitude;
+  document.getElementById("locationdata2").style.display = "none";
+}
+
+function SaveNewLocation2() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/save-location-2.php";
+  url = url + "?lat=" + lat + "&long=" + long;
+  xhttp.onload = function () {
+    //console.log(this.responseText);
+    if (this.responseText == "0") {
+      window.location.replace("./dashboard.html");
+    } else {
+      document.getElementById("failedStrat2").style.display = "block";
+      document.getElementById("failedStrat2").innerHTML =
+        "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง";
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
 function GetHistory() {
   var txt = "";
   const xhttp = new XMLHttpRequest();
@@ -1203,6 +1266,7 @@ function ChangeUnit(val) {
 
     document.getElementById("UnitTxt").innerHTML = "กรัม";
     food_unit = "g";
+    sessionStorage.setItem("food_unit", "g");
   } else {
     document.getElementById("add-btn-kg").style.border = "medium solid #1C319F";
     document.getElementById("add-btn-kg").style.background = "white";
@@ -1214,6 +1278,7 @@ function ChangeUnit(val) {
 
     document.getElementById("UnitTxt").innerHTML = "กิโลกรัม";
     food_unit = "kg";
+    sessionStorage.setItem("food_unit", "kg");
   }
 }
 
@@ -1228,8 +1293,13 @@ function ChangeUnitSettingModal(val) {
     document.getElementById("btn-kg").style.opacity = "0.5";
     document.getElementById("btn-kg").style.color = "gray";
 
+    document.getElementById("project_current_unit").innerHTML = val;
+
     UpdateUnitBySettingModal("g");
+    Get4PondsInfo();
+    Get4PondsAutomationTable();
     food_unit = "g";
+    sessionStorage.setItem("food_unit", "g");
   } else {
     document.getElementById("btn-kg").style.border = "medium solid #1C319F";
     document.getElementById("btn-kg").style.background = "white";
@@ -1240,8 +1310,13 @@ function ChangeUnitSettingModal(val) {
     document.getElementById("btn-g").style.opacity = "0.5";
     document.getElementById("btn-g").style.color = "gray";
 
+    document.getElementById("project_current_unit").innerHTML = val;
+
     UpdateUnitBySettingModal("kg");
+    Get4PondsInfo();
+    Get4PondsAutomationTable();
     food_unit = "kg";
+    sessionStorage.setItem("food_unit", "kg");
   }
 }
 
@@ -1301,8 +1376,8 @@ function SaveEditSetting(val) {
     xhttp.send();
   } else if (val == 2) {
     document.getElementById("user-name").value = oldname;
-      document.getElementById("user-sirname").value = oldsirname;
-      document.getElementById("user-phone").value = oldphone;
+    document.getElementById("user-sirname").value = oldsirname;
+    document.getElementById("user-phone").value = oldphone;
     document.getElementById("user-name").disabled = true;
     document.getElementById("user-sirname").disabled = true;
     document.getElementById("user-phone").disabled = true;
@@ -1383,6 +1458,64 @@ function CheckMemberData() {
   }
 }
 
+function SelectPage(val) {
+  document.getElementById("pond_type").value = val;
+  if (val == "1") {
+    setSelectedProjectWhenChangePage();
+    //alert("Into selectoage: 1 " + latilongti);
+
+    document.getElementById("user-data-div").style.display = "block";
+    document.getElementById("control-dashboard-div-1").style.display = "block";
+    document.getElementById("control-dashboard-div-2").style.display = "none";
+    document.getElementById("weather1").style.display = "block";
+    document.getElementById("weather2").style.display = "none";
+    sessionStorage.setItem("SelectPage", "1");
+  } else {
+    Get4PondsInfo();
+    Get4PondsAutomationTable();
+    //alert("Into selectoage: 2 " + latilongti);
+
+    document.getElementById("user-data-div").style.display = "none";
+    document.getElementById("control-dashboard-div-1").style.display = "none";
+    document.getElementById("control-dashboard-div-2").style.display = "block";
+    document.getElementById("weather1").style.display = "none";
+    document.getElementById("weather2").style.display = "block";
+    sessionStorage.setItem("SelectPage", "2");
+  }
+}
+
+function setSelectedProjectWhenChangePage() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/set-selected-project-when-change-page.php";
+  xhttp.onload = function () {
+    var data = JSON.parse(this.response);
+    latilongti = data.p_latlon;
+    //alert("Into selectoage when change page: " + latilongti + " key " + data.p_key);
+    getWeather();
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+var TopBtn = document.getElementById("TopBtn");
+
+window.onscroll = function () {
+  scrollFunction();
+};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 5 || document.documentElement.scrollTop > 5) {
+    TopBtn.style.display = "block";
+  } else {
+    TopBtn.style.display = "none";
+  }
+}
+
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
 $(function () {
   $("#AddProjectModal").on("show.bs.modal", function () {
     document.getElementById("add-btn-g").style.border = "medium solid #1C319F";
@@ -1407,6 +1540,14 @@ $(function () {
   });
 
   $("#AutomationModal").on("show.bs.modal", function () {
+    if (food_unit == "g") {
+      $(".UnitTextFeedingManual").html("กรัม");
+    } else {
+      $(".UnitTextFeedingManual").html("กิโลกรัม");
+    }
+  });
+
+  $("#4PondsAutomationModal").on("show.bs.modal", function () {
     if (food_unit == "g") {
       $(".UnitTextFeedingManual").html("กรัม");
     } else {
