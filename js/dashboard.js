@@ -10,9 +10,9 @@ function Dashboard() {
   const xhttp = new XMLHttpRequest();
   var url = "./php/get-session.php";
   xhttp.onload = function () {
-    if (this.responseText == "0") {      
+    if (this.responseText == "0") {
       startTime();
-      GetDropdownList();      
+      GetDropdownList();
       GetAutomationTable();
       MachineStatus();
       CheckTimeWeatherStatus();
@@ -63,7 +63,6 @@ function GetFoodUnit() {
   xhttp.onload = function () {
     var data = JSON.parse(this.responseText);
     ChangeUnitSettingModal(data.p_food_unit);
-    
   };
   xhttp.open("GET", url);
   xhttp.send();
@@ -1471,8 +1470,7 @@ function SelectPage(val) {
     document.getElementById("weather2").style.display = "none";
     sessionStorage.setItem("SelectPage", "1");
   } else {
-    Get4PondsInfo();
-    Get4PondsAutomationTable();
+    fourponds();
     //alert("Into selectoage: 2 " + latilongti);
 
     document.getElementById("user-data-div").style.display = "none";
@@ -1489,9 +1487,15 @@ function setSelectedProjectWhenChangePage() {
   var url = "./php/set-selected-project-when-change-page.php";
   xhttp.onload = function () {
     var data = JSON.parse(this.response);
-    latilongti = data.p_latlon;
-    //alert("Into selectoage when change page: " + latilongti + " key " + data.p_key);
-    getWeather();
+    if (data != "1") {
+      latilongti = data.p_latlon;
+      //console.log("Into selectoage when change page: " + latilongti + " key " + data.p_key);
+      getWeather();
+    } else {
+      latilongti = null;
+      document.getElementById("weatherTxt").innerHTML = "-";
+      document.getElementById("celsiusTxt").innerHTML = "-";
+    }
   };
   xhttp.open("GET", url);
   xhttp.send();

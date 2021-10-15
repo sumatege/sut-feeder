@@ -177,6 +177,11 @@ body {
   color: red;
 }
 
+#FourPondsCloseAutoFeed {
+  display: none;
+  color: red;
+}
+
 .btn-r1,
 .btn-r2,
 .btn-r3,
@@ -228,7 +233,8 @@ body {
 }
 
 #fillempty,
-#RestartAutoDateTxt {
+#RestartAutoDateTxt,
+#FourPondsRestartAutoDateTxt {
   font-size: 13px;
   line-height: 1.4;
   color: red;
@@ -236,7 +242,8 @@ body {
   margin-top: 10px;
 }
 
-#linkforlatlong, #linkforlatlong2 {
+#linkforlatlong,
+#linkforlatlong2 {
   font-size: small;
   text-decoration: underline;
 }
@@ -278,6 +285,12 @@ body {
 
 #CloseAutoFeed,
 #CloseAutoFeed a {
+  font-size: medium;
+  color: red;
+}
+
+#FourPondsCloseAutoFeed,
+#FourPondsCloseAutoFeed a {
   font-size: medium;
   color: red;
 }
@@ -410,16 +423,22 @@ body {
   border-radius: 4px;
 }
 
-#bor-1-auto-table{
+#bor-1-auto-table {
   width: 100%;
 }
 
-#bor-1-auto-table tr, #bor-2-auto-table tr, #bor-3-auto-table tr, #bor-4-auto-table tr{
+#bor-1-auto-table tr,
+#bor-2-auto-table tr,
+#bor-3-auto-table tr,
+#bor-4-auto-table tr {
   white-space: nowrap;
   text-align: center;
 }
 
-#bor-1-auto-table th, #bor-2-auto-table th, #bor-3-auto-table th, #bor-4-auto-table th{
+#bor-1-auto-table th,
+#bor-2-auto-table th,
+#bor-3-auto-table th,
+#bor-4-auto-table th {
   white-space: nowrap;
   text-align: center;
 }
@@ -581,6 +600,12 @@ input:disabled + .slider {
 
   #CloseAutoFeed,
   #CloseAutoFeed a {
+    font-size: x-small;
+    color: red;
+  }
+
+  #FourPondsCloseAutoFeed,
+  #FourPondsCloseAutoFeed a {
     font-size: x-small;
     color: red;
   }

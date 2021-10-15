@@ -1,3 +1,9 @@
+function fourponds() {
+  Get4PondsInfo();
+  Get4PondsAutomationTable();
+  GetWeatherStatus_4ponds();
+}
+
 function Get4PondsInfo() {
   var fcr1 = 0;
   var fcr2 = 0;
@@ -238,7 +244,7 @@ function Get4PondsAutomationTable() {
     var recorddata = JSON.parse(this.response);
     if (recorddata != 1) {
       four_ponds_automation = recorddata;
-      //CheckAutomation();
+      FourPondsCheckAutomation();
 
       draw4PondsTable(recorddata);
     } else {
@@ -578,4 +584,276 @@ function Delete4PondsAutomation(id) {
   };
   xhttp.open("GET", url);
   xhttp.send();
+}
+
+var count_weather_alert_4ponds = 0;
+function GetWeather_4ponds() {
+  if (
+    latilongti != "" &&
+    latilongti != null &&
+    latilongti != "undefined,undefined"
+  ) {
+    var latlong = latilongti.split(",");
+    var sep_lat = latlong[0];
+    var sep_long = latlong[1];
+    //alert("Get weather: " + latilongti);
+
+    var url = weatherApi + "&lat=" + sep_lat + "&lon=" + sep_long;
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+      var data = JSON.parse(this.responseText);
+      var cel = parseFloat(data.main.temp) - 273.15;
+      document.getElementById("weatherTxt").innerHTML =
+        data.weather[0].description;
+      document.getElementById("celsiusTxt").innerHTML = cel.toFixed(2);
+
+      //alert(data.weather.length);
+      for (var i = 0; i < data.weather.length; i++) {
+        weather_status = data.weather[i].main;
+        //alert(i + " " + data.weather[i].main);
+        if (data.weather[i].main == "Rain") {
+          break;
+        }
+      }
+
+      if (weather_status == "Rain") {
+        if (count_weather_alert_4ponds == 0) {
+          CheckWeatherStatus_4ponds();
+        }
+
+        count_weather_alert_4ponds += 1;
+        if (count_weather_alert_4ponds == 30) {
+          count_weather_alert_4ponds = 0;
+        }
+      } else {
+        count_weather_alert_4ponds = 0;
+      }
+    };
+    xhttp.open("GET", url);
+    xhttp.send();
+  } else {
+    document.getElementById("weatherTxt").innerHTML = "-";
+    document.getElementById("celsiusTxt").innerHTML = "-";
+  }
+
+  setTimeout(getWeather, 60000);
+}
+
+function CheckWeatherStatus_4ponds() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-4ponds-weather-data.php";
+  xhttp.onload = function () {
+    var data = JSON.parse(this.response);
+    if (data.weather_status == 1) {
+      project_weather_status = 1;
+      sessionStorage.setItem("project_weather_status", 1);
+      $("#FourPondsWeatherModal").modal("show");
+    } else {
+      project_weather_status = 0;
+      sessionStorage.setItem("project_weather_status", 0);
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function GetWeatherStatus_4ponds() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-4ponds-weather-data.php";
+  xhttp.onload = function () {
+    var data = JSON.parse(this.response);
+    if (data != 1) {
+      latilongti = data.latlon;
+      GetWeather_4ponds();
+    } else {
+      latilongti = null;
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function FourPondsSetupStopAutomationModal() {
+  $("#FourPondsWeatherModal").modal("hide");
+  $("#FourPondsSetupStopAutomationModal").modal("show");
+}
+
+function SaveFourPondsSetupStopAutomation() {
+  var restart_date = document.getElementById("4PondsRestartAutoDate").value;
+  if (restart_date != "") {
+    document.getElementById("FourPondsRestartAutoDateTxt").style.display =
+      "none";
+    var today = new Date(restart_date);
+    var datetime =
+      "'" +
+      today.getFullYear() +
+      "-" +
+      String(today.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(today.getDate()).padStart(2, "0") +
+      " " +
+      String(today.getHours()).padStart(2, "0") +
+      ":" +
+      String(today.getMinutes()).padStart(2, "0") +
+      ":00'";
+    FourPondsAPISaveSetupStopAutomation(0, datetime);
+  } else {
+    document.getElementById("FourPondsRestartAutoDateTxt").innerHTML =
+      "** กรุณาระบุวันที่และเวลาให้ครบถ้วน";
+    document.getElementById("FourPondsRestartAutoDateTxt").style.display =
+      "block";
+  }
+}
+
+function FourPondsAPISaveSetupStopAutomation(status, restart_date) {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/save-restart-stop-4ponds-automation.php";
+  url = url + "?status=" + status + "&date=" + restart_date;
+  xhttp.onload = function () {
+    console.log(this.response);
+    if (this.responseText == "0") {
+      window.location.replace("./dashboard.html");
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function FourPondsCancelDisabledAutomotion() {
+  APISaveSetupStopAutomation(1, null);
+  document.getElementById("FourPondsCloseAutoFeed").style.display = "none";
+}
+
+function FourPondsCheckTimeWeatherStatus() {
+  if (project_weather_status == 0) {
+    var today = new Date();
+    var datetime =
+      today.getFullYear() +
+      "-" +
+      String(today.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(today.getDate()).padStart(2, "0") +
+      " " +
+      String(today.getHours()).padStart(2, "0") +
+      ":" +
+      String(today.getMinutes()).padStart(2, "0") +
+      ":00";
+
+    const xhttp = new XMLHttpRequest();
+    var url = "./php/get-project-data.php";
+    xhttp.onload = function () {
+      var data = JSON.parse(this.response);
+      //console.log(datetime + " " + data.p_weather_start_time);
+      if (data.p_weather_status == 0 && data.p_weather_start_time == datetime) {
+        APISaveSetupStopAutomation(1, null);
+        document.getElementById("CloseAutoFeed").style.display = "none";
+      }
+    };
+    xhttp.open("GET", url);
+    xhttp.send();
+  }
+
+  setTimeout(CheckTimeWeatherStatus, 1000);
+}
+
+function FourPondsCheckAutomation() {
+  var data = four_ponds_automation;
+  var count = Object.keys(data).length;
+  var ws_data;
+
+  const ws_xhttp = new XMLHttpRequest();
+  var ws_url = "./php/get-four-ponds-data-weather-time.php";
+  ws_xhttp.onload = function () {
+    if (this.responseText != "1") {
+      ws_data = JSON.parse(this.response);
+      var today = new Date();
+      var starttime =
+        String(today.getHours()).padStart(2, "0") +
+        ":" +
+        String(today.getMinutes()).padStart(2, "0") +
+        ":00";
+      var endtime =
+        String(today.getHours()).padStart(2, "0") +
+        ":" +
+        String(today.getMinutes()).padStart(2, "0") +
+        ":15";
+      var checkTime =
+        String(today.getHours()).padStart(2, "0") +
+        ":" +
+        String(today.getMinutes()).padStart(2, "0") +
+        ":" +
+        String(today.getSeconds()).padStart(2, "0");
+
+      const cr_date_format = "YYYY-MM-DD HH:mm:ss";
+      var cr_date = new Date();
+      cr_date = moment(cr_date).format(cr_date_format);
+      let new_cr_date = cr_date;
+
+      //console.log(starttime + " " + data.feeding_time);
+      //console.log(endtime + " " + checkTime);
+      if (ws_data.weather_status == "1") {
+        if (
+          starttime == data.feeding_time &&
+          data.switch == 0 &&
+          checkTime <= endtime
+        ) {
+          const xhttp = new XMLHttpRequest();
+          var url =
+            "./php/set-fout-ponds-automation-status.php?status=0&id=" +
+            data.id +
+            "&datetime=" +
+            new_cr_date +
+            "&key=" +
+            data.project_key;
+          xhttp.onload = function () {
+            //console.log(this.responseText);
+            //RefreshAutomationTable();
+            Get4PondsAutomationTable
+          };
+          xhttp.open("GET", url);
+          xhttp.send();
+        } else {
+          const xhttp = new XMLHttpRequest();
+          var url =
+            "./php/set-four-ponds-automation-status.php?status=1&id=" +
+            data.id +
+            "&datetime=" +
+            new_cr_date +
+            "&key=" +
+            data.project_key;
+          xhttp.onload = function () {
+            //RefreshAutomationTable();
+            Get4PondsAutomationTable
+          };
+          xhttp.open("GET", url);
+          xhttp.send();
+        }
+        document.getElementById("CloseAutoFeed").style.display = "none";
+      } else {
+        const xhttp = new XMLHttpRequest();
+        var url =
+          "./php/set-four-ponds-automation-status.php?status=1&id=" +
+          data.id +
+          "&datetime=" +
+          new_cr_date +
+          "&key=" +
+          data.project_key;
+        xhttp.onload = function () {
+          document.getElementById("CloseAutoFeed").style.display = "block";
+          document.getElementById("CloseAutoFeed_date").innerHTML =
+            ws_data.weather_start_time;
+          //RefreshAutomationTable();
+          Get4PondsAutomationTable
+        };
+        xhttp.open("GET", url);
+        xhttp.send();
+      }
+    }
+  };
+  ws_xhttp.open("GET", ws_url);
+  ws_xhttp.send();
+
+  //console.log(starttime);
+  setTimeout(FourPondsCheckAutomation, 1000);
 }
