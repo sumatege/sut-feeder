@@ -242,9 +242,12 @@
                         <h4>ควบคุมการให้อาหารอัตโนมัติ [4 บ่อ]</h4>                        
                     </div>
                     <div class="row justify-content-center p-1 settime-btn">
-                        <button data-toggle="modal" data-target="#4PondsAutomationModal" class="btn btn-sm btn-warning">ตั้งเวลา</button>                              
+                        <button data-toggle="modal" data-target="#4PondsAutomationModal" class="btn btn-sm btn-warning">ตั้งเวลา</button>
+                        <button data-toggle="modal" data-target="#4PondsResetProjectModal" class="btn btn-sm btn-danger ml-1">ล้างข้อมูล</button>
+                        <button data-toggle="modal" data-target="#4PondsCloseProjectModal" class="btn btn-sm btn-info ml-1">ปิดโครงการ</button>
+                        <button data-toggle="modal" data-target="#4PondsHistoryModal" class="btn btn-sm btn-secondary ml-1">ประวัติโครงการ</button>                        
                     </div>
-                    <div class="row justify-content-center" id="FourPondsCloseAutoFeed">
+                    <div class="row justify-content-center p-1 pl-3" id="FourPondsCloseAutoFeed">
                         * โปรแกรมให้อาหารอัตโนมัติ จะเริ่มทำงานอีกครั้ง วันที่ <span id="FourPondsCloseAutoFeed_date"></span> น.
                         [<a style="text-decoration: underline;" onclick="FourPondsCancelDisabledAutomotion()">ยกเลิก</a>]
                     </div>
@@ -272,11 +275,16 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-md-12 four-pond-content" style="overflow-x: auto;">
+                        <div class="col-md-12 our-pond-content" style="overflow-x: auto;">                            
                             <table class="table table-responsive table-hover table-bordered four-pond-table">
                                 <tbody>
                                     <tr style="background-color: rgba(255, 255, 255, 0.5);">                                        
-                                        <th style="text-align: start;">ข้อมูลการใช้อาหาร บ่อที่ 1</th>
+                                        <th style="text-align: start; white-space: nowrap;">
+                                            ข้อมูลการใช้อาหาร บ่อที่ 1
+                                            <button id="FPEdit1Btn" class="btn btn-sm btn-secondary btn-edit-4ponds" onclick="FPEdit1()">แก้ไขข้อมูล</button>
+                                            <button id="FPSave1Btn" class="btn btn-sm btn-success btn-edit-4ponds" onclick="FPSave1()">บันทึกข้อมูล</button>
+                                            <button id="FPCancel1Btn" class="btn btn-sm btn-danger btn-edit-4ponds" onclick="FPCancel1()">ยกเลิก</button>
+                                        </th>
                                         <th style="width: 10%;"></th>
                                         <th style="width: 5%;"></th>
                                     </tr>
@@ -321,7 +329,7 @@
                                       <td></td>
                                     </tr>
                                 </tbody>
-                            </table>                                                
+                            </table>                                       
                         </div>
                     </div>
                     <hr style="margin-top: 5px; margin-bottom: 5px;" />
@@ -352,7 +360,12 @@
                             <table class="table table-responsive table-hover table-bordered four-pond-table">
                                 <tbody>
                                     <tr style="background-color: rgba(255, 255, 255, 0.5);">                                        
-                                        <th style="text-align: start;">ข้อมูลการใช้อาหาร บ่อที่ 2</th>
+                                        <th style="text-align: start; white-space: nowrap;">
+                                            ข้อมูลการใช้อาหาร บ่อที่ 2
+                                            <button id="FPEdit2Btn" class="btn btn-sm btn-secondary btn-edit-4ponds" onclick="FPEdit2()">แก้ไขข้อมูล</button>
+                                            <button id="FPSave2Btn" class="btn btn-sm btn-success btn-edit-4ponds" onclick="FPSave2()">บันทึกข้อมูล</button>
+                                            <button id="FPCancel2Btn" class="btn btn-sm btn-danger btn-edit-4ponds" onclick="FPCancel2()">ยกเลิก</button>
+                                        </th>
                                         <th style="width: 10%;"></th>
                                         <th style="width: 5%;"></th>
                                     </tr>
@@ -428,7 +441,12 @@
                             <table class="table table-responsive table-hover table-bordered four-pond-table">
                                 <tbody>
                                     <tr style="background-color: rgba(255, 255, 255, 0.5);">                                        
-                                        <th style="text-align: start;">ข้อมูลการใช้อาหาร บ่อที่ 3</th>
+                                        <th style="text-align: start; white-space: nowrap;">
+                                            ข้อมูลการใช้อาหาร บ่อที่ 3
+                                            <button id="FPEdit3Btn" class="btn btn-sm btn-secondary btn-edit-4ponds" onclick="FPEdit3()">แก้ไขข้อมูล</button>
+                                            <button id="FPSave3Btn" class="btn btn-sm btn-success btn-edit-4ponds" onclick="FPSave3()">บันทึกข้อมูล</button>
+                                            <button id="FPCancel3Btn" class="btn btn-sm btn-danger btn-edit-4ponds" onclick="FPCancel3()">ยกเลิก</button>
+                                        </th>
                                         <th style="width: 10%;"></th>
                                         <th style="width: 5%;"></th>
                                     </tr>
@@ -504,7 +522,12 @@
                             <table class="table table-responsive table-hover table-bordered four-pond-table">
                                 <tbody>
                                     <tr style="background-color: rgba(255, 255, 255, 0.5);">                                        
-                                        <th style="text-align: start;">ข้อมูลการใช้อาหาร บ่อที่ 4</th>
+                                        <th style="text-align: start; white-space: nowrap;">
+                                            ข้อมูลการใช้อาหาร บ่อที่ 4
+                                            <button id="FPEdit4Btn" class="btn btn-sm btn-secondary btn-edit-4ponds" onclick="FPEdit4()">แก้ไขข้อมูล</button>
+                                            <button id="FPSave4Btn" class="btn btn-sm btn-success btn-edit-4ponds" onclick="FPSave4()">บันทึกข้อมูล</button>
+                                            <button id="FPCancel4Btn" class="btn btn-sm btn-danger btn-edit-4ponds" onclick="FPCancel4()">ยกเลิก</button>
+                                        </th>
                                         <th style="width: 10%;"></th>
                                         <th style="width: 5%;"></th>
                                     </tr>

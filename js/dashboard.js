@@ -58,11 +58,17 @@ function SettingModal() {
 }
 
 function GetFoodUnit() {
+  var unit;
   const xhttp = new XMLHttpRequest();
   var url = "./php/get-project-data.php";
   xhttp.onload = function () {
     var data = JSON.parse(this.responseText);
-    ChangeUnitSettingModal(data.p_food_unit);
+    if (data.p_food_unit == null) {
+      unit = sessionStorage.getItem("food_unit");
+    } else {
+      unit = data.p_food_unit;
+    }
+    ChangeUnitSettingModal(unit);
   };
   xhttp.open("GET", url);
   xhttp.send();
@@ -289,7 +295,8 @@ function getProjectInfo() {
       document.getElementById("r_enddate").value = data.p_end_date;
     }
 
-    if (data.p_food_unit == "g") {
+    var unit = sessionStorage.getItem("food_unit");
+    if (data.p_food_unit == "g" || unit == "g") {
       document.getElementById("r_beginweight").value =
         parseFloat(data.p_fish_begin_weight) * 1000;
       document.getElementById("r_endweight").value =
@@ -1295,8 +1302,6 @@ function ChangeUnitSettingModal(val) {
     document.getElementById("project_current_unit").innerHTML = val;
 
     UpdateUnitBySettingModal("g");
-    Get4PondsInfo();
-    Get4PondsAutomationTable();
     food_unit = "g";
     sessionStorage.setItem("food_unit", "g");
   } else {
@@ -1312,11 +1317,11 @@ function ChangeUnitSettingModal(val) {
     document.getElementById("project_current_unit").innerHTML = val;
 
     UpdateUnitBySettingModal("kg");
-    Get4PondsInfo();
-    Get4PondsAutomationTable();
     food_unit = "kg";
     sessionStorage.setItem("food_unit", "kg");
   }
+  Get4PondsInfo();
+  Get4PondsAutomationTable();
 }
 
 function UpdateUnitBySettingModal(val) {

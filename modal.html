@@ -646,5 +646,152 @@
         </div>
     </div>
 
+    <!-- 4Ponds Reset Proect modal -->
+    <div class="modal fade" id="4PondsResetProjectModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ยืนยันการล้างข้อมูล/เริ่มใหม่</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
+                        <span>กรุณากรอกเบอร์โทรศัพท์หรือรหัสผ่าน<br/>เพื่อยืนยันการล้างข้อมูล/เริ่มใหม่</span>
+                    </div>
+                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
+                        <input type="text" id="ConfirmFourPondsResetTxt" class="form-control ml-3 mr-3" />
+                    </div>
+                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 3px; border:0px">
+                        <span id="FourPondsResetErr">เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง!</span>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success" onclick="FourPondsResetProjectModal()">ตกลง</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4Ponds Close Proect modal -->
+    <div class="modal fade" id="4PondsCloseProjectModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ยืนยันปิดโครงการ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
+                        <span>กรุณากรอกเบอร์โทรศัพท์หรือรหัสผ่าน<br/>เพื่อยืนยันปิดโครงการ</span>
+                    </div>
+                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
+                        <input type="text" id="ConfirmFourPondsCloseTxt" class="form-control ml-3 mr-3" />
+                    </div>
+                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 3px; border:0px">
+                        <span id="FourPondsCloseErr">เบอร์โทรศัพท์หรือรหัสผ่านไม่ถูกต้อง!</span>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-success" onclick="FourPondsCloseProjectModal()">ตกลง</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4Ponds Proect History modal -->
+    <div class="modal fade" id="4PondsHistoryModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-history" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ประวัติการบันทึกข้อมูล [4 บ่อ]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body modal-body-history" style=" padding: 50px; padding-left: 10px; padding-right: 10px;">
+                    <table class="table table-responsive table-hover table-striped" id="four-ponds-history-table">
+                        <tbody id="four-ponds-history-table-tbody">
+                            <tr>
+                                <td colspan="2" style="text-align: center;">ไม่พบข้อมูล</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4Ponds Lot Detailed modal -->
+    <div class="modal fade" id="FourPondsLotDetailedModal" tabindex="1000" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-FourPondsLotDetailedModal" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">รายละเอียด Lot <span id="LotTxt">000000</span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center align-items-center text-center" style="padding: 10px; border:0px">
+                        <table id="FourPondsLotDetailedTable" class="table table-responsive table-hover table-bordered table-striped">
+                            <tr style="background-color: aquamarine;"><td>บ่อที่</td><td>1</td></tr>
+                            <tr><td>รหัสอุปกรณ์</td><td><span id="FPKeyTxt1"></span></td></tr>
+                            <tr><td>วันที่เริ่มต้น</td><td><span id="FPSDateTxt1"></span></td></tr>
+                            <tr><td>วันที่สุดท้าย</td><td><span id="FPEDateTxt1"></span></td></tr>
+                            <tr><td>จำนวนปลาทั้งหมด (ตัว/บ่อ)</td><td><span id="FPAmountTxt1"></span></td></tr>
+                            <tr><td>น้ำหนักปลาเริ่มต้น (กิโลกรัม)</td><td><span id="FPBWeightTxt1"></span></td></tr>
+                            <tr><td>น้ำหนักปลาสุดท้าย (กิโลกรัม)</td><td><span id="FPEWeightTxt1"></span></td></tr>
+                            <tr><td>น้ำหนักปลาที่เพิ่มขึ้น (กิโลกรัม)</td><td><span id="FPPlusWeightTxt1"></span></td></tr>
+                            <tr><td>อาหารที่ใช้ทั้งหมด (กิโลกรัม)</td><td><span id="FPFoodTxt1"></span></td></tr>
+                            <tr><td>อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td><td><span id="FPFCRTxt1"></span></td></tr>
+                            <tr style="background-color: aquamarine;"><td>บ่อที่</td><td>2</td></tr>
+                            <tr><td>รหัสอุปกรณ์</td><td><span id="FPKeyTxt2"></span></td></tr>
+                            <tr><td>วันที่เริ่มต้น</td><td><span id="FPSDateTxt2"></span></td></tr>
+                            <tr><td>วันที่สุดท้าย</td><td><span id="FPEDateTxt2"></span></td></tr>
+                            <tr><td>จำนวนปลาทั้งหมด (ตัว/บ่อ)</td><td><span id="FPAmountTxt2"></span></td></tr>
+                            <tr><td>น้ำหนักปลาเริ่มต้น (กิโลกรัม)</td><td><span id="FPBWeightTxt2"></span></td></tr>
+                            <tr><td>น้ำหนักปลาสุดท้าย (กิโลกรัม)</td><td><span id="FPEWeightTxt2"></span></td></tr>
+                            <tr><td>น้ำหนักปลาที่เพิ่มขึ้น (กิโลกรัม)</td><td><span id="FPPlusWeightTxt2"></span></td></tr>
+                            <tr><td>อาหารที่ใช้ทั้งหมด (กิโลกรัม)</td><td><span id="FPFoodTxt2"></span></td></tr>
+                            <tr><td>อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td><td><span id="FPFCRTxt2"></span></td></tr>
+                            <tr style="background-color: aquamarine;"><td>บ่อที่</td><td>3</td></tr>
+                            <tr><td>รหัสอุปกรณ์</td><td><span id="FPKeyTxt3"></span></td></tr>
+                            <tr><td>วันที่เริ่มต้น</td><td><span id="FPSDateTxt3"></span></td></tr>
+                            <tr><td>วันที่สุดท้าย</td><td><span id="FPEDateTxt3"></span></td></tr>
+                            <tr><td>จำนวนปลาทั้งหมด (ตัว/บ่อ)</td><td><span id="FPAmountTxt3"></span></td></tr>
+                            <tr><td>น้ำหนักปลาเริ่มต้น (กิโลกรัม)</td><td><span id="FPBWeightTxt3"></span></td></tr>
+                            <tr><td>น้ำหนักปลาสุดท้าย (กิโลกรัม)</td><td><span id="FPEWeightTxt3"></span></td></tr>
+                            <tr><td>น้ำหนักปลาที่เพิ่มขึ้น (กิโลกรัม)</td><td><span id="FPPlusWeightTxt3"></span></td></tr>
+                            <tr><td>อาหารที่ใช้ทั้งหมด (กิโลกรัม)</td><td><span id="FPFoodTxt3"></span></td></tr>
+                            <tr><td>อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td><td><span id="FPFCRTxt3"></span></td></tr>
+                            <tr style="background-color: aquamarine;"><td>บ่อที่</td><td>4</td></tr>
+                            <tr><td>รหัสอุปกรณ์</td><td><span id="FPKeyTxt4"></span></td></tr>
+                            <tr><td>วันที่เริ่มต้น</td><td><span id="FPSDateTxt4"></span></td></tr>
+                            <tr><td>วันที่สุดท้าย</td><td><span id="FPEDateTxt4"></span></td></tr>
+                            <tr><td>จำนวนปลาทั้งหมด (ตัว/บ่อ)</td><td><span id="FPAmountTxt4"></span></td></tr>
+                            <tr><td>น้ำหนักปลาเริ่มต้น (กิโลกรัม)</td><td><span id="FPBWeightTxt4"></span></td></tr>
+                            <tr><td>น้ำหนักปลาสุดท้าย (กิโลกรัม)</td><td><span id="FPEWeightTxt4"></span></td></tr>
+                            <tr><td>น้ำหนักปลาที่เพิ่มขึ้น (กิโลกรัม)</td><td><span id="FPPlusWeightTxt4"></span></td></tr>
+                            <tr><td>อาหารที่ใช้ทั้งหมด (กิโลกรัม)</td><td><span id="FPFoodTxt4"></span></td></tr>
+                            <tr><td>อัตราการเปลี่ยนอาหารเป็นเนื้อ (FCR)</td><td><span id="FPFCRTxt4"></span></td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/dashboard.js"></script>
     <script src="js/four-ponds.js"></script>

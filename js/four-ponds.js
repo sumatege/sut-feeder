@@ -2,6 +2,8 @@ function fourponds() {
   Get4PondsInfo();
   Get4PondsAutomationTable();
   GetWeatherStatus_4ponds();
+  FourPondsCheckTimeWeatherStatus();
+  FourPondsEditButton();
 }
 
 function Get4PondsInfo() {
@@ -175,7 +177,7 @@ function Get4PondsInfo() {
           parseFloat(data[3].food_used) / 1000;
 
         //1
-        if (data[0].p_fish_end_weight == 0) {
+        if (data[0].end_weight == 0) {
           document.getElementById("1_plusweight").value = 0;
           document.getElementById("1_fcr").value = 0;
         } else {
@@ -618,6 +620,7 @@ function GetWeather_4ponds() {
       }
 
       if (weather_status == "Rain") {
+        //alert(weather_status);
         if (count_weather_alert_4ponds == 0) {
           CheckWeatherStatus_4ponds();
         }
@@ -711,7 +714,7 @@ function FourPondsAPISaveSetupStopAutomation(status, restart_date) {
   var url = "./php/save-restart-stop-4ponds-automation.php";
   url = url + "?status=" + status + "&date=" + restart_date;
   xhttp.onload = function () {
-    console.log(this.response);
+    //alert(this.response);
     if (this.responseText == "0") {
       window.location.replace("./dashboard.html");
     }
@@ -721,7 +724,7 @@ function FourPondsAPISaveSetupStopAutomation(status, restart_date) {
 }
 
 function FourPondsCancelDisabledAutomotion() {
-  APISaveSetupStopAutomation(1, null);
+  FourPondsAPISaveSetupStopAutomation(1, null);
   document.getElementById("FourPondsCloseAutoFeed").style.display = "none";
 }
 
@@ -741,20 +744,21 @@ function FourPondsCheckTimeWeatherStatus() {
       ":00";
 
     const xhttp = new XMLHttpRequest();
-    var url = "./php/get-project-data.php";
+    var url = "./php/get-four-ponds-data-weather-time.php";
     xhttp.onload = function () {
       var data = JSON.parse(this.response);
-      //console.log(datetime + " " + data.p_weather_start_time);
-      if (data.p_weather_status == 0 && data.p_weather_start_time == datetime) {
-        APISaveSetupStopAutomation(1, null);
-        document.getElementById("CloseAutoFeed").style.display = "none";
+      //console.log(datetime + " " + data.weather_start_time);
+      if (data.weather_status == 0 && data.weather_start_time == datetime) {
+        FourPondsAPISaveSetupStopAutomation(1, null);
+        document.getElementById("FourPondsCloseAutoFeed").style.display =
+          "none";
       }
     };
     xhttp.open("GET", url);
     xhttp.send();
   }
 
-  setTimeout(CheckTimeWeatherStatus, 1000);
+  setTimeout(FourPondsCheckTimeWeatherStatus, 1000);
 }
 
 function FourPondsCheckAutomation() {
@@ -767,87 +771,85 @@ function FourPondsCheckAutomation() {
   ws_xhttp.onload = function () {
     if (this.responseText != "1") {
       ws_data = JSON.parse(this.response);
-      var today = new Date();
-      var starttime =
-        String(today.getHours()).padStart(2, "0") +
-        ":" +
-        String(today.getMinutes()).padStart(2, "0") +
-        ":00";
-      var endtime =
-        String(today.getHours()).padStart(2, "0") +
-        ":" +
-        String(today.getMinutes()).padStart(2, "0") +
-        ":15";
-      var checkTime =
-        String(today.getHours()).padStart(2, "0") +
-        ":" +
-        String(today.getMinutes()).padStart(2, "0") +
-        ":" +
-        String(today.getSeconds()).padStart(2, "0");
+      for (var i = 0; i < count; i++) {
+        var today = new Date();
+        var starttime =
+          String(today.getHours()).padStart(2, "0") +
+          ":" +
+          String(today.getMinutes()).padStart(2, "0") +
+          ":00";
+        var endtime =
+          String(today.getHours()).padStart(2, "0") +
+          ":" +
+          String(today.getMinutes()).padStart(2, "0") +
+          ":15";
+        var checkTime =
+          String(today.getHours()).padStart(2, "0") +
+          ":" +
+          String(today.getMinutes()).padStart(2, "0") +
+          ":" +
+          String(today.getSeconds()).padStart(2, "0");
 
-      const cr_date_format = "YYYY-MM-DD HH:mm:ss";
-      var cr_date = new Date();
-      cr_date = moment(cr_date).format(cr_date_format);
-      let new_cr_date = cr_date;
+        const cr_date_format = "YYYY-MM-DD HH:mm:ss";
+        var cr_date = new Date();
+        cr_date = moment(cr_date).format(cr_date_format);
+        let new_cr_date = cr_date;
 
-      //console.log(starttime + " " + data.feeding_time);
-      //console.log(endtime + " " + checkTime);
-      if (ws_data.weather_status == "1") {
-        if (
-          starttime == data.feeding_time &&
-          data.switch == 0 &&
-          checkTime <= endtime
-        ) {
-          const xhttp = new XMLHttpRequest();
-          var url =
-            "./php/set-fout-ponds-automation-status.php?status=0&id=" +
-            data.id +
-            "&datetime=" +
-            new_cr_date +
-            "&key=" +
-            data.project_key;
-          xhttp.onload = function () {
-            //console.log(this.responseText);
-            //RefreshAutomationTable();
-            Get4PondsAutomationTable
-          };
-          xhttp.open("GET", url);
-          xhttp.send();
+        //console.log(starttime + " " + data[i].feeding_time);
+        //console.log(endtime + " " + checkTime);
+
+        if (ws_data.weather_status == "1") {
+          if (
+            starttime == data[i].feeding_time &&
+            data[i].switch == 0 &&
+            checkTime <= endtime
+          ) {
+            //console.log(1);
+            const xhttp = new XMLHttpRequest();
+            var url =
+              "./php/set-four-ponds-automation-status.php?status=0&id=" +
+              data[i].id;
+            //console.log(url);
+            xhttp.onload = function () {
+              console.log(this.responseText);
+              //RefreshAutomationTable();
+              Get4PondsAutomationTable;
+            };
+            xhttp.open("GET", url);
+            xhttp.send();
+          } else {
+            //console.log(2);
+            const xhttp = new XMLHttpRequest();
+            var url =
+              "./php/set-four-ponds-automation-status.php?status=1&id=" +
+              data[i].id;
+            xhttp.onload = function () {
+              //RefreshAutomationTable();
+              Get4PondsAutomationTable;
+            };
+            xhttp.open("GET", url);
+            xhttp.send();
+          }
+          document.getElementById("FourPondsCloseAutoFeed").style.display =
+            "none";
         } else {
+          //console.log(3);
+          //alert(ws_data.weather_status);
           const xhttp = new XMLHttpRequest();
           var url =
             "./php/set-four-ponds-automation-status.php?status=1&id=" +
-            data.id +
-            "&datetime=" +
-            new_cr_date +
-            "&key=" +
-            data.project_key;
+            data[i].id;
           xhttp.onload = function () {
+            document.getElementById("FourPondsCloseAutoFeed").style.display =
+              "block";
+            document.getElementById("FourPondsCloseAutoFeed_date").innerHTML =
+              ws_data.weather_start_time;
             //RefreshAutomationTable();
-            Get4PondsAutomationTable
+            Get4PondsAutomationTable;
           };
           xhttp.open("GET", url);
           xhttp.send();
         }
-        document.getElementById("CloseAutoFeed").style.display = "none";
-      } else {
-        const xhttp = new XMLHttpRequest();
-        var url =
-          "./php/set-four-ponds-automation-status.php?status=1&id=" +
-          data.id +
-          "&datetime=" +
-          new_cr_date +
-          "&key=" +
-          data.project_key;
-        xhttp.onload = function () {
-          document.getElementById("CloseAutoFeed").style.display = "block";
-          document.getElementById("CloseAutoFeed_date").innerHTML =
-            ws_data.weather_start_time;
-          //RefreshAutomationTable();
-          Get4PondsAutomationTable
-        };
-        xhttp.open("GET", url);
-        xhttp.send();
       }
     }
   };
@@ -857,3 +859,434 @@ function FourPondsCheckAutomation() {
   //console.log(starttime);
   setTimeout(FourPondsCheckAutomation, 1000);
 }
+
+function FourPondsEditButton() {
+  document.getElementById("FPSave1Btn").disabled = "true";
+  document.getElementById("FPCancel1Btn").disabled = "true";
+
+  document.getElementById("FPSave2Btn").disabled = "true";
+  document.getElementById("FPCancel2Btn").disabled = "true";
+
+  document.getElementById("FPSave3Btn").disabled = "true";
+  document.getElementById("FPCancel3Btn").disabled = "true";
+
+  document.getElementById("FPSave4Btn").disabled = "true";
+  document.getElementById("FPCancel4Btn").disabled = "true";
+}
+
+function FPEdit1() {
+  document.getElementById("FPEdit1Btn").disabled = true;
+  document.getElementById("FPSave1Btn").disabled = false;
+  document.getElementById("FPCancel1Btn").disabled = false;
+
+  document.getElementById("1_startdate").disabled = false;
+  document.getElementById("1_enddate").disabled = false;
+  document.getElementById("1_beginamount").disabled = false;
+  document.getElementById("1_beginweight").disabled = false;
+  document.getElementById("1_endweight").disabled = false;
+}
+
+function FPCancel1() {
+  document.getElementById("FPEdit1Btn").disabled = false;
+  document.getElementById("FPSave1Btn").disabled = true;
+  document.getElementById("FPCancel1Btn").disabled = true;
+
+  document.getElementById("1_startdate").disabled = true;
+  document.getElementById("1_enddate").disabled = true;
+  document.getElementById("1_beginamount").disabled = true;
+  document.getElementById("1_beginweight").disabled = true;
+  document.getElementById("1_endweight").disabled = true;
+
+  Get4PondsInfo();
+}
+
+function FPSave1() {
+  var sdate = document.getElementById("1_startdate").value;
+  var edate = document.getElementById("1_enddate").value;
+  var amount = document.getElementById("1_beginamount").value;
+  var beginweight = document.getElementById("1_beginweight").value;
+  var endweight = document.getElementById("1_endweight").value;
+
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/save-four-ponds-data.php";
+  url =
+    url +
+    "?id=1&sdate=" +
+    sdate +
+    "&edate=" +
+    edate +
+    "&amount=" +
+    amount +
+    "&bweight=" +
+    beginweight +
+    "&eweight=" +
+    endweight;
+  xhttp.onload = function () {
+    //alert(this.response);
+    if (this.responseText == "0") {
+      FPCancel1();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function FPEdit2() {
+  document.getElementById("FPEdit2Btn").disabled = true;
+  document.getElementById("FPSave2Btn").disabled = false;
+  document.getElementById("FPCancel2Btn").disabled = false;
+
+  document.getElementById("2_startdate").disabled = false;
+  document.getElementById("2_enddate").disabled = false;
+  document.getElementById("2_beginamount").disabled = false;
+  document.getElementById("2_beginweight").disabled = false;
+  document.getElementById("2_endweight").disabled = false;
+}
+
+function FPCancel2() {
+  document.getElementById("FPEdit2Btn").disabled = false;
+  document.getElementById("FPSave2Btn").disabled = true;
+  document.getElementById("FPCancel2Btn").disabled = true;
+
+  document.getElementById("2_startdate").disabled = true;
+  document.getElementById("2_enddate").disabled = true;
+  document.getElementById("2_beginamount").disabled = true;
+  document.getElementById("2_beginweight").disabled = true;
+  document.getElementById("2_endweight").disabled = true;
+
+  Get4PondsInfo();
+}
+
+function FPSave2() {
+  var sdate = document.getElementById("2_startdate").value;
+  var edate = document.getElementById("2_enddate").value;
+  var amount = document.getElementById("2_beginamount").value;
+  var beginweight = document.getElementById("2_beginweight").value;
+  var endweight = document.getElementById("2_endweight").value;
+
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/save-four-ponds-data.php";
+  url =
+    url +
+    "?id=2&sdate=" +
+    sdate +
+    "&edate=" +
+    edate +
+    "&amount=" +
+    amount +
+    "&bweight=" +
+    beginweight +
+    "&eweight=" +
+    endweight;
+  xhttp.onload = function () {
+    //alert(this.response);
+    if (this.responseText == "0") {
+      FPCancel2();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function FPEdit3() {
+  document.getElementById("FPEdit3Btn").disabled = true;
+  document.getElementById("FPSave3Btn").disabled = false;
+  document.getElementById("FPCancel3Btn").disabled = false;
+
+  document.getElementById("3_startdate").disabled = false;
+  document.getElementById("3_enddate").disabled = false;
+  document.getElementById("3_beginamount").disabled = false;
+  document.getElementById("3_beginweight").disabled = false;
+  document.getElementById("3_endweight").disabled = false;
+}
+
+function FPCancel3() {
+  document.getElementById("FPEdit3Btn").disabled = false;
+  document.getElementById("FPSave3Btn").disabled = true;
+  document.getElementById("FPCancel3Btn").disabled = true;
+
+  document.getElementById("3_startdate").disabled = true;
+  document.getElementById("3_enddate").disabled = true;
+  document.getElementById("3_beginamount").disabled = true;
+  document.getElementById("3_beginweight").disabled = true;
+  document.getElementById("3_endweight").disabled = true;
+
+  Get4PondsInfo();
+}
+
+function FPSave3() {
+  var sdate = document.getElementById("3_startdate").value;
+  var edate = document.getElementById("3_enddate").value;
+  var amount = document.getElementById("3_beginamount").value;
+  var beginweight = document.getElementById("3_beginweight").value;
+  var endweight = document.getElementById("3_endweight").value;
+
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/save-four-ponds-data.php";
+  url =
+    url +
+    "?id=3&sdate=" +
+    sdate +
+    "&edate=" +
+    edate +
+    "&amount=" +
+    amount +
+    "&bweight=" +
+    beginweight +
+    "&eweight=" +
+    endweight;
+  xhttp.onload = function () {
+    //alert(this.response);
+    if (this.responseText == "0") {
+      FPCancel3();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function FPEdit4() {
+  document.getElementById("FPEdit4Btn").disabled = true;
+  document.getElementById("FPSave4Btn").disabled = false;
+  document.getElementById("FPCancel4Btn").disabled = false;
+
+  document.getElementById("4_startdate").disabled = false;
+  document.getElementById("4_enddate").disabled = false;
+  document.getElementById("4_beginamount").disabled = false;
+  document.getElementById("4_beginweight").disabled = false;
+  document.getElementById("4_endweight").disabled = false;
+}
+
+function FPCancel4() {
+  document.getElementById("FPEdit4Btn").disabled = false;
+  document.getElementById("FPSave4Btn").disabled = true;
+  document.getElementById("FPCancel4Btn").disabled = true;
+
+  document.getElementById("4_startdate").disabled = true;
+  document.getElementById("4_enddate").disabled = true;
+  document.getElementById("4_beginamount").disabled = true;
+  document.getElementById("4_beginweight").disabled = true;
+  document.getElementById("4_endweight").disabled = true;
+
+  Get4PondsInfo();
+}
+
+function FPSave4() {
+  var sdate = document.getElementById("4_startdate").value;
+  var edate = document.getElementById("4_enddate").value;
+  var amount = document.getElementById("4_beginamount").value;
+  var beginweight = document.getElementById("4_beginweight").value;
+  var endweight = document.getElementById("4_endweight").value;
+
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/save-four-ponds-data.php";
+  url =
+    url +
+    "?id=4&sdate=" +
+    sdate +
+    "&edate=" +
+    edate +
+    "&amount=" +
+    amount +
+    "&bweight=" +
+    beginweight +
+    "&eweight=" +
+    endweight;
+  xhttp.onload = function () {
+    //alert(this.response);
+    if (this.responseText == "0") {
+      FPCancel4();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function FourPondsResetProjectModal() {
+  var auth = document.getElementById("ConfirmFourPondsResetTxt").value;
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/check-phone-password.php?auth=" + auth;
+  xhttp.onload = function () {
+    if (this.responseText == "0") {
+      FourPondsResetProject();
+      document.getElementById("FourPondsResetErr").style.display = "none";
+    } else {
+      document.getElementById("FourPondsResetErr").style.display = "block";
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function FourPondsResetProject() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/reset-four-ponds.php";
+  xhttp.onload = function () {
+    //console.log(this.responseText);
+    if (this.responseText == "0") {
+      window.location.replace("./dashboard.html");
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function FourPondsCloseProjectModal() {
+  var auth = document.getElementById("ConfirmFourPondsCloseTxt").value;
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/check-phone-password.php?auth=" + auth;
+  xhttp.onload = function () {
+    if (this.responseText == "0") {
+      FourPondsCloseProject();
+      document.getElementById("FourPondsCloseErr").style.display = "none";
+    } else {
+      document.getElementById("FourPondsCloseErr").style.display = "block";
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function FourPondsCloseProject() {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/four-ponds-close-project.php";
+  xhttp.onload = function () {
+    //console.log(this.responseText);
+    if (this.responseText == "0000") {
+      FourPondsResetProject();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+$("#4PondsHistoryModal").on("show.bs.modal", function () {
+  FourPondsGetHistory();
+});
+
+var FourPondsHistory;
+function FourPondsGetHistory() {
+  var txt = "";
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-count-close-project.php";
+  xhttp.onload = function () {
+    if (this.responseText != "1") {
+      var data = JSON.parse(this.response);
+      FourPondsHistory = data;
+      drawFourPondsHistoryTable(data);
+    } else {
+      $("#four-ponds-history-table-tbody").empty();
+      var row = $("<tr />");
+      $("#four-ponds-history-table").append(row);
+      row.append(
+        $(
+          "<td colspan='2' style='text-align:center;font-size: smaller'>ไม่พบข้อมูล</td>"
+        )
+      );
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+
+function drawFourPondsHistoryTable(data) {
+  var count = Object.keys(data).length;
+
+  $("#four-ponds-history-table-tbody").empty();
+  for (var i = 0; i < count; i++) {
+    if (data[i] != null) {
+      drawFourPondsHistoryRow(data[i]);
+    }
+  }
+}
+
+function drawFourPondsHistoryRow(rowData) {
+  var row = $("<tr />");
+  $("#four-ponds-history-table").append(row);
+  row.append(
+    $(
+      "<td style='text-align: left' onclick='LotDetailed(" +
+        rowData.lot +
+        ")'><a href='#' >Lot " +
+        rowData.lot +
+        "</a></td>"
+    )
+  );
+  row.append(
+    $(
+      "<td style='text-align: center; width: 1%; cursor: pointer;'><a href='#' onclick='DeleteLot(" +
+        rowData.lot +
+        ")'><i class='fa fa-trash' aria-hidden='true'></i></a></td>"
+    )
+  );
+}
+
+function LotDetailed(lot) {
+  document.getElementById("LotTxt").innerHTML = lot;
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/get-lot-close-project.php?lot=" + lot;
+  xhttp.onload = function () {
+    if (this.responseText != "1") {
+      var data = JSON.parse(this.response);
+      document.getElementById("FPKeyTxt1").innerHTML = data[0].equipment_key;
+      document.getElementById("FPSDateTxt1").innerHTML = data[0].start_date;
+      document.getElementById("FPEDateTxt1").innerHTML = data[0].end_date;
+      document.getElementById("FPAmountTxt1").innerHTML = data[0].fish_amount;
+      document.getElementById("FPBWeightTxt1").innerHTML = data[0].begin_weight;
+      document.getElementById("FPEWeightTxt1").innerHTML = data[0].end_weight;
+      document.getElementById("FPPlusWeightTxt1").innerHTML =
+        parseFloat(data[0].end_weight) - parseFloat(data[0].begin_weight);
+      document.getElementById("FPFoodTxt1").innerHTML = data[0].food_used;
+      document.getElementById("FPFCRTxt1").innerHTML = data[0].fcr;
+
+      document.getElementById("FPKeyTxt2").innerHTML = data[1].equipment_key;
+      document.getElementById("FPSDateTxt2").innerHTML = data[1].start_date;
+      document.getElementById("FPEDateTxt2").innerHTML = data[1].end_date;
+      document.getElementById("FPAmountTxt2").innerHTML = data[1].fish_amount;
+      document.getElementById("FPBWeightTxt2").innerHTML = data[1].begin_weight;
+      document.getElementById("FPEWeightTxt2").innerHTML = data[1].end_weight;
+      document.getElementById("FPPlusWeightTxt2").innerHTML =
+        parseFloat(data[1].end_weight) - parseFloat(data[1].begin_weight);
+      document.getElementById("FPFoodTxt2").innerHTML = data[1].food_used;
+      document.getElementById("FPFCRTxt2").innerHTML = data[1].fcr;
+
+      document.getElementById("FPKeyTxt3").innerHTML = data[2].equipment_key;
+      document.getElementById("FPSDateTxt3").innerHTML = data[2].start_date;
+      document.getElementById("FPEDateTxt3").innerHTML = data[2].end_date;
+      document.getElementById("FPAmountTxt3").innerHTML = data[2].fish_amount;
+      document.getElementById("FPBWeightTxt3").innerHTML = data[2].begin_weight;
+      document.getElementById("FPEWeightTxt3").innerHTML = data[2].end_weight;
+      document.getElementById("FPPlusWeightTxt3").innerHTML =
+        parseFloat(data[2].end_weight) - parseFloat(data[2].begin_weight);
+      document.getElementById("FPFoodTxt3").innerHTML = data[2].food_used;
+      document.getElementById("FPFCRTxt3").innerHTML = data[2].fcr;
+
+      document.getElementById("FPKeyTxt4").innerHTML = data[3].equipment_key;
+      document.getElementById("FPSDateTxt4").innerHTML = data[3].start_date;
+      document.getElementById("FPEDateTxt4").innerHTML = data[3].end_date;
+      document.getElementById("FPAmountTxt4").innerHTML = data[3].fish_amount;
+      document.getElementById("FPBWeightTxt4").innerHTML = data[3].begin_weight;
+      document.getElementById("FPEWeightTxt4").innerHTML = data[3].end_weight;
+      document.getElementById("FPPlusWeightTxt4").innerHTML =
+        parseFloat(data[3].end_weight) - parseFloat(data[3].begin_weight);
+      document.getElementById("FPFoodTxt4").innerHTML = data[3].food_used;
+      document.getElementById("FPFCRTxt4").innerHTML = data[3].fcr;
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+  $("#FourPondsLotDetailedModal").modal("show");
+}
+
+function DeleteLot(lot) {
+  const xhttp = new XMLHttpRequest();
+  var url = "./php/delete-lot.php?lot=" + lot;
+  xhttp.onload = function () {
+    if (this.responseText == 0) {
+      FourPondsGetHistory();
+    }
+  };
+  xhttp.open("GET", url);
+  xhttp.send();
+}
+

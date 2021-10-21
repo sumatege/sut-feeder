@@ -10,9 +10,11 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $data[] = $row;
-        $latlon = explode(",", $row["latlon"]);
-        $_SESSION["p_latlong"] = $latlon[0] . "," . $latlon[1];
-        $_SESSION["selectedLatlon"] = $latlon[0] . "," . $latlon[1];
+        if ($row["latlon"] != null) {
+            $latlon = explode(",", $row["latlon"]);
+            $_SESSION["p_latlong"] = $latlon[0] . "," . $latlon[1];
+            $_SESSION["selectedLatlon"] = $latlon[0] . "," . $latlon[1];
+        }
     }
     echo json_encode($data);
 } else {

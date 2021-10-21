@@ -443,6 +443,54 @@ body {
   text-align: center;
 }
 
+.btn-edit-4ponds {
+  padding: 0px;
+  padding-left: 2px;
+  padding-right: 2px;
+  font-size: xx-small;
+  cursor: grab;
+}
+
+.btn-edit-4ponds:disabled {
+  cursor: default;
+}
+
+#FourPondsResetErr,
+#FourPondsCloseErr {
+  display: none;
+  font-size: small;
+  color: red;
+}
+
+#four-ponds-history-table {
+  margin: 0px;
+}
+
+#four-ponds-history-table td {
+  cursor: grab;
+}
+
+#FourPondsLotDetailedTable {
+  width: 80%;
+  margin: 0px;
+}
+
+#FourPondsLotDetailedTable td:nth-child(1) {
+  text-align: left;
+  width: 50%;
+  font-weight: bold;
+}
+
+#FourPondsLotDetailedTable td:nth-child(2) {
+  text-align: right;
+  width: 50%;
+  color: rgb(0, 0, 255);
+}
+
+#modal-dialog-FourPondsLotDetailedModal {
+  max-width: 600px !important;
+}
+
 /* The switch - the box around the slider ======================================== */
 .switch {
   position: relative;
@@ -621,5 +669,12 @@ input:disabled + .slider {
 
   .settime-btn > .btn {
     font-size: smaller;
+  }
+
+  .btn-edit-4ponds {
+    padding: 0px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: xx-small;
   }
 }

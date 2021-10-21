@@ -3,7 +3,7 @@
 session_start();
 require 'config.php';
 
-$sql = "UPDATE 4ponds_automation SET status = " . $_GET["status"] . " WHERE id='" . $_GET["id"] . "'";
+$sql = "DELETE FROM 4ponds_close_project WHERE lot='" . $_GET["lot"] . "'";
 
 if ($conn->query($sql) === TRUE) {
     echo "0";
