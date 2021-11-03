@@ -12,7 +12,7 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         //$data[] = $row;
         $myObj = new stdClass();
-        $myObj->id = $row["a_id"];
+        $myObj->a_id = $row["a_id"];
         $myObj->a_project_key = $row["a_project_key"];
         $myObj->a_begin_date = $row["a_begin_date"];
         $myObj->a_end_date = $row["a_end_date"];
