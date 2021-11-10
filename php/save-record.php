@@ -7,7 +7,7 @@ $sum_food = 0;
 if ($_GET["foodsize"] != null && $_GET["totaltime"] != null && $_GET["usedfood"] != null && $_GET["datetime"] != null) {
 
     $sqlINSERT = "INSERT INTO record (r_key,r_food_size,r_total_time,r_used_food,r_date_time) VALUES 
-    ('" . $_SESSION["selectedKey"] . "'," . $_GET["foodsize"] . ", " . $_GET["totaltime"] . ", " . $_GET["usedfood"] . ",  '" . $_GET["datetime"] . "')";
+    ('" . $_SESSION["selectedKey"] . "','" . $_GET["foodsize"] . "',' " . $_GET["totaltime"] . "', '" . $_GET["usedfood"] . "',  '" . $_GET["datetime"] . "')";
 
     if ($conn->query($sqlINSERT) === TRUE) {
 
@@ -43,13 +43,13 @@ if ($_GET["foodsize"] != null && $_GET["totaltime"] != null && $_GET["usedfood"]
             if ($conn->query($sql_update) === TRUE) {
                 echo "0";
             } else {
-                echo "Error updating record: " . $conn->error;
+                echo "Error updating project: " . $conn->error;
             }
         } else {
             echo "error";
         }
     } else {
-        echo "Error updating record: " . $conn->error;
+        echo "Error inserting record: " . $conn->error;
     }
 } else {
     echo "1";

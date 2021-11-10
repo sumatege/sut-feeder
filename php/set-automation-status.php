@@ -15,7 +15,7 @@ if ($_GET["status"] == 0) {
             $totaltime = intval($row["a_round"]) * intval($row["a_time_per_round"]);
             $usedfood = floatval($row["a_food_weight"]) * 1000;
             $sql_insert = "INSERT INTO record (r_key,r_food_size,r_total_time,r_used_food,r_date_time) VALUES 
-            ('" . $row["a_project_key"] . "'," . $row["a_food_size"] . ", " . $totaltime . ", " . $usedfood . ",  '" . $_GET["datetime"] . "')";
+            ('" . $row["a_project_key"] . "','" . $row["a_food_size"] . "', '" . $totaltime . "', '" . $usedfood . "',  '" . $_GET["datetime"] . "')";
 
             if ($conn->query($sql_insert) === FALSE) {
                 echo "Error inserting record: " . $conn->error;
