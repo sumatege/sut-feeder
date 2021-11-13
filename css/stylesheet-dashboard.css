@@ -104,7 +104,8 @@ body {
 }
 
 .fa-cog,
-.fa-bars {
+.fa-bars,
+.fa-question-circle-o {
   color: gray;
 }
 
@@ -599,7 +600,8 @@ input:disabled + .slider {
   }
 
   .fa-cog,
-  .fa-bars {
+  .fa-bars,
+  .fa-question-circle-o {
     font-size: x-large;
   }
 
