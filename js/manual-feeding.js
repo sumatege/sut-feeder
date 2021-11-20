@@ -175,6 +175,7 @@ function CalculateFood(usetime, foodsize) {
         switch (foodsize) {
           case "1":
             document.getElementById("UsedFoodG").value = item.oneg;
+            console.log(item.oneg);
             document.getElementById("UsedFoodK").value = item.onek;
             break;
           case "2":
