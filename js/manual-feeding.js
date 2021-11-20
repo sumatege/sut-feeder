@@ -86,7 +86,6 @@ function ClearFeeding() {
 }
 
 function SaveFeeding() {
-  console.log("Test");
   clearInterval(myTimer);
   c = 0;
 
