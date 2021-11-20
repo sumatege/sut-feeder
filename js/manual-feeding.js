@@ -92,8 +92,8 @@ function SaveFeeding() {
   var foodsize = document.getElementById("foodsize").value;
   var totaltime = document.getElementById("UsedFoodTime").value;
   var usedfood = document.getElementById("UsedFoodG").value;
-  //usedfood = parseFloat(usedfood);
-  alert("ttt" + usedfood + "ttt");
+  usedfood = parseFloat(usedfood);
+  alert("ttt" + usedfood + "ttt")
 
   var url = "./php/save-record.php";
   url =
