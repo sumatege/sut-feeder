@@ -195,7 +195,6 @@ function CalculateFood(usetime, foodsize) {
 
 function CalculateFoodNewSize(usetime, foodsize) {
   var unit = $(".UnitTextFeedingManual").html();
-  console.log(foodsize);
 
   //console.log(unit);
   if (unit == "กรัม") {
