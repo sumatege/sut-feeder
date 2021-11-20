@@ -3,11 +3,12 @@
 session_start();
 require 'config.php';
 $sum_food = 0;
+date_default_timezone_set("Asia/Bangkok");
 
-if ($_GET["foodsize"] != null && $_GET["totaltime"] != null && $_GET["usedfood"] != null && $_GET["datetime"] != null) {
+if ($_GET["foodsize"] != null && $_GET["totaltime"] != null && $_GET["usedfood"] != null) {
 
     $sqlINSERT = "INSERT INTO record (r_key,r_food_size,r_total_time,r_used_food,r_date_time) VALUES 
-    ('" . $_SESSION["selectedKey"] . "','" . $_GET["foodsize"] . "',' " . $_GET["totaltime"] . "', '" . $_GET["usedfood"] . "',  '" . $_GET["datetime"] . "')";
+    ('" . $_SESSION["selectedKey"] . "','" . $_GET["foodsize"] . "',' " . $_GET["totaltime"] . "', '" . $_GET["usedfood"] . "',  '" . date("Y-m-d h:i:s") . "')";
 
     if ($conn->query($sqlINSERT) === TRUE) {
 

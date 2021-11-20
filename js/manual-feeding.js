@@ -93,11 +93,6 @@ function SaveFeeding() {
   var totaltime = document.getElementById("UsedFoodTime").value;
   var usedfood = document.getElementById("UsedFoodG").value;
 
-  const format1 = "YYYY-MM-DD HH:mm:ss";
-  var date1 = new Date();
-  dateTime1 = moment(date1).format(format1);
-  let today = dateTime1;
-
   var url = "./php/save-record.php";
   url =
     url +
@@ -106,13 +101,11 @@ function SaveFeeding() {
     "&totaltime=" +
     totaltime +
     "&usedfood=" +
-    usedfood +
-    "&datetime=" +
-    today;
-    alert(url);
+    usedfood;
+  //alert(url);
   const xhttp = new XMLHttpRequest();
   xhttp.onload = function () {
-    alert(this.response);
+    //alert(this.response);
     if (this.responseText == "0") {
       document.getElementById("UsedFoodG").value = 0;
       document.getElementById("UsedFoodK").value = 0;
@@ -201,16 +194,16 @@ function CalculateFood(usetime, foodsize) {
 }
 
 function CalculateFoodNewSize(usetime, foodsize) {
-  var unit = $('.UnitTextFeedingManual').html();
+  var unit = $(".UnitTextFeedingManual").html();
 
   //console.log(unit);
-  if (unit == "กรัม") {    
-    document.getElementById("UsedFoodG").value =
-      usetime * (parseFloat(foodsize));
-      document.getElementById("UsedFoodK").value = usetime * (parseFloat(foodsize) / 1000);
+  if (unit == "กรัม") {
+    document.getElementById("UsedFoodG").value = usetime * parseFloat(foodsize);
+    document.getElementById("UsedFoodK").value =
+      usetime * (parseFloat(foodsize) / 1000);
   } else {
     document.getElementById("UsedFoodG").value =
       usetime * (parseFloat(foodsize) * 1000);
-      document.getElementById("UsedFoodK").value = usetime * (parseFloat(foodsize));
+    document.getElementById("UsedFoodK").value = usetime * parseFloat(foodsize);
   }
 }
