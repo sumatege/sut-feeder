@@ -92,8 +92,6 @@ function SaveFeeding() {
   var foodsize = document.getElementById("foodsize").value;
   var totaltime = document.getElementById("UsedFoodTime").value;
   var usedfood = document.getElementById("UsedFoodG").value;
-  usedfood = parseFloat(usedfood);
-  alert("ttt" + usedfood + "ttt")
 
   var url = "./php/save-record.php";
   url =
@@ -104,10 +102,10 @@ function SaveFeeding() {
     totaltime +
     "&usedfood=" +
     usedfood;
-  alert(url);
+  //alert(url);
   const xhttp = new XMLHttpRequest();
   xhttp.onload = function () {
-    alert(this.response);
+    //alert(this.response);
     if (this.responseText == "0") {
       document.getElementById("UsedFoodG").value = 0;
       document.getElementById("UsedFoodK").value = 0;
