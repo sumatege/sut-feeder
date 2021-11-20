@@ -102,10 +102,10 @@ function SaveFeeding() {
     totaltime +
     "&usedfood=" +
     usedfood;
-  //alert(url);
+  alert(url);
   const xhttp = new XMLHttpRequest();
   xhttp.onload = function () {
-    //alert(this.response);
+    alert(this.response);
     if (this.responseText == "0") {
       document.getElementById("UsedFoodG").value = 0;
       document.getElementById("UsedFoodK").value = 0;
@@ -174,8 +174,7 @@ function CalculateFood(usetime, foodsize) {
       if (item.time == usetime) {
         switch (foodsize) {
           case "1":
-            document.getElementById("UsedFoodG").value = item.oneg;
-            console.log(item.oneg);
+            document.getElementById("UsedFoodG").value = item.oneg;            
             document.getElementById("UsedFoodK").value = item.onek;
             break;
           case "2":
