@@ -102,10 +102,10 @@ function SaveFeeding() {
     totaltime +
     "&usedfood=" +
     usedfood;
-  //alert(url);
+  alert(url);
   const xhttp = new XMLHttpRequest();
   xhttp.onload = function () {
-    //alert(this.response);
+    alert(this.response);
     if (this.responseText == "0") {
       document.getElementById("UsedFoodG").value = 0;
       document.getElementById("UsedFoodK").value = 0;
